@@ -1,0 +1,46 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+model User {
+  id        String    @id @default(uuid())
+  username  String    @unique
+  avatarUrl String
+  tier      String    // e.g. "Vibe Master", "L1 Prompter", "No-code Explorer", "Bot"
+  isBot     Boolean   @default(false)
+  createdAt DateTime  @default(now())
+  topics    Topic[]
+  comments  Comment[]
+}
+
+model Topic {
+  id         String    @id @default(uuid())
+  title      String
+  content    String
+  category   String    // "VibeCoding", "SideProject", "AI-Showcase", "Monetization"
+  tags       String    // Comma-separated list (e.g. "#NextJS,#Gemini")
+  authorId   String
+  author     User      @relation(fields: [authorId], references: [id])
+  replyCount Int       @default(0)
+  viewCount  Int       @default(0)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  comments   Comment[]
+}
+
+model Comment {
+  id        String    @id @default(uuid())
+  content   String
+  authorId  String
+  author    User      @relation(fields: [authorId], references: [id])
+  topicId   String
+  topic     Topic     @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  parentId  String?   // Optional parent comment ID for simple nested replies
+  createdAt DateTime  @default(now())
+}
