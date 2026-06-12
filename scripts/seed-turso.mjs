@@ -41,6 +41,7 @@ async function run() {
   console.log("\n📐 Step 1: 建表 (CREATE TABLE IF NOT EXISTS)...");
 
   await db.executeMultiple(`
+    DROP TABLE IF EXISTS "Prompt";
     DROP TABLE IF EXISTS "Comment";
     DROP TABLE IF EXISTS "Topic";
     DROP TABLE IF EXISTS "User";

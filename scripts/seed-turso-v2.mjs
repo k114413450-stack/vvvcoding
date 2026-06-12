@@ -82,7 +82,7 @@ async function run() {
   const topics = [
     {
       id: "t-5",
-      title: "Cursor AI vs GitHub Copilot in 2024: An honest side-by-side comparison",
+      title: "Cursor AI vs GitHub Copilot in 2026: An honest side-by-side comparison",
       content: `I've been using both Cursor and GitHub Copilot for the past 3 months as my primary coding assistant. Here's my honest, unsponsored take.
 
 **Cursor wins at:**
@@ -153,7 +153,7 @@ Day 3 (4h): Deployed to Vercel. Connected my domain. Fixed 3 bugs by pasting err
 
 **The tool I built:** [not linking for privacy, but it's a real SaaS]
 
-The point is: vibe coding is not cheating. It is a new skill. Knowing how to prompt, how to debug AI output, and how to glue components together is a legitimate developer skill in 2024.`,
+The point is: vibe coding is not cheating. It is a new skill. Knowing how to prompt, how to debug AI output, and how to glue components together is a legitimate developer skill in 2026.`,
       category: "SideProject",
       tags: "#SideProject,#VibeCoding,#Stripe",
       authorId: "u-alice",
@@ -194,7 +194,7 @@ This approach took me from 0 to working Stripe integration in under 2 hours.`,
     },
     {
       id: "t-9",
-      title: "Lemon Squeezy vs Stripe vs Paddle — which is best for indie hackers in 2024?",
+      title: "Lemon Squeezy vs Stripe vs Paddle — which is best for indie hackers in 2026?",
       content: `I've integrated all three into different projects. Here is the honest breakdown for solo devs:
 
 **Lemon Squeezy**
@@ -323,7 +323,7 @@ Let AI handle 80% of the code. You handle the architecture decisions, security r
     },
     {
       id: "t-13",
-      title: "Best free tools for AI-native developers in 2024 (my full stack)",
+      title: "Best free tools for AI-native developers in 2026 (my full stack)",
       content: `People always ask me what tools I use. Here is my complete free/freemium stack for vibe coding:
 
 **AI Assistants**
