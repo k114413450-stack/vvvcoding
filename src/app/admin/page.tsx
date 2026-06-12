@@ -32,6 +32,56 @@ export default function AdminPage() {
   ]);
   const [loadingAction, setLoadingAction] = useState<string | null>(null);
 
+  // ── Simple password gate ──
+  const [unlocked, setUnlocked] = useState(false);
+  const [pwInput, setPwInput] = useState("");
+  const [pwError, setPwError] = useState(false);
+  const ADMIN_PW = process.env.NEXT_PUBLIC_ADMIN_PASSWORD ?? "vvvcoding888";
+
+  const handleUnlock = () => {
+    if (pwInput === ADMIN_PW) {
+      setUnlocked(true);
+      setPwError(false);
+    } else {
+      setPwError(true);
+      setPwInput("");
+    }
+  };
+
+  if (!unlocked) {
+    return (
+      <div className="min-h-screen flex flex-col bg-slate-950">
+        <Navbar />
+        <main className="flex-1 flex items-center justify-center px-4">
+          <div className="w-full max-w-sm rounded-2xl border border-slate-800 bg-slate-900/40 p-8 shadow-2xl backdrop-blur">
+            <div className="flex items-center gap-2 mb-6">
+              <Cpu className="h-5 w-5 text-emerald-400 animate-pulse" />
+              <h1 className="text-base font-bold text-slate-200">Admin Access</h1>
+            </div>
+            <p className="text-xs text-slate-500 mb-4">This page is restricted to site admins.</p>
+            <input
+              type="password"
+              value={pwInput}
+              onChange={(e) => { setPwInput(e.target.value); setPwError(false); }}
+              onKeyDown={(e) => e.key === "Enter" && handleUnlock()}
+              placeholder="Enter admin password"
+              className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-200 placeholder-slate-600 outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 mb-2"
+            />
+            {pwError && (
+              <p className="text-xs text-red-400 mb-2">Incorrect password.</p>
+            )}
+            <button
+              onClick={handleUnlock}
+              className="w-full rounded-lg bg-gradient-to-r from-purple-600 to-emerald-600 py-2 text-sm font-semibold text-white hover:opacity-90 transition-opacity"
+            >
+              Unlock
+            </button>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   const addLog = (message: string, type: "info" | "success" | "error" = "info") => {
     setLogs((prev) => [
       {

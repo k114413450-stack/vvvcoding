@@ -7,9 +7,7 @@ import { useApp } from "@/context/AppContext";
 import {
   Terminal,
   Globe,
-  UserCheck,
   PlusCircle,
-  Cpu,
   ChevronDown,
 } from "lucide-react";
 
@@ -58,15 +56,6 @@ export default function Navbar() {
               }`}
             >
               All Topics
-            </Link>
-            <Link
-              href="/admin"
-              className={`flex items-center gap-1 px-3 py-1.5 rounded-md transition-colors hover:text-white ${
-                pathname === "/admin" ? "bg-slate-900 text-white" : ""
-              }`}
-            >
-              <Cpu className="h-4 w-4 text-emerald-400" />
-              Bot Control
             </Link>
           </nav>
         </div>
@@ -175,7 +164,7 @@ export default function Navbar() {
                     Switch Identity
                   </p>
                   <div className="max-h-60 overflow-y-auto space-y-0.5 mt-1 pr-1 scrollbar-thin">
-                    {users.map((u) => (
+                    {users.filter((u) => !u.isBot).map((u) => (
                       <button
                         key={u.id}
                         onClick={() => {
@@ -203,11 +192,6 @@ export default function Navbar() {
                             {u.tier}
                           </span>
                         </div>
-                        {u.isBot && (
-                          <span className="text-[9px] bg-red-950 text-red-400 border border-red-900 px-1 rounded font-mono">
-                            BOT
-                          </span>
-                        )}
                       </button>
                     ))}
                   </div>
