@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import { useApp } from "@/context/AppContext";
+import PostContent from "@/components/PostContent";
 import {
   ArrowLeft,
   MessageSquare,
@@ -244,11 +245,11 @@ export default function TopicDetailClient({ id }: { id: string }) {
                 />
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-semibold text-slate-200">
+                    <span className="text-base font-semibold text-slate-200">
                       {topic.author.username}
                     </span>
                     <span
-                      className={`text-[9px] font-bold px-1.5 py-0.2 rounded border ${getTierBadgeStyle(
+                      className={`text-xs font-bold px-1.5 py-0.5 rounded border ${getTierBadgeStyle(
                         topic.author.tier
                       )}`}
                     >
@@ -268,14 +269,14 @@ export default function TopicDetailClient({ id }: { id: string }) {
               </div>
 
               {/* Title */}
-              <h1 className="text-xl font-bold text-white leading-tight mb-3">
+              <h1 className="text-xl sm:text-2xl font-bold text-white leading-tight mb-3">
                 {topic.title}
               </h1>
 
               {/* Node Tags */}
               <div className="flex items-center flex-wrap gap-1.5 mb-6">
                 <span
-                  className={`rounded px-2 py-0.5 text-[10px] font-bold border ${getCategoryStyle(
+                  className={`rounded px-2 py-0.5 text-xs font-bold border ${getCategoryStyle(
                     topic.category
                   )}`}
                 >
@@ -286,7 +287,7 @@ export default function TopicDetailClient({ id }: { id: string }) {
                     tag.trim() && (
                       <span
                         key={tag}
-                        className="rounded bg-slate-900 border border-slate-800 px-2 py-0.5 text-[10px] font-semibold text-slate-400"
+                        className="rounded bg-slate-900 border border-slate-800 px-2 py-0.5 text-xs font-semibold text-slate-400"
                       >
                         {tag.trim()}
                       </span>
@@ -296,11 +297,13 @@ export default function TopicDetailClient({ id }: { id: string }) {
 
               {/* Content Body */}
               <div className="border-t border-slate-900 pt-6">
-                <div className="text-sm text-slate-300 leading-relaxed whitespace-pre-line font-sans prose prose-invert max-w-none">
-                  {activeTranslations[topic.id]
-                    ? translatedTexts[topic.id]
-                    : topic.content}
-                </div>
+                <PostContent
+                  content={
+                    activeTranslations[topic.id]
+                      ? translatedTexts[topic.id]
+                      : topic.content
+                  }
+                />
 
                 {/* Translate Toggle Button */}
                 <div className="flex justify-end mt-4 border-t border-slate-900/60 pt-4">
@@ -394,11 +397,14 @@ export default function TopicDetailClient({ id }: { id: string }) {
                         </div>
 
                         {/* Content text */}
-                        <p className="text-slate-300 text-xs leading-relaxed whitespace-pre-line">
-                          {activeTranslations[comment.id]
-                            ? translatedTexts[comment.id]
-                            : comment.content}
-                        </p>
+                        <PostContent
+                          content={
+                            activeTranslations[comment.id]
+                              ? translatedTexts[comment.id]
+                              : comment.content
+                          }
+                          className="text-sm"
+                        />
 
                         {/* Comment Actions (Translate button) */}
                         <div className="flex gap-4 mt-2.5 opacity-0 group-hover:opacity-100 transition-opacity">

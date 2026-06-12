@@ -8,7 +8,9 @@ export async function GET(request: NextRequest) {
     const category = searchParams.get("category");
     const search = searchParams.get("search");
 
-    const whereClause: any = {};
+    const whereClause: any = {
+      createdAt: { lte: new Date() }
+    };
     if (category) {
       whereClause.category = category;
     }

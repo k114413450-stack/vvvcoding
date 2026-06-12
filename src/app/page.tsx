@@ -11,7 +11,9 @@ export default async function HomePage({ searchParams }: Props) {
   const category = resolvedSearchParams?.category || "All";
   const search = resolvedSearchParams?.search || "";
 
-  const whereClause: any = {};
+  const whereClause: any = {
+    createdAt: { lte: new Date() }
+  };
   if (category && category !== "All") {
     whereClause.category = category;
   }

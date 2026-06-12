@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const translationMap: Record<string, string> = {
-  "How I built a fully functional SaaS in 3 hours using Gemini 1.5 Pro and Next.js":
-    "如何使用 Gemini 1.5 Pro 和 Next.js 在 3 小时内构建一个功能齐全的 SaaS",
-  "I have very little background in react, but today I wanted to test if the \"vibe coding\" hype is real.\n      \nHere is exactly what I did:\n1. I described my idea: a simplified analytics dashboard for indie hackers.\n2. I prompted Gemini 1.5 Pro to generate the nextjs setup commands.\n3. I used standard tailwind cards to make it look super modern.\n4. I hooked up the SQLite db.\n\nThe results are insane. The app compiles, writes records, and looks extremely sleek.\nHow is everyone else vibing? Are we actually entering the zero-syntax developer era?":
-    "我几乎没有 React 基础，但今天我想测试一下“vibe coding”的宣传是否属实。\n\n我具体是这么做的：\n1. 我描述了我的想法：一个面向独立开发者的简易分析仪表盘。\n2. 我提示 Gemini 1.5 Pro 生成 Next.js 的安装命令。\n3. 我使用标准的 Tailwind 卡片设计让它看起来非常现代。\n4. 我连接了 SQLite 数据库。\n\n结果太不可思议了。应用成功编译，写入记录，而且外观极其流畅。\n大家最近感觉如何？我们真的要进入“零语法开发时代”了吗？",
+  "How I built a fully functional SaaS in 3 hours using Gemini 3.5 Pro and Next.js":
+    "如何使用 Gemini 3.5 Pro 和 Next.js 在 3 小时内构建一个功能齐全的 SaaS",
+  "I have very little background in react, but today I wanted to test if the \"vibe coding\" hype is real.\n      \nHere is exactly what I did:\n1. I described my idea: a simplified analytics dashboard for indie hackers.\n2. I prompted Gemini 3.5 Pro to generate the nextjs setup commands.\n3. I used standard tailwind cards to make it look super modern.\n4. I hooked up the SQLite db.\n\nThe results are insane. The app compiles, writes records, and looks extremely sleek.\nHow is everyone else vibing? Are we actually entering the zero-syntax developer era?":
+    "我几乎没有 React 基础，但今天我想测试一下“vibe coding”的宣传是否属实。\n\n我具体是这么做的：\n1. 我描述了我的想法：一个面向独立开发者的简易分析仪表盘。\n2. 我提示 Gemini 3.5 Pro 生成 Next.js 的安装命令。\n3. 我使用标准的 Tailwind 卡片设计让它看起来非常现代。\n4. 我连接了 SQLite 数据库。\n\n结果太不可思议了。应用成功编译，写入记录，而且外观极其流畅。\n大家最近感觉如何？我们真的要进入“零语法开发时代”了吗？",
   "This is exactly what I mean! The syntax barrier is gone. Now it's all about product thinking.":
     "这就是我所说的！语法障碍消失了。现在一切都看产品思维了。",
   "Did you encounter any hallucinations with the SQLite setup? Sometimes my agent tries to use pg-native packages which fail.":

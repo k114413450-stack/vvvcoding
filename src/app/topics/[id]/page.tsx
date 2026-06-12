@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { stripMarkdown } from "@/lib/strip-markdown";
 import TopicDetailClient from "./TopicDetailClient";
 
 interface Props {
@@ -16,16 +17,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     include: { author: true },
   });
 
-  if (!topic) {
+  if (!topic || topic.createdAt > new Date()) {
     return { title: "Topic Not Found — vvvcoding.com" };
   }
 
-  // Strip code blocks and markdown syntax from content for a clean description
-  const description = topic.content
-    .replace(/```[\s\S]*?```/g, "")
-    .replace(/[#*`]/g, "")
-    .slice(0, 150)
-    .trim() + "...";
+  const description =
+    stripMarkdown(topic.content).slice(0, 150).trim() + "...";
 
   return {
     title: `${topic.title} — vvvcoding.com`,
@@ -57,7 +54,7 @@ export default async function TopicDetailPage({ params }: Props) {
     include: { author: true },
   });
 
-  if (!topicData) {
+  if (!topicData || topicData.createdAt > new Date()) {
     notFound();
   }
 

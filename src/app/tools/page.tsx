@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Best AI Coding Tools 2026 — Community Reviews | VVVCODING",
-  description: "Compare Cursor, GitHub Copilot, v0.dev, Windsurf, and more. Real reviews from AI-native developers. Updated by the VVVCODING community.",
+  description: "Compare Cursor, GitHub Copilot, v0.dev, Antigravity, and more. Real reviews from AI-native developers. Updated June 2026 by the VVVCODING community.",
   alternates: {
     canonical: "https://vvvcoding.com/tools",
   },
@@ -57,7 +57,7 @@ const TOOLS = [
     name: "Antigravity (Google)",
     emoji: "🛸",
     tagline: "Google's premier agentic coding assistant",
-    description: "Evolved from Google's acquisition of Windsurf. Features an advanced collaborative agent system that integrates deeply with local workspace environments to perform complex multi-file engineering tasks.",
+    description: "Google's agentic coding IDE — the 2026 evolution of Windsurf after Google's acquisition. Deep multi-file agent workflows, workspace-aware edits, and tight integration with Gemini 3.5.",
     website: "https://google.com",
     pricing: "Google Workspace / API Tier",
     rating: 4.9,

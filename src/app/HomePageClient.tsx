@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useApp } from "@/context/AppContext";
@@ -8,8 +8,8 @@ import {
   MessageSquare,
   Eye,
   Clock,
-  Sparkles,
   Compass,
+  Sparkles,
   ArrowUpRight,
   ShieldCheck,
 } from "lucide-react";
@@ -41,7 +41,6 @@ export default function HomePageClient({
 }) {
   const router = useRouter();
   const { currentUser } = useApp();
-  const [botActionLoading, setBotActionLoading] = useState(false);
 
   const categories = [
     { name: "All", label: "All Topics" },
@@ -75,25 +74,6 @@ export default function HomePageClient({
     router.push(url);
   };
 
-  const handleSpawnBotTopic = async () => {
-    setBotActionLoading(true);
-    try {
-      const res = await fetch("/api/bot", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "create_topic" }),
-      });
-      if (res.ok) {
-        router.refresh();
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setBotActionLoading(false);
-    }
-  };
-
-  // Helper for category badge styling
   const getCategoryStyle = (category: string) => {
     switch (category) {
       case "VibeCoding":
@@ -174,25 +154,19 @@ export default function HomePageClient({
                 </div>
               )}
             </div>
-
-            {/* Bot Simulation Quick Trigger */}
-            <button
-              onClick={handleSpawnBotTopic}
-              disabled={botActionLoading}
-              className="flex items-center gap-1.5 rounded-lg border border-slate-800 bg-slate-900/60 px-3 py-1.5 text-xs font-semibold text-slate-300 hover:bg-slate-800/80 active:scale-95 disabled:opacity-50 transition-all cursor-pointer"
-            >
-              <Sparkles className="h-3.5 w-3.5 text-emerald-400" />
-              <span>{botActionLoading ? "Spawning..." : "Spawn Bot Post"}</span>
-            </button>
           </div>
 
           {/* List of Posts */}
           {initialTopics.length === 0 ? (
             <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-850 p-12 text-center bg-slate-900/10">
               <Compass className="h-10 w-10 text-slate-500 mb-3" />
-              <h3 className="text-sm font-semibold text-slate-300">No topics found</h3>
-              <p className="mt-1 text-xs text-slate-500">
-                Select another category or click "Spawn Bot Post" to seed topics!
+              <h3 className="text-base font-semibold text-slate-300">No topics found</h3>
+              <p className="mt-2 text-sm text-slate-500">
+                Try another category, or{" "}
+                <Link href="/create" className="text-purple-400 hover:text-purple-300">
+                  start a new topic
+                </Link>
+                .
               </p>
             </div>
           ) : (
@@ -213,11 +187,11 @@ export default function HomePageClient({
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center flex-wrap gap-2 mb-1">
                       {/* Author name & badge */}
-                      <span className="text-xs font-medium text-slate-300 hover:text-white transition-colors">
+                      <span className="text-sm font-medium text-slate-300 hover:text-white transition-colors">
                         {topic.author.username}
                       </span>
                       <span
-                        className={`text-[9px] font-bold px-1 rounded border scale-90 ${getTierBadgeStyle(
+                        className={`text-[11px] font-bold px-1.5 py-0.5 rounded border ${getTierBadgeStyle(
                           topic.author.tier
                         )}`}
                       >
@@ -229,7 +203,7 @@ export default function HomePageClient({
                       <span className="text-slate-600 text-[10px]">•</span>
 
                       {/* Timestamp */}
-                      <div className="flex items-center gap-1 text-[10px] text-slate-500">
+                      <div className="flex items-center gap-1 text-xs text-slate-500">
                         <Clock className="h-3 w-3" />
                         <span>{formatRelativeTime(topic.createdAt)}</span>
                       </div>
@@ -238,7 +212,7 @@ export default function HomePageClient({
                     {/* Topic Title */}
                     <Link
                       href={`/topics/${topic.id}`}
-                      className="block text-slate-100 font-semibold text-sm group-hover:text-purple-400 transition-colors leading-snug line-clamp-2"
+                      className="block text-base sm:text-lg text-slate-100 font-semibold group-hover:text-purple-400 transition-colors leading-snug line-clamp-2"
                     >
                       {topic.title}
                     </Link>
@@ -246,7 +220,7 @@ export default function HomePageClient({
                     {/* Tags */}
                     <div className="flex items-center flex-wrap gap-1.5 mt-2">
                       <span
-                        className={`rounded px-1.5 py-0.5 text-[9px] font-bold border ${getCategoryStyle(
+                        className={`rounded px-2 py-0.5 text-xs font-bold border ${getCategoryStyle(
                           topic.category
                         )}`}
                       >
@@ -257,7 +231,7 @@ export default function HomePageClient({
                           tag.trim() && (
                             <span
                               key={tag}
-                              className="rounded bg-slate-900 border border-slate-800 px-1.5 py-0.5 text-[9px] font-semibold text-slate-400"
+                              className="rounded bg-slate-900 border border-slate-800 px-2 py-0.5 text-xs font-semibold text-slate-400"
                             >
                               {tag.trim()}
                             </span>
@@ -350,10 +324,10 @@ export default function HomePageClient({
                 About VVVCODING
               </h3>
             </div>
-            <p className="text-xs text-slate-400 leading-relaxed">
+            <p className="text-sm text-slate-400 leading-relaxed">
               A community for <strong className="text-slate-200">AI-native developers</strong> who build with prompts, ship fast, and share what works.
             </p>
-            <ul className="mt-3 space-y-1.5 text-xs text-slate-500">
+            <ul className="mt-3 space-y-1.5 text-sm text-slate-500">
               <li className="flex items-center gap-1.5"><span className="text-emerald-400">→</span> Share your best prompts</li>
               <li className="flex items-center gap-1.5"><span className="text-purple-400">→</span> Showcase AI-built projects</li>
               <li className="flex items-center gap-1.5"><span className="text-indigo-400">→</span> Discuss monetization</li>
@@ -362,8 +336,8 @@ export default function HomePageClient({
           </div>
 
           {/* Forum Guidelines */}
-          <div className="rounded-2xl border border-slate-900 bg-slate-900/15 p-5 text-xs">
-            <h3 className="font-bold text-slate-300 mb-2 uppercase tracking-wider text-[10px]">
+          <div className="rounded-2xl border border-slate-900 bg-slate-900/15 p-5 text-sm">
+            <h3 className="font-bold text-slate-300 mb-2 uppercase tracking-wider text-xs">
               Forum Rules
             </h3>
             <ul className="space-y-1.5 text-slate-400 list-disc list-inside">

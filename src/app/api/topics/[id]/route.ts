@@ -25,6 +25,9 @@ export async function GET(
       include: {
         author: true,
         comments: {
+          where: {
+            createdAt: { lte: new Date() },
+          },
           include: {
             author: true,
           },
@@ -35,7 +38,7 @@ export async function GET(
       },
     });
 
-    if (!topic) {
+    if (!topic || topic.createdAt > new Date()) {
       return NextResponse.json({ error: "Topic not found" }, { status: 404 });
     }
 

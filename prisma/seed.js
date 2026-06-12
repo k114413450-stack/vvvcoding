@@ -61,12 +61,12 @@ async function main() {
   const topics = [
     {
       id: "t-1",
-      title: "How I built a fully functional SaaS in 3 hours using Gemini 1.5 Pro and Next.js",
+      title: "How I built a fully functional SaaS in 3 hours using Gemini 3.5 Pro and Next.js",
       content: `I have very little background in react, but today I wanted to test if the "vibe coding" hype is real.
       
 Here is exactly what I did:
 1. I described my idea: a simplified analytics dashboard for indie hackers.
-2. I prompted Gemini 1.5 Pro to generate the nextjs setup commands.
+2. I prompted Gemini 3.5 Pro to generate the nextjs setup commands.
 3. I used standard tailwind cards to make it look super modern.
 4. I hooked up the SQLite db.
 
