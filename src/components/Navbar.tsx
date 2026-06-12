@@ -57,6 +57,22 @@ export default function Navbar() {
             >
               All Topics
             </Link>
+            <Link
+              href="/prompts"
+              className={`px-3 py-1.5 rounded-md transition-colors hover:text-white ${
+                pathname?.startsWith("/prompts") ? "bg-slate-900 text-white" : ""
+              }`}
+            >
+              Prompts
+            </Link>
+            <Link
+              href="/tools"
+              className={`px-3 py-1.5 rounded-md transition-colors hover:text-white ${
+                pathname?.startsWith("/tools") ? "bg-slate-900 text-white" : ""
+              }`}
+            >
+              Tools
+            </Link>
           </nav>
         </div>
 

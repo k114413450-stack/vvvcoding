@@ -17,6 +17,7 @@ model User {
   createdAt DateTime  @default(now())
   topics    Topic[]
   comments  Comment[]
+  prompts   Prompt[]
 }
 
 model Topic {
@@ -43,4 +44,21 @@ model Comment {
   topic     Topic     @relation(fields: [topicId], references: [id], onDelete: Cascade)
   parentId  String?   // Optional parent comment ID for simple nested replies
   createdAt DateTime  @default(now())
+}
+
+model Prompt {
+  id           String   @id @default(uuid())
+  title        String
+  useCase      String
+  model        String
+  template     String
+  effectNote   String
+  category     String
+  tags         String
+  authorId     String
+  author       User     @relation(fields: [authorId], references: [id])
+  copyCount    Int      @default(0)
+  likeCount    Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }

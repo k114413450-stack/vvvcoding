@@ -1,8 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export async function POST(request: NextRequest) {
   try {
+    // Apply IP rate limiting for comments (10 requests per 60 seconds)
+    const ip = request.headers.get("x-forwarded-for") ?? "unknown";
+    const { allowed, retryAfter } = checkRateLimit(ip, 10, 60_000);
+    if (!allowed) {
+      return NextResponse.json(
+        { error: `Too many requests. Try again in ${retryAfter}s.` },
+        { status: 429 }
+      );
+    }
+
     const body = await request.json();
     const { content, authorId, topicId, parentId } = body;
 

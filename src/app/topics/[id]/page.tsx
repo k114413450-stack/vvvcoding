@@ -20,7 +20,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return { title: "Topic Not Found — vvvcoding.com" };
   }
 
-  const description = topic.content.slice(0, 155).replace(/\n/g, " ") + "…";
+  // Strip code blocks and markdown syntax from content for a clean description
+  const description = topic.content
+    .replace(/```[\s\S]*?```/g, "")
+    .replace(/[#*`]/g, "")
+    .slice(0, 150)
+    .trim() + "...";
 
   return {
     title: `${topic.title} — vvvcoding.com`,
@@ -47,12 +52,12 @@ export default async function TopicDetailPage({ params }: Props) {
   const { id } = await params;
 
   // Verify the topic exists server-side; 404 if not
-  const topic = await db.topic.findUnique({
+  const topicData = await db.topic.findUnique({
     where: { id },
-    select: { id: true },
+    include: { author: true },
   });
 
-  if (!topic) {
+  if (!topicData) {
     notFound();
   }
 
@@ -62,5 +67,44 @@ export default async function TopicDetailPage({ params }: Props) {
     data: { viewCount: { increment: 1 } },
   });
 
-  return <TopicDetailClient id={id} />;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "DiscussionForumPosting",
+    "headline": topicData.title,
+    "text": topicData.content.slice(0, 500),
+    "datePublished": topicData.createdAt.toISOString(),
+    "dateModified": topicData.updatedAt.toISOString(),
+    "author": {
+      "@type": "Person",
+      "name": topicData.author.username,
+    },
+    "interactionStatistic": [
+      {
+        "@type": "InteractionCounter",
+        "interactionType": "https://schema.org/ReplyAction",
+        "userInteractionCount": topicData.replyCount,
+      },
+      {
+        "@type": "InteractionCounter",
+        "interactionType": "https://schema.org/ViewAction",
+        "userInteractionCount": topicData.viewCount,
+      },
+    ],
+    "url": `https://vvvcoding.com/topics/${topicData.id}`,
+    "isPartOf": {
+      "@type": "DiscussionForum",
+      "name": "VVVCODING",
+      "url": "https://vvvcoding.com",
+    },
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <TopicDetailClient id={id} />
+    </>
+  );
 }
