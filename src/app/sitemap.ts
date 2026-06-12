@@ -13,6 +13,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 1.0,
     },
     {
+      url: `${BASE_URL}/prompts`,
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.9,
+    },
+    {
+      url: `${BASE_URL}/tools`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
       url: `${BASE_URL}/create`,
       lastModified: new Date(),
       changeFrequency: "monthly",
@@ -38,5 +50,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error("sitemap: skipping topic routes", error);
   }
 
-  return [...staticRoutes, ...topicRoutes];
+  // Dynamic prompt routes
+  let promptRoutes: MetadataRoute.Sitemap = [];
+  try {
+    const prompts = await db.prompt.findMany({
+      select: { id: true, updatedAt: true },
+      orderBy: { updatedAt: "desc" },
+    });
+
+    promptRoutes = prompts.map((prompt) => ({
+      url: `${BASE_URL}/prompts/${prompt.id}`,
+      lastModified: prompt.updatedAt,
+      changeFrequency: "weekly" as const,
+      priority: 0.85,
+    }));
+  } catch (error) {
+    console.error("sitemap: skipping prompt routes", error);
+  }
+
+  return [...staticRoutes, ...topicRoutes, ...promptRoutes];
 }
