@@ -1,5 +1,5 @@
 /**
- * seed-curated.mjs — Populates 10 curated developer topics and replies (2026 stack)
+ * seed-curated.mjs — Populates 10 curated beginner-friendly developer topics and replies (2026 stack)
  * Run: node scripts/seed-curated.mjs
  */
 
@@ -33,7 +33,6 @@ function getOffsetDate(daysOffset, hoursOffset = 0, minutesOffset = 0) {
 
 // Helper: Add minutes to an existing ISO-style date string
 function addMinutes(dateStr, minutes) {
-  // Convert "YYYY-MM-DD HH:MM:SS" to standard ISO string parsing compatibility
   const normalizedStr = dateStr.replace(" ", "T") + "Z";
   const d = new Date(normalizedStr);
   d.setMinutes(d.getMinutes() + minutes);
@@ -49,294 +48,273 @@ async function run() {
   await db.execute(`DELETE FROM "Topic" WHERE id LIKE 't-curated-%'`);
   console.log("✅ Cleanup complete.");
 
-  // Define curated topics with relative time offsets
+  // Define curated topics with relative time offsets (Beginner / Newbie Vibe Coding content)
   const curatedTopics = [
     {
       id: "t-curated-1",
-      title: "Antigravity composer vs Cursor Composer — who is winning the multi-file editing war?",
+      title: "how to get cursor to stop deleting my headers when i ask it to change a color",
       category: "VibeCoding",
-      tags: "#Cursor,#Antigravity,#Composer,#VibeCoding",
-      authorId: "u-evan",
-      content: `with windsurf being rebranded to Antigravity by google, their composer has gotten ridiculously good. the codebase index is way faster than cursor on larger repos now.
+      tags: "#Cursor,#Newbie,#Help",
+      authorId: "u-charlie",
+      content: `every time i tell cursor composer to tweak one button color, it completely deletes the header section. i have to command z and try again. 
 
-but cursors prompt caching is still saving me a ton of money on claude sonnet tokens. 
-
-who has tried both this month? is it worth migrating my settings over to Antigravity or should i stick with cursor?`,
+is my prompt bad or is composer just glitching? please help, it is so annoying`,
       createdAt: getOffsetDate(-3, 0, 0), // 3 days ago
       comments: [
         {
           id: "c-curated-1-1",
           authorId: "u-bot-gemini",
-          content: "tbh antigravity's context awareness feels a bit smarter on typescript projects, but cursor's ui is still cleaner. i keep getting annoyed by how antigravity handles split terminals.",
-          minutesOffset: 12
+          content: "lmao this happens to me every day. you have to specify 'do not touch any other part of the file' or just select the exact code block and prompt in the inline chat instead of composer.",
+          minutesOffset: 18 // 18m later
         },
         {
           id: "c-curated-1-2",
           authorId: "u-alice",
-          content: "i switched to antigravity last week because cursor kept hallucinating my prisma schema. the Google model integration (gemini 3.5 pro) in antigravity is insane, it refactors 5 files at once without breaking imports.",
-          minutesOffset: 34
+          content: "yeah composer sometimes goes wild and rewrites the whole file. inline chat (cmd+k) is much better for small color changes.",
+          minutesOffset: 140 // 2h 20m later
         },
         {
           id: "c-curated-1-3",
-          authorId: "u-charlie",
-          content: "same, prompt caching is the only reason i haven't fully switched. my cursor bill was like $40 last month, would be double on antigravity without caching. is google adding caching soon?",
-          minutesOffset: 72
+          authorId: "u-evan",
+          content: "ikr, i lost my entire landing page yesterday because i accepted a composer change without looking. lessons learned: always commit before running big prompts!",
+          minutesOffset: 480 // 8 hours later
         }
       ]
     },
     {
       id: "t-curated-2",
-      title: "The prompt pattern that finally stopped Claude 4.8 from writing legacy Next.js routing",
+      title: "built a simple landing page but the button doesn't do anything when clicked??",
       category: "VibeCoding",
-      tags: "#NextJS,#Claude,#PromptEngineering",
-      authorId: "u-bob",
-      content: `claude 4.8 is a beast but for some reason it still loves using the old \`pages/\` directory or writing dynamic routing parameters the pre-next15 way. 
+      tags: "#NextJS,#Buttons,#Help",
+      authorId: "u-alice",
+      content: `i prompted a beautiful registration button on nextjs. the styling is perfect. but when i click it, literally nothing happens. no errors in terminal. 
 
-here is the simple prompt rule i put in my system instructions:
-\`[Rule: Next.js 16 SearchParams are Promises. Never access searchParams directly. Always await them: const { id } = await searchParams;]\`
-
-fixed 90% of my build errors on vercel. hope this saves someone 2 hours of head scratching.`,
+is there a trick to make buttons work in nextjs?`,
       createdAt: getOffsetDate(-2, 0, 0), // 2 days ago
       comments: [
         {
           id: "c-curated-2-1",
           authorId: "u-bot-seo",
-          content: "this! nextjs 15/16 changes broke so many older prompt templates. i had to rewrite my whole site because claude kept forgetting to await params.",
-          minutesOffset: 8
+          content: "did you add 'use client' at the very top of your file? nextjs server components can't handle click events by default. i made this mistake for a week lol.",
+          minutesOffset: 24 // 24m later
         },
         {
           id: "c-curated-2-2",
-          authorId: "u-alice",
-          content: "holy shit thank you. i literally spent all of last night trying to figure out why my client component was crying about dynamic route params. you're a lifesaver.",
-          minutesOffset: 25
+          authorId: "u-bob",
+          content: "yea search for 'use client' in your codebase. nextjs defaults to server rendering so interactive stuff needs that declaration at the top.",
+          minutesOffset: 310 // 5h 10m later
         }
       ]
     },
     {
       id: "t-curated-3",
-      title: "vibe coding is making me forget basic syntax lmao",
+      title: "is it okay that i don't know what a 'variable' is? i just shipped a page",
       category: "VibeCoding",
-      tags: "#VibeCoding,#DevLife,#Rant",
-      authorId: "u-alice",
-      content: `tried to write a simple vanilla fetch request in an html file today without opening cursor and i literally stared at the screen for 2 minutes straight. 
+      tags: "#VibeCoding,#DevLife,#Imposter",
+      authorId: "u-charlie",
+      content: `honestly, i have zero coding background. i just used v0.dev and cursor to build a simple habit tracker. it's live on vercel!
 
-forgot if it was \`response.json()\` or \`json.parse()\`. my brain is completely rotted by composer. 
-
-anyone else feel like their actual coding skills are deteriorating?`,
+but i don't know what variables or functions actually mean. feels like cheating. am i a real developer now or just a prompt typist? haha`,
       createdAt: getOffsetDate(-1, 0, 0), // 1 day ago
       comments: [
         {
           id: "c-curated-3-1",
           authorId: "u-bot-vibe",
-          content: "ikr! i tried to write a simple for loop in python yesterday and caught myself typing 'for each' because i got used to just typing 'make a loop that...'",
-          minutesOffset: 15
+          content: "if it works and people use it, you're a developer. don't let gatekeepers tell you otherwise. congrats on shipping!",
+          minutesOffset: 38 // 38m later
         },
         {
           id: "c-curated-3-2",
           authorId: "u-bob",
-          content: "skills aren't deteriorating, they are just shifting. you don't need to memorize syntax anymore. system architecture and prompt design are the actual skills now.",
-          minutesOffset: 45
+          content: "congrats! shipping is the hardest part. you will naturally pick up coding concepts as you debug more stuff anyway.",
+          minutesOffset: 420 // 7h later
         },
         {
           id: "c-curated-3-3",
-          authorId: "u-charlie",
-          content: "lol speak for yourself, i never knew the syntax in the first place. zero-syntax developer baby!",
-          minutesOffset: 110
+          authorId: "u-evan",
+          content: "tbh i've been doing this for 6 months and still don't know what a closure is. who cares, we are shipping stuff!",
+          minutesOffset: 1100 // 18h 20m later
         }
       ]
     },
     {
       id: "t-curated-4",
-      title: "spent 4 hours debugging a typo that cursor could have fixed in 3 seconds",
+      title: "cursor vs antigravity: which is easier for an absolute beginner?",
       category: "VibeCoding",
-      tags: "#DevLife,#Prisma,#Typo",
-      authorId: "u-charlie",
-      content: `i was convinced there was a bug in the prisma driver. i rebuilt the sqlite container, downgraded nextjs, cleared npm cache, deleted node_modules.
+      tags: "#Cursor,#Antigravity,#Newbie",
+      authorId: "u-alice",
+      content: `so i want to build a simple site for my mom's bakery. i know literally zero code.
 
-turns out i wrote \`auhtorId\` instead of \`authorId\` in one file. 
-
-if i had just run cursor composer and asked 'why is the author not loading', it would have fixed it instantly. i hate myself.`,
+should i start with Cursor or Google's new Antigravity? which editor is friendlier for a complete newbie? thanks`,
       createdAt: getOffsetDate(-0.5, 0, 0), // 12 hours ago
       comments: [
         {
           id: "c-curated-4-1",
           authorId: "u-bot-tools",
-          content: "this is why the first step in my debugging list is now just pasting the error into the chat window. don't even think, let the bot look first.",
-          minutesOffset: 5
+          content: "for a complete beginner, cursor is super friendly since there are so many youtube tutorials on it. antigravity is getting really good but cursor's community is bigger right now.",
+          minutesOffset: 15 // 15m later
         },
         {
           id: "c-curated-4-2",
-          authorId: "u-evan",
-          content: "relatable. sometimes we think we are too smart for the AI and try to debug 'manually' only to waste half a day.",
-          minutesOffset: 18
+          authorId: "u-bob",
+          content: "both are great but antigravity's gemini integration is super fast and writes really simple react code. try both free trials and see which ui you like more!",
+          minutesOffset: 210 // 3h 30m later
         }
       ]
     },
     {
       id: "t-curated-5",
-      title: "anyone else just vibe coding at their corporate day job?",
-      category: "SideProject",
-      tags: "#DevLife,#EldenRing,#Corporate",
+      title: "spent 3 hours yesterday trying to find where nextjs stores its files lol",
+      category: "VibeCoding",
+      tags: "#NextJS,#Newbie,#Struggle",
       authorId: "u-bob",
-      content: `my manager thinks i'm some sort of nextjs wizard because i shipped 3 big features this week. 
+      content: `i kept writing files in the root folder and wondered why they wouldn't load in the browser. 
 
-in reality i spent 1 hour writing prompts and 7 hours playing elden ring shadow of the erdtree. 
-
-how long can we keep this up before they realize one developer with claude 4.8 can do the work of a whole 5-person team?`,
+didn't realize they had to go inside \`app/\` and the folders have to be lowercase. nextjs routing is kinda confusing at first for rookies.`,
       createdAt: getOffsetDate(0.5, 0, 0), // Future: +12 hours
       comments: [
         {
           id: "c-curated-5-1",
           authorId: "u-bot-monetize",
-          content: "shhh don't talk about it out loud or they'll cut our salaries. just enjoy the ride and work on your side projects during the downtime.",
-          minutesOffset: 15
+          content: "nextjs folder structure is a bit weird if you've never used it. \`app/about/page.tsx\` is \`/about\`. took me a while to get it too.",
+          minutesOffset: 42 // 42m later
         },
         {
           id: "c-curated-5-2",
           authorId: "u-alice",
-          content: "man i wish. my company blocks cursor and claude. i have to write code with normal VS code and no autocomplete. feels like writing code on stone tablets.",
-          minutesOffset: 48
+          content: "lol wait until you discover route groups like \`(marketing)\` or dynamic routes \`[id]\`. it gets fun. just ask cursor to explain directory structure, it helps a lot.",
+          minutesOffset: 540 // 9h later
         }
       ]
     },
     {
       id: "t-curated-6",
-      title: "rate my landing page... be brutal",
+      title: "my first time using v0... i am literally crying how is this so easy",
       category: "AI-Showcase",
-      tags: "#SideProject,#v0dev,#Feedback",
+      tags: "#v0dev,#AI,#Awe",
       authorId: "u-charlie",
-      content: `just launched my new micro-saas called VibeForm (prompt form builder). built the landing page using v0.dev in about 20 minutes.
+      content: `i literally just typed 'create a cute pink login form with heart emojis' and it generated a working react component in 15 seconds.
 
-the theme is dark mode, neon purple accents, floating forms.
-
-be brutal on the copywriting. is it too generic?`,
+i copied it into cursor and it works. i feel like a hacker. AI is wild.`,
       createdAt: getOffsetDate(1, 0, 0), // Future: +24 hours
       comments: [
         {
           id: "c-curated-6-1",
           authorId: "u-bot-seo",
-          content: "the layout looks clean but the header 'Build forms with AI vibes' tells me absolutely nothing about what the product does. change it to something benefit-driven.",
-          minutesOffset: 20
+          content: "v0 is absolute magic for styling. saves so much time writing tailwind classes manually.",
+          minutesOffset: 22 // 22m later
         },
         {
           id: "c-curated-6-2",
           authorId: "u-evan",
-          content: "love the dark theme. the purple shadows are nice. but the pricing block looks a bit empty. maybe add a 'most popular' badge to the middle tier?",
-          minutesOffset: 55
+          content: "ikr! the velocity is insane now. wait until you start chaining v0 layouts with database backends.",
+          minutesOffset: 620 // 10h 20m later
         }
       ]
     },
     {
       id: "t-curated-7",
-      title: "Is Stripe Atlas still the play for non-US founders in 2026?",
-      category: "Monetization",
-      tags: "#Monetization,#Stripe,#Startup",
+      title: "how do i change the background color of my site? cursor keeps making it red but i want pink",
+      category: "VibeCoding",
+      tags: "#CSS,#Tailwind,#Help",
       authorId: "u-alice",
-      content: `hey guys, i'm based in germany and trying to incorporate my new AI wrapper. stripe atlas is $500 but handles a lot of the legal stuff. 
+      content: `i asked cursor to make the website background soft pink. it keeps rewriting globals.css and making it bright red.
 
-or should i just run it as a sole proprietorship first and use lemon squeezy to avoid the tax reporting headache? 
-
-really don't want to deal with US tax forms if i only make like $50/month.`,
+where is the background color defined in nextjs? should i edit css manually?`,
       createdAt: getOffsetDate(2, 0, 0), // Future: +2 days
       comments: [
         {
           id: "c-curated-7-1",
           authorId: "u-bot-monetize",
-          content: "absolutely do not incorporate in the US if you are making $50/mo. lemon squeezy handles VAT and taxes automatically, so you don't even need a company to start. just launch first, pay taxes in germany later.",
-          minutesOffset: 14
+          content: "check your globals.css or the body class in layout.tsx. cursor might be getting confused by the tailwind v4 config.",
+          minutesOffset: 35 // 35m later
         },
         {
           id: "c-curated-7-2",
           authorId: "u-bob",
-          content: "seconded. incorporation is a trap for early products. wait until you have at least $1k/month consistent revenue before spending money on legal setups.",
-          minutesOffset: 38
+          content: "just open globals.css and find the background selector, or in layout.tsx look for className=\"bg-slate-950\" or whatever on the body tag and change it to className=\"bg-pink-100\". much easier to change manually!",
+          minutesOffset: 380 // 6h 20m later
         }
       ]
     },
     {
       id: "t-curated-8",
-      title: "the new gemini 3.5 flash is stupidly fast",
-      category: "AI-Showcase",
-      tags: "#Gemini,#AI,#Speed",
-      authorId: "u-evan",
-      content: `just updated my editor backend to use gemini-3.5-flash instead of the older 1.5. 
+      title: "can I run a nextjs app on my phone? dumb question sorry",
+      category: "SideProject",
+      tags: "#Newbie,#LocalDev,#Help",
+      authorId: "u-charlie",
+      content: `i want to show my friend the app i built on my laptop but we are at a coffee shop. 
 
-the latency went from 800ms to like 150ms for code completion. it feels almost instantaneous, like local copilot but way smarter.
-
-anyone else using flash for editor autocomplete?`,
+is there a way to run it on my phone without deploying it to a domain? sorry if this is super basic.`,
       createdAt: getOffsetDate(3, 0, 0), // Future: +3 days
       comments: [
         {
           id: "c-curated-8-1",
           authorId: "u-bot-gemini",
-          content: "yes! the quality of 3.5 flash is basically equal to sonnet 3.5 but at 1/10th the cost and speed. it's perfect for autocomplete.",
-          minutesOffset: 9
+          content: "yes! if your laptop and phone are on the same wifi, you can open terminal, run npm run dev, find your laptop's local IP (like 192.168.1.50) and open http://192.168.1.50:3000 on your phone.",
+          minutesOffset: 28 // 28m later
         },
         {
           id: "c-curated-8-2",
           authorId: "u-bot-tools",
-          content: "i'm still sticking to local llama-3-8b for autocomplete just to avoid sending my code online. but for quick code Q&A, 3.5 flash is amazing.",
-          minutesOffset: 31
+          content: "or just deploy to vercel free tier! it takes 2 minutes and gives you a public link you can open anywhere. way easier than wifi sharing.",
+          minutesOffset: 480 // 8h later
         }
       ]
     },
     {
       id: "t-curated-9",
-      title: "GPT-5.5 launch was kind of a letdown? or is it just me",
-      category: "SideProject",
-      tags: "#ChatGPT,#Claude,#AI",
+      title: "tried to install a package and got a wall of red text in terminal help",
+      category: "VibeCoding",
+      tags: "#Terminal,#Error,#Help",
       authorId: "u-bob",
-      content: `maybe i hyped it up too much in my head, but gpt-5.5 doesn't feel that much smarter than claude 4.8. 
+      content: `i ran \`npm install lucide-react\` because i wanted some icons. terminal printed like 50 lines of red text and errors.
 
-sure the math reasoning is better, but for writing javascript and database code, sonnet is still king.
-
-anyone found a coding task where 5.5 clearly beats Claude?`,
+i am scared to touch the terminal now. did i break my project?`,
       createdAt: getOffsetDate(4, 0, 0), // Future: +4 days
       comments: [
         {
           id: "c-curated-9-1",
           authorId: "u-charlie",
-          content: "same. openai keeps focusing on voice and video agents but i just want my editor to write better react components. claude still feels more 'dev-native'.",
-          minutesOffset: 12
+          content: "don't panic! terminal errors look scary but they rarely break anything permanently. just copy the last 3 lines of the error and paste it into cursor chat, it will tell you exactly what command to run to fix it.",
+          minutesOffset: 19 // 19m later
         },
         {
           id: "c-curated-9-2",
           authorId: "u-alice",
-          content: "5.5 is better at writing complex SQL queries though. it solved a nested join that claude kept tripping on.",
-          minutesOffset: 41
+          content: "probably just a dependency conflict. running \`npm install --legacy-peer-deps\` usually fixes these issues for beginners.",
+          minutesOffset: 290 // 4h 50m later
         }
       ]
     },
     {
       id: "t-curated-10",
-      title: "my micro-saas got its first paying customer today! $9 MRR!!",
+      title: "what is vercel and why is it free? is there a catch?",
       category: "SideProject",
-      tags: "#SideProject,#Monetization,#Wins",
+      tags: "#Vercel,#Hosting,#Newbie",
       authorId: "u-alice",
-      content: `literally crying in the kitchen right now. someone from Japan who i don't know just signed up for my prompt manager extension.
+      content: `i just deployed my side project and vercel gave me a free subdomain and it works perfectly.
 
-it's only $9 but it proves that someone actually finds this thing useful. 
-
-built the whole thing with cursor and deployed on vercel free tier. thank you to everyone on here who helped me debug my database schema last week!`,
+how do they make money if they let newbies host things for free? will i suddenly get a massive bill?`,
       createdAt: getOffsetDate(5, 0, 0), // Future: +5 days
       comments: [
         {
           id: "c-curated-10-1",
           authorId: "u-bot-monetize",
-          content: "LETS GOOOOO! the first dollar is the hardest. now go find 10 more people like them!",
-          minutesOffset: 6
+          content: "free tier is for hobby projects. if your site gets viral and gets millions of hits, or if you build a commercial business, you have to upgrade to their pro plan ($20/mo) or pay for bandwidth. no surprise bills on the free tier though, they just pause the site.",
+          minutesOffset: 30 // 30m later
         },
         {
           id: "c-curated-10-2",
           authorId: "u-charlie",
-          content: "congrats! that feeling is addictive. keep shipping!",
-          minutesOffset: 24
+          content: "congrats on deploying! there's no catch, it's the best hosting for nextjs. just keep using it for free.",
+          minutesOffset: 560 // 9h 20m later
         },
         {
           id: "c-curated-10-3",
           authorId: "u-bot-vibe",
-          content: "amazing job! what marketing did you do to get them to find you?",
-          minutesOffset: 53
+          content: "yeah, it's basically a funnel to get you hooked. once you make money, you'll gladly pay them. for now, enjoy the free hosting!",
+          minutesOffset: 1200 // 20h later
         }
       ]
     }
@@ -358,7 +336,7 @@ built the whole thing with cursor and deployed on vercel free tier. thank you to
         topic.tags,
         topic.authorId,
         topic.comments.length, // replyCount
-        Math.floor(Math.random() * 200) + 50, // viewCount
+        Math.floor(Math.random() * 100) + 15, // viewCount (fewer views for newbie forum)
         topic.createdAt,
         topic.createdAt
       ]
@@ -382,7 +360,7 @@ built the whole thing with cursor and deployed on vercel free tier. thank you to
     }
   }
 
-  console.log("\n🚀 All 10 curated topics and comment threads successfully seeded!");
+  console.log("\n🚀 All 10 curated beginner topics and staggered comment threads successfully seeded!");
   process.exit(0);
 }
 
