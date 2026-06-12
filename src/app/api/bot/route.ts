@@ -93,27 +93,24 @@ export async function POST(request: NextRequest) {
           Math.floor(Math.random() * BOT_COMMENT_TEMPLATES.length)
         ];
 
-      const [comment] = await db.$transaction([
-        db.comment.create({
+      const commentWithAuthor = await db.$transaction(async (tx) => {
+        const comment = await tx.comment.create({
           data: {
             content: commentContent,
             authorId: randomBot.id,
             topicId: topicId,
           },
-        }),
-        db.topic.update({
+        });
+        await tx.topic.update({
           where: { id: topicId },
           data: {
-            replyCount: {
-              increment: 1,
-            },
+            replyCount: { increment: 1 },
           },
-        }),
-      ]);
-
-      const commentWithAuthor = await db.comment.findUnique({
-        where: { id: comment.id },
-        include: { author: true },
+        });
+        return tx.comment.findUnique({
+          where: { id: comment.id },
+          include: { author: true },
+        });
       });
 
       return NextResponse.json({

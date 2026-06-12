@@ -13,24 +13,23 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const [comment] = await db.$transaction([
-      db.comment.create({
+    const comment = await db.$transaction(async (tx) => {
+      const newComment = await tx.comment.create({
         data: {
           content,
           authorId,
           topicId,
           parentId: parentId || null,
         },
-      }),
-      db.topic.update({
+      });
+      await tx.topic.update({
         where: { id: topicId },
         data: {
-          replyCount: {
-            increment: 1,
-          },
+          replyCount: { increment: 1 },
         },
-      }),
-    ]);
+      });
+      return newComment;
+    });
 
     return NextResponse.json(comment);
   } catch (error) {

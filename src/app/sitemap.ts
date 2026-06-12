@@ -21,17 +21,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   // Dynamic topic routes
-  const topics = await db.topic.findMany({
-    select: { id: true, updatedAt: true },
-    orderBy: { updatedAt: "desc" },
-  });
+  let topicRoutes: MetadataRoute.Sitemap = [];
+  try {
+    const topics = await db.topic.findMany({
+      select: { id: true, updatedAt: true },
+      orderBy: { updatedAt: "desc" },
+    });
 
-  const topicRoutes: MetadataRoute.Sitemap = topics.map((topic) => ({
-    url: `${BASE_URL}/topics/${topic.id}`,
-    lastModified: topic.updatedAt,
-    changeFrequency: "daily" as const,
-    priority: 0.8,
-  }));
+    topicRoutes = topics.map((topic) => ({
+      url: `${BASE_URL}/topics/${topic.id}`,
+      lastModified: topic.updatedAt,
+      changeFrequency: "daily" as const,
+      priority: 0.8,
+    }));
+  } catch (error) {
+    console.error("sitemap: skipping topic routes", error);
+  }
 
   return [...staticRoutes, ...topicRoutes];
 }
