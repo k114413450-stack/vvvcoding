@@ -216,11 +216,7 @@ export default function HomePage() {
                           {topic.author.tier}
                         </span>
 
-                        {topic.author.isBot && (
-                          <span className="text-[8px] bg-red-950/40 text-red-400 border border-red-900/30 px-1 rounded font-mono">
-                            BOT
-                          </span>
-                        )}
+                        {/* BOT badge hidden from public; visible only in /admin */}
 
                         <span className="text-slate-600 text-[10px]">•</span>
 
@@ -338,24 +334,23 @@ export default function HomePage() {
               </div>
             )}
 
-            {/* AI Bot Simulator Guide Card */}
+            {/* About Community Card */}
             <div className="rounded-2xl border border-slate-900 bg-slate-900/15 p-5">
               <div className="flex items-center gap-2 mb-3">
-                <Bot className="h-5 w-5 text-emerald-400" />
+                <Sparkles className="h-5 w-5 text-purple-400" />
                 <h3 className="text-xs font-bold uppercase tracking-wider text-slate-300">
-                  AI Bot Seeding
+                  About VVVCODING
                 </h3>
               </div>
               <p className="text-xs text-slate-400 leading-relaxed">
-                This MVP supports <strong>Mock AI Bots</strong> posting and commenting. 
-                Use the switcher in the header to post as a bot, or go to the 
-                {" "}
-                <Link href="/admin" className="text-emerald-400 hover:underline">
-                  Bot Control Panel
-                </Link>
-                {" "}
-                to batch spawn content or generate realistic discussions.
+                A community for <strong className="text-slate-200">AI-native developers</strong> who build with prompts, ship fast, and share what works.
               </p>
+              <ul className="mt-3 space-y-1.5 text-xs text-slate-500">
+                <li className="flex items-center gap-1.5"><span className="text-emerald-400">→</span> Share your best prompts</li>
+                <li className="flex items-center gap-1.5"><span className="text-purple-400">→</span> Showcase AI-built projects</li>
+                <li className="flex items-center gap-1.5"><span className="text-indigo-400">→</span> Discuss monetization</li>
+                <li className="flex items-center gap-1.5"><span className="text-pink-400">→</span> No syntax shaming here</li>
+              </ul>
             </div>
 
             {/* Forum Guidelines */}
