@@ -6,6 +6,8 @@ This document defines the repeatable process for sourcing, adapting, and schedul
 
 ## 🎯 Target Audience & Content Direction
 VVVCODING targets **vibe-coding beginners and newbies** (Vibe 菜鸟). 
+* **Strictly English**: The platform targets an English-speaking developer base. All curated posts, tags, and comments must be strictly in natural developer English.
+* **UI Translation**: The UI translation buttons are disabled/removed to keep the English context clean.
 * **DO NOT** use highly advanced technical topics (e.g., complex SQL joins, advanced prompt caching configurations, legal corporate structuring).
 * **DO** focus on beginner friction points: basic editor controls, folder layouts, simple CSS changes, terminal fear, HTML/JS logic bugs, and motivational/casual developer chats.
 * **Ratio**: 20% Simple Beginner Value (tips, basic prompt setups) and 80% Casual Beginner Chat (rants, frustrations, awe, memes).

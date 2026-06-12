@@ -305,27 +305,7 @@ export default function TopicDetailClient({ id }: { id: string }) {
                   }
                 />
 
-                {/* Translate Toggle Button */}
-                <div className="flex justify-end mt-4 border-t border-slate-900/60 pt-4">
-                  <button
-                    onClick={() => handleTranslate(topic.id, topic.content)}
-                    disabled={translatingIds[topic.id]}
-                    className={`flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-semibold transition-all ${
-                      activeTranslations[topic.id]
-                        ? "bg-purple-950/40 border-purple-900 text-purple-400"
-                        : "bg-slate-900 border-slate-800 text-slate-400 hover:bg-slate-850 hover:text-slate-200"
-                    }`}
-                  >
-                    <Globe className="h-3.5 w-3.5" />
-                    <span>
-                      {translatingIds[topic.id]
-                        ? "Translating..."
-                        : activeTranslations[topic.id]
-                        ? "Show Original"
-                        : "Simulate Translate"}
-                    </span>
-                  </button>
-                </div>
+
               </div>
             </article>
 
@@ -406,23 +386,7 @@ export default function TopicDetailClient({ id }: { id: string }) {
                           className="text-sm"
                         />
 
-                        {/* Comment Actions (Translate button) */}
-                        <div className="flex gap-4 mt-2.5 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <button
-                            onClick={() => handleTranslate(comment.id, comment.content)}
-                            disabled={translatingIds[comment.id]}
-                            className="flex items-center gap-1 text-[10px] font-semibold text-slate-500 hover:text-purple-400 transition-colors"
-                          >
-                            <Globe className="h-3 w-3" />
-                            <span>
-                              {translatingIds[comment.id]
-                                ? "Translating..."
-                                : activeTranslations[comment.id]
-                                ? "Original"
-                                : "Translate"}
-                            </span>
-                          </button>
-                        </div>
+
                       </div>
                     </div>
                   </div>
