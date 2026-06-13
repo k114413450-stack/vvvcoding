@@ -1,27 +1,117 @@
 "use client";
 
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import React, { useState, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import { useApp } from "@/context/AppContext";
 import {
   ArrowLeft,
   Send,
-  UserCheck,
   ChevronDown,
   Info,
 } from "lucide-react";
 
-export default function CreateTopicPage() {
+const CATEGORY_TEMPLATES: Record<string, string> = {
+  FileACase: `📁 Case filed at The Build Bureau
+
+**What I want to build:**
+
+
+**Who it's for:**
+
+
+**Why I think it's needed:**
+
+
+**What AI tool I'd use:** (Cursor / Lovable / Bolt / v0 / Replit / Antigravity)
+
+
+**Honest concern:**
+
+
+---
+Bureau is open. What's the verdict?`,
+  WebBuilds: `## What I built
+
+
+## Live URL
+
+
+## Built with
+(Cursor / Lovable / Bolt / v0 / Replit / Antigravity)
+
+## What stage is it?
+- [ ] Just shipped
+- [ ] Needs feedback
+- [ ] Looking for first users
+- [ ] Experiment / toy
+
+## What feedback I want`,
+  RoastMyPage: `## URL
+
+
+## Target user
+
+
+## What should visitors do?
+(Sign up / Join waitlist / Buy / Try demo / Contact me)
+
+## What I'm most worried about
+- [ ] People don't understand it
+- [ ] It looks too AI-generated
+- [ ] No one clicks the CTA
+- [ ] Mobile looks bad
+- [ ] Other:`,
+  DeployHelp: `**What I built:**
+
+
+**What AI tool I used:**
+
+
+**Where I'm stuck:**
+
+
+**What I've tried so far:**
+
+
+**Error message (if any):**`,
+  Graveyard: `## What I built
+
+
+## URL or screenshot
+
+
+## Why I stopped
+
+
+## What I learned
+
+
+## Would I rebuild it?
+`,
+};
+
+function CreateTopicForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { currentUser, setCurrentUser, users } = useApp();
 
+  const urlCategory = searchParams.get("category") || "FileACase";
+
   const [title, setTitle] = useState("");
-  const [category, setCategory] = useState("VibeCoding");
+  const [category, setCategory] = useState(urlCategory);
   const [tags, setTags] = useState("");
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState(CATEGORY_TEMPLATES[urlCategory] || "");
   const [submitting, setSubmitting] = useState(false);
   const [showFormIdentityMenu, setShowFormIdentityMenu] = useState(false);
+
+  // When category changes, offer to load the template
+  const handleCategoryChange = (newCat: string) => {
+    setCategory(newCat);
+    if (content === "" || content === CATEGORY_TEMPLATES[category]) {
+      setContent(CATEGORY_TEMPLATES[newCat] || "");
+    }
+  };
 
   const getTierBadgeClass = (tier: string) => {
     switch (tier) {
@@ -92,7 +182,7 @@ export default function CreateTopicPage() {
               Create New Topic
             </h1>
             <p className="text-xs text-slate-400 mt-1">
-              Share your latest vibe code, prompt hack, or side-project milestone.
+              File an idea, share a web build, request a roast, or ask about deployment.
             </p>
           </div>
 
@@ -214,15 +304,15 @@ export default function CreateTopicPage() {
                 <select
                   id="category"
                   value={category}
-                  onChange={(e) => setCategory(e.target.value)}
+                  onChange={(e) => handleCategoryChange(e.target.value)}
                   className="w-full rounded-xl border border-slate-850 bg-slate-950 px-3.5 py-2.5 text-sm text-slate-200 focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none transition-all"
                 >
-                  <option value="FileACase">#FileACase (File a Case)</option>
-                  <option value="WebBuilds">#WebBuilds (Web Builds)</option>
-                  <option value="RoastMyPage">#RoastMyPage (Roast My Page)</option>
-                  <option value="DeployHelp">#DeployHelp (Deploy Help)</option>
-                  <option value="AITools">#AITools (AI Tools)</option>
-                  <option value="Graveyard">#Graveyard (Graveyard)</option>
+                  <option value="FileACase">📁 File a Case (idea validation)</option>
+                  <option value="WebBuilds">🚀 Web Builds (show what you made)</option>
+                  <option value="RoastMyPage">🔥 Roast My Page (get feedback)</option>
+                  <option value="DeployHelp">🛠 Deploy Help (stuck on launch)</option>
+                  <option value="AITools">🤖 AI Tools (tool discussion)</option>
+                  <option value="Graveyard">⚰️ Graveyard (project postmortem)</option>
                 </select>
               </div>
 
@@ -279,5 +369,13 @@ export default function CreateTopicPage() {
         </div>
       </main>
     </div>
+  );
+}
+
+export default function CreateTopicPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-slate-500 text-sm bg-slate-950">Loading...</div>}>
+      <CreateTopicForm />
+    </Suspense>
   );
 }
