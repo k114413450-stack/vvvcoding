@@ -111,6 +111,10 @@ export default function HomePageClient({
     const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
     const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
+    if (diffMs < 0) {
+      if (Math.abs(diffMs) < 60 * 1000) return "just now";
+      return "scheduled";
+    }
     if (diffMins < 1) return "just now";
     if (diffMins < 60) return `${diffMins}m ago`;
     if (diffHours < 24) return `${diffHours}h ago`;

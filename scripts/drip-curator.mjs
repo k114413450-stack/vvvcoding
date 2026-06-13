@@ -94,7 +94,7 @@ function getFutureOffsetDate(baseDate, hoursOffset, minutesOffset) {
   const d = new Date(baseDate);
   d.setHours(d.getHours() + hoursOffset);
   d.setMinutes(d.getMinutes() + minutesOffset);
-  return d.toISOString().replace("T", " ").replace(/\.\d+Z$/, "");
+  return d.toISOString();
 }
 
 async function run() {

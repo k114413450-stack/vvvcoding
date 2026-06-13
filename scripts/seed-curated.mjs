@@ -28,15 +28,14 @@ function getOffsetDate(daysOffset, hoursOffset = 0, minutesOffset = 0) {
   d.setDate(d.getDate() + daysOffset);
   d.setHours(d.getHours() + hoursOffset);
   d.setMinutes(d.getMinutes() + minutesOffset);
-  return d.toISOString().replace("T", " ").replace(/\.\d+Z$/, "");
+  return d.toISOString();
 }
 
 // Helper: Add minutes to an existing ISO-style date string
 function addMinutes(dateStr, minutes) {
-  const normalizedStr = dateStr.replace(" ", "T") + "Z";
-  const d = new Date(normalizedStr);
+  const d = new Date(dateStr);
   d.setMinutes(d.getMinutes() + minutes);
-  return d.toISOString().replace("T", " ").replace(/\.\d+Z$/, "");
+  return d.toISOString();
 }
 
 async function run() {
