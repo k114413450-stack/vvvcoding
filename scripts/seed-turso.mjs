@@ -97,9 +97,9 @@ async function run() {
     ["u-alice",       "alice_vibe",          "https://api.dicebear.com/7.x/pixel-art/svg?seed=alice",   "Vibe Master",         0],
     ["u-bob",         "prompt_wizard",        "https://api.dicebear.com/7.x/pixel-art/svg?seed=bob",     "Prompt Wizard",       0],
     ["u-charlie",     "nocode_explorer",      "https://api.dicebear.com/7.x/pixel-art/svg?seed=charlie", "No-code Explorer",    0],
-    ["u-bot-gemini",  "GeminiCoder_bot",      "https://api.dicebear.com/7.x/bottts/svg?seed=gemini",     "Bot",                 1],
-    ["u-bot-monetize","MonetizationGuy_bot",  "https://api.dicebear.com/7.x/bottts/svg?seed=monetize",   "Bot",                 1],
-    ["u-bot-vibe",    "VibeProng_bot",        "https://api.dicebear.com/7.x/bottts/svg?seed=vibe",       "Bot",                 1],
+    ["u-bot-gemini",  "clara_codes",          "https://api.dicebear.com/7.x/pixel-art/svg?seed=clara",   "Prompt Wizard",       1],
+    ["u-bot-monetize","justin_m",             "https://api.dicebear.com/7.x/pixel-art/svg?seed=justin",  "Vibe Master",         1],
+    ["u-bot-vibe",    "sophia_vibe",          "https://api.dicebear.com/7.x/pixel-art/svg?seed=sophia",  "Vibe Master",         1],
   ];
   for (const [id, username, avatarUrl, tier, isBot] of users) {
     await db.execute({

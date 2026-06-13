@@ -65,15 +65,15 @@ async function run() {
   const newUsers = [
     { id: "u-dana",     username: "dana_ships",        avatarUrl: "https://api.dicebear.com/7.x/pixel-art/svg?seed=dana",      tier: "Vibe Master",      isBot: 0 },
     { id: "u-evan",     username: "evan_promptsmith",  avatarUrl: "https://api.dicebear.com/7.x/pixel-art/svg?seed=evan",      tier: "Prompt Wizard",    isBot: 0 },
-    { id: "u-bot-seo",  username: "SEOGuru_bot",       avatarUrl: "https://api.dicebear.com/7.x/bottts/svg?seed=seo",          tier: "Bot",              isBot: 1 },
-    { id: "u-bot-tools",username: "ToolsReviewer_bot", avatarUrl: "https://api.dicebear.com/7.x/bottts/svg?seed=tools",        tier: "Bot",              isBot: 1 },
+    { id: "u-bot-seo",  username: "marcus_seo",        avatarUrl: "https://api.dicebear.com/7.x/pixel-art/svg?seed=marcus",    tier: "L1 Prompter",      isBot: 1 },
+    { id: "u-bot-tools",username: "jamie_hacker",      avatarUrl: "https://api.dicebear.com/7.x/pixel-art/svg?seed=jamie",     tier: "No-code Explorer", isBot: 1 },
   ];
   // 修正：username 放在正确的字段
   const usersFixed = [
     { id: "u-dana",     username: "dana_ships",        avatarUrl: "https://api.dicebear.com/7.x/pixel-art/svg?seed=dana",      tier: "Vibe Master",      isBot: 0 },
     { id: "u-evan",     username: "evan_promptsmith",  avatarUrl: "https://api.dicebear.com/7.x/pixel-art/svg?seed=evan",      tier: "Prompt Wizard",    isBot: 0 },
-    { id: "u-bot-seo",  username: "SEOGuru_bot",       avatarUrl: "https://api.dicebear.com/7.x/bottts/svg?seed=seo",          tier: "Bot",              isBot: 1 },
-    { id: "u-bot-tools",username: "ToolsReviewer_bot", avatarUrl: "https://api.dicebear.com/7.x/bottts/svg?seed=tools",        tier: "Bot",              isBot: 1 },
+    { id: "u-bot-seo",  username: "marcus_seo",        avatarUrl: "https://api.dicebear.com/7.x/pixel-art/svg?seed=marcus",    tier: "L1 Prompter",      isBot: 1 },
+    { id: "u-bot-tools",username: "jamie_hacker",      avatarUrl: "https://api.dicebear.com/7.x/pixel-art/svg?seed=jamie",     tier: "No-code Explorer", isBot: 1 },
   ];
   for (const u of usersFixed) await upsertUser(u);
   console.log("✅ 用户追加完成");

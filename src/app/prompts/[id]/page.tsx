@@ -114,7 +114,7 @@ export default async function PromptDetailPage({ params }: Props) {
         {/* Back Link */}
         <Link
           href="/prompts"
-          className="group inline-flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-white transition-colors mb-6"
+          className="group inline-flex items-center gap-1.5 text-sm font-semibold text-slate-400 hover:text-white transition-colors mb-6"
         >
           <ArrowLeft className="h-4 w-4 group-hover:-translate-x-0.5 transition-transform" />
           Back to prompts
@@ -139,14 +139,14 @@ export default async function PromptDetailPage({ params }: Props) {
                       {prompt.author.username}
                     </span>
                     <span
-                      className={`text-[9px] font-bold px-1.5 py-0.2 rounded border ${getTierBadgeStyle(
+                      className={`text-xs font-bold px-1.5 py-0.2 rounded border ${getTierBadgeStyle(
                         prompt.author.tier
                       )}`}
                     >
                       {prompt.author.tier}
                     </span>
                   </div>
-                  <div className="flex items-center gap-1.5 text-[10px] text-slate-500 mt-0.5">
+                  <div className="flex items-center gap-1.5 text-xs text-slate-500 mt-0.5">
                     <Clock className="h-3.5 w-3.5" />
                     <span>Posted on {new Date(prompt.createdAt).toLocaleDateString()}</span>
                   </div>
@@ -154,14 +154,14 @@ export default async function PromptDetailPage({ params }: Props) {
               </div>
 
               {/* Title */}
-              <h1 className="text-xl font-bold text-white leading-tight mb-3">
+              <h1 className="text-2xl font-bold text-white leading-tight mb-3">
                 {prompt.title}
               </h1>
 
               {/* Category, tags, models */}
               <div className="flex items-center flex-wrap gap-1.5 mb-6">
                 <span
-                  className={`rounded px-2 py-0.5 text-[10px] font-bold border ${getCategoryStyle(
+                  className={`rounded px-2 py-0.5 text-xs font-bold border ${getCategoryStyle(
                     prompt.category
                   )}`}
                 >
@@ -172,7 +172,7 @@ export default async function PromptDetailPage({ params }: Props) {
                     tag.trim() && (
                       <span
                         key={tag}
-                        className="rounded bg-slate-900 border border-slate-800 px-2 py-0.5 text-[10px] font-semibold text-slate-400"
+                        className="rounded bg-slate-900 border border-slate-800 px-2 py-0.5 text-xs font-semibold text-slate-400"
                       >
                         {tag.trim()}
                       </span>
@@ -182,8 +182,8 @@ export default async function PromptDetailPage({ params }: Props) {
 
               {/* Use Case */}
               <div className="bg-slate-900/30 border border-slate-900/60 rounded-xl p-4 mb-6">
-                <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-500 block mb-1">Use Case</span>
-                <p className="text-slate-350 text-xs leading-relaxed font-sans">
+                <span className="text-xs font-extrabold uppercase tracking-wider text-slate-500 block mb-1">Use Case</span>
+                <p className="text-slate-350 text-sm leading-relaxed font-sans">
                   {prompt.useCase}
                 </p>
               </div>
@@ -191,13 +191,13 @@ export default async function PromptDetailPage({ params }: Props) {
               {/* Template Body */}
               <div className="border-t border-slate-900 pt-6">
                 <div className="flex justify-between items-center mb-3">
-                  <span className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                  <span className="text-sm font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
                     <Terminal className="h-4 w-4 text-purple-400" />
                     <span>Prompt Template</span>
                   </span>
                 </div>
 
-                <div className="relative rounded-xl border border-slate-850 bg-slate-950/80 p-4 font-mono text-xs text-slate-300 whitespace-pre-wrap leading-relaxed">
+                <div className="relative rounded-xl border border-slate-850 bg-slate-950/80 p-4 font-mono text-sm text-slate-300 whitespace-pre-wrap leading-relaxed">
                   {prompt.template}
                 </div>
 
@@ -210,10 +210,10 @@ export default async function PromptDetailPage({ params }: Props) {
               {/* Effect Note */}
               {prompt.effectNote && (
                 <div className="mt-6 border-t border-slate-900 pt-6">
-                  <span className="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-2">
+                  <span className="text-sm font-bold uppercase tracking-wider text-slate-400 block mb-2">
                     Effect & Tips
                   </span>
-                  <p className="text-slate-400 text-xs leading-relaxed whitespace-pre-line font-sans">
+                  <p className="text-slate-400 text-sm leading-relaxed whitespace-pre-line font-sans">
                     {prompt.effectNote}
                   </p>
                 </div>
@@ -225,8 +225,8 @@ export default async function PromptDetailPage({ params }: Props) {
           <div className="space-y-4">
             
             {/* Stats Card */}
-            <div className="rounded-2xl border border-slate-900 bg-slate-900/15 p-5 text-xs text-slate-400 space-y-3 shadow-lg">
-              <h3 className="font-bold text-slate-350 uppercase tracking-wider text-[10px] border-b border-slate-850 pb-2">
+            <div className="rounded-2xl border border-slate-900 bg-slate-900/15 p-5 text-sm text-slate-400 space-y-3 shadow-lg">
+              <h3 className="font-bold text-slate-350 uppercase tracking-wider text-xs border-b border-slate-850 pb-2">
                 Prompt Stats
               </h3>
               <div className="flex justify-between">
@@ -252,14 +252,14 @@ export default async function PromptDetailPage({ params }: Props) {
                 alt={prompt.author.username}
                 className="h-14 w-14 rounded-full border border-slate-850 bg-slate-900 object-cover mx-auto mb-3"
               />
-              <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
+              <p className="text-sm font-bold uppercase tracking-wider text-slate-500">
                 Author
               </p>
-              <h4 className="text-sm font-bold text-white mt-0.5">
+              <h4 className="text-base font-bold text-white mt-0.5">
                 {prompt.author.username}
               </h4>
               <span
-                className={`inline-block text-[9px] font-bold px-2 py-0.5 rounded border mt-2 ${getTierBadgeStyle(
+                className={`inline-block text-xs font-bold px-2 py-0.5 rounded border mt-2 ${getTierBadgeStyle(
                   prompt.author.tier
                 )}`}
               >

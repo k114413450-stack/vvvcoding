@@ -85,10 +85,10 @@ export default async function PromptsPage({ searchParams }: Props) {
               <div className="absolute top-0 right-0 h-40 w-40 rounded-full bg-gradient-to-br from-purple-600/10 to-emerald-500/10 blur-2xl" />
               <div className="relative flex items-center gap-2 mb-2">
                 <Terminal className="h-5 w-5 text-purple-400" />
-                <span className="text-[10px] font-extrabold uppercase tracking-wider text-purple-400">Prompts Database</span>
+                <span className="text-xs font-extrabold uppercase tracking-wider text-purple-400">Prompts Database</span>
               </div>
               <h1 className="text-2xl font-extrabold text-white tracking-tight">AI Prompt Templates</h1>
-              <p className="text-xs text-slate-400 mt-1.5 leading-relaxed max-w-xl">
+              <p className="text-sm text-slate-400 mt-1.5 leading-relaxed max-w-xl">
                 Copy-ready, structured prompt templates designed to keep AI coding assistants like Claude, GPT, and Gemini focused and high-performing.
               </p>
             </div>
@@ -103,7 +103,7 @@ export default async function PromptsPage({ searchParams }: Props) {
                     <Link
                       key={cat.name}
                       href={href}
-                      className={`rounded-lg px-3 py-1.5 text-xs font-semibold border transition-all ${
+                      className={`rounded-lg px-3 py-1.5 text-sm font-semibold border transition-all ${
                         isActive
                           ? "bg-slate-900 border-slate-700 text-white shadow"
                           : "border-transparent text-slate-400 hover:text-slate-200"
@@ -120,8 +120,8 @@ export default async function PromptsPage({ searchParams }: Props) {
             {prompts.length === 0 ? (
               <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-850 p-12 text-center bg-slate-900/10">
                 <Compass className="h-10 w-10 text-slate-500 mb-3" />
-                <h3 className="text-sm font-semibold text-slate-300">No prompts found</h3>
-                <p className="mt-1 text-xs text-slate-500">
+                <h3 className="text-base font-semibold text-slate-300">No prompts found</h3>
+                <p className="mt-1 text-sm text-slate-500">
                   Select another category or check back later!
                 </p>
               </div>
@@ -136,13 +136,13 @@ export default async function PromptsPage({ searchParams }: Props) {
                       {/* Top Row: category & copy count */}
                       <div className="flex items-center justify-between mb-3">
                         <span
-                          className={`rounded px-1.5 py-0.5 text-[9px] font-bold border ${getCategoryStyle(
+                          className={`rounded px-1.5 py-0.5 text-xs font-bold border ${getCategoryStyle(
                             p.category
                           )}`}
                         >
                           {p.category}
                         </span>
-                        <div className="flex items-center gap-1 text-[10px] text-slate-500 font-mono">
+                        <div className="flex items-center gap-1 text-xs text-slate-500 font-mono">
                           <Copy className="h-3 w-3" />
                           <span>{p.copyCount} copies</span>
                         </div>
@@ -151,20 +151,20 @@ export default async function PromptsPage({ searchParams }: Props) {
                       {/* Title */}
                       <Link
                         href={`/prompts/${p.id}`}
-                        className="block text-slate-100 font-bold text-sm group-hover:text-purple-400 transition-colors leading-snug"
+                        className="block text-slate-100 font-bold text-base group-hover:text-purple-400 transition-colors leading-snug"
                       >
                         {p.title}
                       </Link>
 
                       {/* Use case */}
-                      <p className="text-slate-400 text-xs mt-2 line-clamp-2 leading-relaxed">
+                      <p className="text-slate-400 text-sm mt-2 line-clamp-2 leading-relaxed">
                         {p.useCase}
                       </p>
 
                       {/* Model Tags */}
                       <div className="mt-3 flex items-center gap-1.5">
-                        <span className="text-[10px] text-slate-500">Target Models:</span>
-                        <span className="text-[10px] font-medium bg-slate-950 border border-slate-850 px-1.5 py-0.5 rounded text-slate-300">
+                        <span className="text-xs text-slate-500">Target Models:</span>
+                        <span className="text-xs font-medium bg-slate-950 border border-slate-850 px-1.5 py-0.5 rounded text-slate-300">
                           {p.model}
                         </span>
                       </div>
@@ -178,14 +178,14 @@ export default async function PromptsPage({ searchParams }: Props) {
                           alt={p.author.username}
                           className="h-5 w-5 rounded-full border border-slate-800 object-cover"
                         />
-                        <span className="text-[10px] text-slate-400 truncate max-w-[80px]">
+                        <span className="text-xs text-slate-400 truncate max-w-[80px]">
                           {p.author.username}
                         </span>
                       </div>
                       
                       <Link
                         href={`/prompts/${p.id}`}
-                        className="flex items-center gap-1 text-[10px] font-bold text-purple-400 group-hover:text-purple-300 transition-colors"
+                        className="flex items-center gap-1 text-xs font-bold text-purple-400 group-hover:text-purple-300 transition-colors"
                       >
                         <span>View & Copy</span>
                         <ArrowRight className="h-3 w-3 group-hover:translate-x-0.5 transition-transform" />
@@ -204,14 +204,14 @@ export default async function PromptsPage({ searchParams }: Props) {
             <div className="rounded-2xl border border-slate-900 bg-slate-900/15 p-5">
               <div className="flex items-center gap-2 mb-3">
                 <Sparkles className="h-5 w-5 text-purple-400" />
-                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-300">
+                <h3 className="text-sm font-bold uppercase tracking-wider text-slate-300">
                   Prompt Engineering
                 </h3>
               </div>
-              <p className="text-xs text-slate-400 leading-relaxed">
+              <p className="text-sm text-slate-400 leading-relaxed">
                 A structured prompt tells the AI how to act, what rules to follow, and what libraries to use. Avoid generic instructions and use templates to get 10x cleaner code.
               </p>
-              <ul className="mt-3 space-y-1.5 text-xs text-slate-500">
+              <ul className="mt-3 space-y-1.5 text-sm text-slate-500">
                 <li className="flex items-center gap-1.5"><span className="text-emerald-400">→</span> Role & constraints set</li>
                 <li className="flex items-center gap-1.5"><span className="text-purple-400">→</span> Input validation defined</li>
                 <li className="flex items-center gap-1.5"><span className="text-indigo-400">→</span> Avoid code hallucinations</li>
@@ -219,8 +219,8 @@ export default async function PromptsPage({ searchParams }: Props) {
             </div>
 
             {/* Quick tips */}
-            <div className="rounded-2xl border border-slate-900 bg-slate-900/15 p-5 text-xs">
-              <h3 className="font-bold text-slate-350 mb-2 uppercase tracking-wider text-[10px]">
+            <div className="rounded-2xl border border-slate-900 bg-slate-900/15 p-5 text-sm">
+              <h3 className="font-bold text-slate-350 mb-2 uppercase tracking-wider text-xs">
                 Copying Tips
               </h3>
               <ul className="space-y-1.5 text-slate-400 list-disc list-inside">

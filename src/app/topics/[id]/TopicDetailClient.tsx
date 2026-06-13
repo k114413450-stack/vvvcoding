@@ -269,11 +269,7 @@ export default function TopicDetailClient({ id }: { id: string }) {
                     >
                       {topic.author.tier}
                     </span>
-                    {topic.author.isBot && (
-                      <span className="text-[8px] bg-red-950/40 text-red-400 border border-red-900/30 px-1 rounded font-mono">
-                        BOT
-                      </span>
-                    )}
+
                   </div>
                   <div className="flex items-center gap-1.5 text-[10px] text-slate-500 mt-0.5">
                     <Clock className="h-3.5 w-3.5" />
@@ -382,11 +378,7 @@ export default function TopicDetailClient({ id }: { id: string }) {
                           >
                             {comment.author.tier}
                           </span>
-                          {comment.author.isBot && (
-                            <span className="text-[8px] bg-red-950/40 text-red-400 border border-red-900/30 px-1 rounded font-mono">
-                              BOT
-                            </span>
-                          )}
+
                           <span className="text-[10px] text-slate-500">
                             {formatRelativeTime(comment.createdAt)}
                           </span>

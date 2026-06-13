@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
-import { Sparkles, Star, CheckCircle2, XCircle, Terminal, MessageSquare } from "lucide-react";
+import { Sparkles, Star, CheckCircle2, XCircle, Terminal, MessageSquare, Globe } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -180,19 +180,31 @@ const HOSTING = [
     badge: "NEXT.JS PICK",
     badgeColor: "slate",
   },
+];
+
+const NETWORK = [
   {
     id: "flowercloud",
-    name: "FlowerCloud VPS",
+    name: "FlowerCloud",
     emoji: "🌸",
-    tagline: "Low-latency Asia-Pacific VPS",
-    description: "Budget-friendly VPS with optimized routes to Asia-Pacific and mainland China. Great for AI developers who need a fast, affordable server in the APAC region — running bots, proxies, or lightweight AI inference workloads around the clock.",
+    tagline: "IEPL proxy network (APAC)",
+    description:
+      "A subscription-based proxy network (often called an “airport” in Chinese dev circles) — not a VPS. Uses Shadowsocks/Trojan over IEPL private lines with nodes in HK, JP, SG, US, and more. Some developers in APAC use it for stable access to Cursor, GitHub, npm, and AI APIs when routing is poor. Requires Clash, Surge, Shadowrocket, or similar.",
     website: "https://api-flowercloud.com",
     affiliateUrl: "https://api-flowercloud.com/aff.php?aff=22466",
     credit: "Discount via referral link",
-    pricing: "From ~¥15/mo",
-    pros: ["Optimized APAC routing — low latency for HK/SG/CN", "Budget-friendly entry plans for side projects", "Solid uptime for 24/7 bot & AI workloads"],
-    cons: ["Primarily Chinese-language support portal", "Less global CDN coverage than DigitalOcean"],
-    badge: "ASIA-PACIFIC",
+    pricing: "From ~¥10/mo (traffic plans)",
+    pros: [
+      "Low-latency IEPL routes for HK/JP/SG/US",
+      "Useful for reaching dev tools & AI APIs in APAC",
+      "Long-running provider (est. 2021)",
+    ],
+    cons: [
+      "This is a proxy subscription — not cloud hosting",
+      "Needs a compatible client; not for deploying your app",
+      "Support portal is mainly Chinese",
+    ],
+    badge: "PROXY · APAC",
     badgeColor: "pink",
   },
 ];
@@ -209,10 +221,10 @@ export default function ToolsPage() {
           <div className="absolute top-0 right-0 h-40 w-40 rounded-full bg-gradient-to-br from-purple-600/10 to-emerald-500/10 blur-2xl" />
           <div className="relative flex items-center gap-2 mb-2">
             <Sparkles className="h-5 w-5 text-purple-400" />
-            <span className="text-[10px] font-extrabold uppercase tracking-wider text-purple-400">Tool Reviews</span>
+            <span className="text-xs font-extrabold uppercase tracking-wider text-purple-400">Tool Reviews</span>
           </div>
           <h1 className="text-2xl font-extrabold text-white tracking-tight">AI Coding Tools Reviews</h1>
-          <p className="text-xs text-slate-400 mt-1.5 leading-relaxed max-w-xl">
+          <p className="text-sm text-slate-400 mt-1.5 leading-relaxed max-w-xl">
             Real evaluations and scores for the most popular AI-native developer utilities. Learn about their strengths, weaknesses, and pricing, and see what the community is talking about.
           </p>
         </div>
@@ -235,21 +247,21 @@ export default function ToolsPage() {
                       <h2 className="text-base font-bold text-white leading-tight">
                         {t.name}
                       </h2>
-                      <p className="text-[10px] text-slate-500 mt-0.5">{t.tagline}</p>
+                      <p className="text-xs text-slate-500 mt-0.5">{t.tagline}</p>
                     </div>
                   </div>
 
                   {/* Rating */}
                   <div className="flex items-center gap-1 bg-slate-950 border border-slate-900 rounded-lg px-2 py-1">
                     <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
-                    <span className="text-[10px] font-bold font-mono text-slate-200">
+                    <span className="text-xs font-bold font-mono text-slate-200">
                       {t.rating.toFixed(1)}
                     </span>
                   </div>
                 </div>
 
                 {/* Description */}
-                <p className="text-xs text-slate-400 mt-3 leading-relaxed">
+                <p className="text-sm text-slate-400 mt-3 leading-relaxed">
                   {t.description}
                 </p>
 
@@ -257,10 +269,10 @@ export default function ToolsPage() {
                 <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3 border-t border-slate-900/60">
                   {/* Pros */}
                   <div>
-                    <span className="text-[9px] font-extrabold uppercase tracking-wider text-emerald-500 block mb-1.5">
+                    <span className="text-xs font-extrabold uppercase tracking-wider text-emerald-500 block mb-1.5">
                       Pros
                     </span>
-                    <ul className="space-y-1 text-slate-350 text-[11px]">
+                    <ul className="space-y-1.5 text-slate-350 text-sm">
                       {t.pros.map((pro, index) => (
                         <li key={index} className="flex items-start gap-1">
                           <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500/80 shrink-0 mt-0.5" />
@@ -272,10 +284,10 @@ export default function ToolsPage() {
 
                   {/* Cons */}
                   <div>
-                    <span className="text-[9px] font-extrabold uppercase tracking-wider text-red-500 block mb-1.5">
+                    <span className="text-xs font-extrabold uppercase tracking-wider text-red-500 block mb-1.5">
                       Cons
                     </span>
-                    <ul className="space-y-1 text-slate-350 text-[11px]">
+                    <ul className="space-y-1.5 text-slate-350 text-sm">
                       {t.cons.map((con, index) => (
                         <li key={index} className="flex items-start gap-1">
                           <XCircle className="h-3.5 w-3.5 text-red-500/80 shrink-0 mt-0.5" />
@@ -288,8 +300,8 @@ export default function ToolsPage() {
               </div>
 
               {/* Bottom Row */}
-              <div className="mt-6 pt-3 border-t border-slate-900/60 flex items-center justify-between flex-wrap gap-2 text-xs">
-                <div className="text-[10px] text-slate-500">
+              <div className="mt-6 pt-3 border-t border-slate-900/60 flex items-center justify-between flex-wrap gap-2 text-sm">
+                <div className="text-xs text-slate-500">
                   Pricing: <strong className="text-slate-300 font-medium">{t.pricing}</strong>
                 </div>
 
@@ -298,13 +310,13 @@ export default function ToolsPage() {
                     href={t.website}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[10px] text-slate-400 hover:text-white transition-colors"
+                    className="text-xs text-slate-400 hover:text-white transition-colors"
                   >
                     Official Site
                   </a>
                   <Link
                     href={`/?search=${encodeURIComponent(t.forumQuery)}`}
-                    className="inline-flex items-center gap-1 rounded-lg bg-slate-900 border border-slate-800 px-3 py-1.5 text-[10px] font-semibold text-slate-200 hover:bg-slate-800 transition-all cursor-pointer"
+                    className="inline-flex items-center gap-1 rounded-lg bg-slate-900 border border-slate-800 px-3 py-1.5 text-xs font-semibold text-slate-200 hover:bg-slate-800 transition-all cursor-pointer"
                   >
                     <MessageSquare className="h-3 w-3 text-purple-400" />
                     <span>View Discussions</span>
@@ -322,12 +334,12 @@ export default function ToolsPage() {
           <div className="flex items-center gap-3 mb-2">
             <Terminal className="h-5 w-5 text-emerald-400" />
             <h2 className="text-lg font-bold text-white">Hosting & Deployment</h2>
-            <span className="text-[9px] font-bold uppercase tracking-wider text-amber-400 bg-amber-400/10 border border-amber-400/20 px-2 py-0.5 rounded">
+            <span className="text-xs font-bold uppercase tracking-wider text-amber-400 bg-amber-400/10 border border-amber-400/20 px-2 py-0.5 rounded">
               Affiliate
             </span>
           </div>
-          <p className="text-xs text-slate-500 mb-5 leading-relaxed max-w-xl">
-            Where vibe coders actually deploy their apps. Community-recommended hosting platforms.{" "}
+          <p className="text-sm text-slate-500 mb-5 leading-relaxed max-w-xl">
+            Where vibe coders deploy their apps. Community-recommended hosting platforms.{" "}
             <span className="text-slate-600">
               * Links marked Affiliate may earn us a commission at no extra cost to you.
             </span>
@@ -352,20 +364,20 @@ export default function ToolsPage() {
                       <div className="flex items-center gap-2">
                         <span className="text-xl" role="img" aria-label={h.name}>{h.emoji}</span>
                         <div>
-                          <h3 className="text-sm font-bold text-white leading-tight">{h.name}</h3>
-                          <p className="text-[10px] text-slate-500 mt-0.5">{h.tagline}</p>
+                          <h3 className="text-base font-bold text-white leading-tight">{h.name}</h3>
+                          <p className="text-xs text-slate-500 mt-0.5">{h.tagline}</p>
                         </div>
                       </div>
-                      <span className={`text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border ${badgeClasses[h.badgeColor]}`}>
+                      <span className={`text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded border ${badgeClasses[h.badgeColor]}`}>
                         {h.badge}
                       </span>
                     </div>
 
-                    <p className="text-xs text-slate-400 leading-relaxed mb-3">{h.description}</p>
+                    <p className="text-sm text-slate-400 leading-relaxed mb-3">{h.description}</p>
 
-                    <ul className="space-y-1 mb-2">
+                    <ul className="space-y-1.5 mb-2">
                       {h.pros.map((pro, i) => (
-                        <li key={i} className="flex items-start gap-1.5 text-[11px] text-slate-350">
+                        <li key={i} className="flex items-start gap-1.5 text-sm text-slate-350">
                           <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500/80 shrink-0 mt-0.5" />
                           {pro}
                         </li>
@@ -374,7 +386,7 @@ export default function ToolsPage() {
                   </div>
 
                   <div className="mt-4 pt-3 border-t border-slate-900/60 flex items-center justify-between gap-2 flex-wrap">
-                    <div className="text-[10px] text-slate-500">
+                    <div className="text-xs text-slate-500">
                       {h.pricing}{" "}
                       <span className="text-emerald-400 font-semibold">· {h.credit}</span>
                     </div>
@@ -383,7 +395,76 @@ export default function ToolsPage() {
                         || h.affiliateUrl.startsWith("PLACEHOLDER") ? h.website : h.affiliateUrl}
                       target="_blank"
                       rel="noopener noreferrer sponsored"
-                      className="inline-flex items-center gap-1 rounded-lg bg-emerald-600/10 border border-emerald-600/20 px-3 py-1.5 text-[10px] font-bold text-emerald-400 hover:bg-emerald-600/20 transition-all"
+                      className="inline-flex items-center gap-1 rounded-lg bg-emerald-600/10 border border-emerald-600/20 px-3 py-1.5 text-xs font-bold text-emerald-400 hover:bg-emerald-600/20 transition-all"
+                    >
+                      Get Started *
+                    </a>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Network Access Section */}
+        <div className="mt-12">
+          <div className="flex items-center gap-3 mb-2">
+            <Globe className="h-5 w-5 text-pink-400" />
+            <h2 className="text-lg font-bold text-white">Network Access (APAC)</h2>
+            <span className="text-xs font-bold uppercase tracking-wider text-amber-400 bg-amber-400/10 border border-amber-400/20 px-2 py-0.5 rounded">
+              Affiliate
+            </span>
+          </div>
+          <p className="text-sm text-slate-500 mb-5 leading-relaxed max-w-xl">
+            Proxy subscriptions for developers who need stable routes to dev tools and AI APIs — not for hosting your app.
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {NETWORK.map((h) => {
+              const badgeClasses: Record<string, string> = {
+                pink: "bg-pink-500/10 text-pink-400 border-pink-500/20",
+              };
+              return (
+                <div
+                  key={h.id}
+                  className="rounded-2xl border border-slate-900 bg-slate-900/10 p-5 flex flex-col justify-between hover:bg-slate-900/25 transition-all shadow-xl"
+                >
+                  <div>
+                    <div className="flex items-start justify-between gap-3 mb-3">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xl" role="img" aria-label={h.name}>{h.emoji}</span>
+                        <div>
+                          <h3 className="text-base font-bold text-white leading-tight">{h.name}</h3>
+                          <p className="text-xs text-slate-500 mt-0.5">{h.tagline}</p>
+                        </div>
+                      </div>
+                      <span className={`text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded border ${badgeClasses[h.badgeColor]}`}>
+                        {h.badge}
+                      </span>
+                    </div>
+
+                    <p className="text-sm text-slate-400 leading-relaxed mb-3">{h.description}</p>
+
+                    <ul className="space-y-1.5 mb-2">
+                      {h.pros.map((pro, i) => (
+                        <li key={i} className="flex items-start gap-1.5 text-sm text-slate-350">
+                          <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500/80 shrink-0 mt-0.5" />
+                          {pro}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="mt-4 pt-3 border-t border-slate-900/60 flex items-center justify-between gap-2 flex-wrap">
+                    <div className="text-xs text-slate-500">
+                      {h.pricing}{" "}
+                      <span className="text-emerald-400 font-semibold">· {h.credit}</span>
+                    </div>
+                    <a
+                      href={h.affiliateUrl}
+                      target="_blank"
+                      rel="noopener noreferrer sponsored"
+                      className="inline-flex items-center gap-1 rounded-lg bg-emerald-600/10 border border-emerald-600/20 px-3 py-1.5 text-xs font-bold text-emerald-400 hover:bg-emerald-600/20 transition-all"
                     >
                       Get Started *
                     </a>
