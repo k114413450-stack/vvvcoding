@@ -36,6 +36,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let topicRoutes: MetadataRoute.Sitemap = [];
   try {
     const topics = await db.topic.findMany({
+      where: {
+        createdAt: { lte: new Date() }
+      },
       select: { id: true, updatedAt: true },
       orderBy: { updatedAt: "desc" },
     });

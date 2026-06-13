@@ -88,6 +88,18 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-slate-950 text-slate-100 selection:bg-purple-600 selection:text-white">
         <AppProvider>{children}</AppProvider>
+        <footer className="mt-auto border-t border-slate-900 bg-slate-950 py-6 px-4">
+          <div className="mx-auto max-w-6xl flex flex-col sm:flex-row items-center justify-between gap-3 text-[10px] text-slate-600">
+            <p>© 2026 VVVCODING — AI Native Developers Community</p>
+            <p className="text-center sm:text-right leading-relaxed max-w-sm">
+              Some links on this site are affiliate links. We may earn a commission at no additional cost to you.{" "}
+              <a href="https://vvvcoding.com/tools" className="underline hover:text-slate-400 transition-colors">
+                View our tools page
+              </a>{" "}
+              for full disclosures.
+            </p>
+          </div>
+        </footer>
       </body>
     </html>
   );
