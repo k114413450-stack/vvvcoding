@@ -57,6 +57,16 @@ export default function TopicDetailClient({ id }: { id: string }) {
   const [newComment, setNewComment] = useState("");
   const [submittingComment, setSubmittingComment] = useState(false);
   const [botReplying, setBotReplying] = useState(false);
+  const [showTestControls, setShowTestControls] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("test") === "true" || params.get("admin") === "true") {
+        setShowTestControls(true);
+      }
+    }
+  }, []);
 
   // Translation States
   const [translatedTexts, setTranslatedTexts] = useState<Record<string, string>>({});
@@ -320,14 +330,16 @@ export default function TopicDetailClient({ id }: { id: string }) {
                 <span>Replies ({topic.comments.length})</span>
               </h2>
 
-              <button
-                onClick={handleBotReply}
-                disabled={botReplying}
-                className="flex items-center gap-1.5 rounded-lg border border-slate-800 bg-slate-900/40 px-3 py-1.5 text-xs font-semibold text-slate-300 hover:bg-slate-850 active:scale-95 disabled:opacity-50 transition-all cursor-pointer"
-              >
-                <Sparkles className="h-3.5 w-3.5 text-emerald-400" />
-                <span>{botReplying ? "Replying..." : "Let Bot Reply"}</span>
-              </button>
+              {showTestControls && (
+                <button
+                  onClick={handleBotReply}
+                  disabled={botReplying}
+                  className="flex items-center gap-1.5 rounded-lg border border-slate-800 bg-slate-900/40 px-3 py-1.5 text-xs font-semibold text-slate-300 hover:bg-slate-850 active:scale-95 disabled:opacity-50 transition-all cursor-pointer"
+                >
+                  <Sparkles className="h-3.5 w-3.5 text-emerald-400" />
+                  <span>{botReplying ? "Replying..." : "Let Bot Reply"}</span>
+                </button>
+              )}
             </div>
 
             {/* Comments Thread (楼层) */}
@@ -485,16 +497,17 @@ export default function TopicDetailClient({ id }: { id: string }) {
               </span>
             </div>
 
-            {/* Bot Seeding details */}
-            <div className="rounded-2xl border border-slate-900 bg-slate-900/15 p-5 text-xs leading-relaxed text-slate-400">
-              <div className="flex items-center gap-1.5 mb-2">
-                <Bot className="h-4 w-4 text-emerald-400" />
-                <span className="font-bold text-slate-350 uppercase tracking-wider text-[10px]">
-                  Testing helper
-                </span>
+             {showTestControls && (
+              <div className="rounded-2xl border border-slate-900 bg-slate-900/15 p-5 text-xs leading-relaxed text-slate-400">
+                <div className="flex items-center gap-1.5 mb-2">
+                  <Bot className="h-4 w-4 text-emerald-400" />
+                  <span className="font-bold text-slate-350 uppercase tracking-wider text-[10px]">
+                    Testing helper
+                  </span>
+                </div>
+                Click the **"Let Bot Reply"** button to trigger the database simulation. A random bot user will scan this post and leave an automated comment instantly!
               </div>
-              Click the **"Let Bot Reply"** button to trigger the database simulation. A random bot user will scan this post and leave an automated comment instantly!
-            </div>
+             )}
           </div>
         </div>
       </main>
