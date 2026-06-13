@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { checkRateLimit } from "@/lib/rate-limit";
 
+import { getDynamicViews } from "@/lib/dynamic-stats";
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
@@ -25,13 +27,28 @@ export async function GET(request: NextRequest) {
       where: whereClause,
       include: {
         author: true,
+        _count: {
+          select: {
+            comments: {
+              where: {
+                createdAt: { lte: new Date() }
+              }
+            }
+          }
+        }
       },
       orderBy: {
         createdAt: "desc",
       },
     });
 
-    return NextResponse.json(topics);
+    const mappedTopics = topics.map((topic: any) => ({
+      ...topic,
+      viewCount: getDynamicViews(topic.createdAt, topic.viewCount),
+      replyCount: topic._count.comments
+    }));
+
+    return NextResponse.json(mappedTopics);
   } catch (error) {
     console.error("Fetch topics error:", error);
     return NextResponse.json(

@@ -2,6 +2,8 @@ import { db } from "@/lib/db";
 import Navbar from "@/components/Navbar";
 import HomePageClient from "./HomePageClient";
 
+import { getDynamicViews } from "@/lib/dynamic-stats";
+
 interface Props {
   searchParams: Promise<{ category?: string; search?: string }>;
 }
@@ -26,14 +28,27 @@ export default async function HomePage({ searchParams }: Props) {
 
   const topics = await db.topic.findMany({
     where: whereClause,
-    include: { author: true },
+    include: {
+      author: true,
+      _count: {
+        select: {
+          comments: {
+            where: {
+              createdAt: { lte: new Date() }
+            }
+          }
+        }
+      }
+    },
     orderBy: { createdAt: "desc" },
     take: 50,
   });
 
   // Convert Date objects to strings for Client Component props serialization
-  const serializedTopics = topics.map((topic) => ({
+  const serializedTopics = topics.map((topic: any) => ({
     ...topic,
+    viewCount: getDynamicViews(topic.createdAt, topic.viewCount),
+    replyCount: topic._count.comments,
     createdAt: topic.createdAt.toISOString(),
     updatedAt: topic.updatedAt.toISOString(),
     author: {

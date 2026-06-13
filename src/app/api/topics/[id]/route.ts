@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { getDynamicViews } from "@/lib/dynamic-stats";
 
 export async function GET(
   request: NextRequest,
@@ -42,7 +43,13 @@ export async function GET(
       return NextResponse.json({ error: "Topic not found" }, { status: 404 });
     }
 
-    return NextResponse.json(topic);
+    const mappedTopic = {
+      ...topic,
+      viewCount: getDynamicViews(topic.createdAt, topic.viewCount),
+      replyCount: topic.comments.length
+    };
+
+    return NextResponse.json(mappedTopic);
   } catch (error) {
     console.error("Fetch topic error:", error);
     return NextResponse.json(

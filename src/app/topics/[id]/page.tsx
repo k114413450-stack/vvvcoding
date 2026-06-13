@@ -45,13 +45,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+import { getDynamicViews } from "@/lib/dynamic-stats";
+
 export default async function TopicDetailPage({ params }: Props) {
   const { id } = await params;
 
   // Verify the topic exists server-side; 404 if not
   const topicData = await db.topic.findUnique({
     where: { id },
-    include: { author: true },
+    include: {
+      author: true,
+      comments: {
+        where: {
+          createdAt: { lte: new Date() }
+        }
+      }
+    },
   });
 
   if (!topicData || topicData.createdAt > new Date()) {
@@ -63,6 +72,8 @@ export default async function TopicDetailPage({ params }: Props) {
     where: { id },
     data: { viewCount: { increment: 1 } },
   });
+
+  const dynamicViewCount = getDynamicViews(topicData.createdAt, topicData.viewCount);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -79,12 +90,12 @@ export default async function TopicDetailPage({ params }: Props) {
       {
         "@type": "InteractionCounter",
         "interactionType": "https://schema.org/ReplyAction",
-        "userInteractionCount": topicData.replyCount,
+        "userInteractionCount": topicData.comments.length,
       },
       {
         "@type": "InteractionCounter",
         "interactionType": "https://schema.org/ViewAction",
-        "userInteractionCount": topicData.viewCount,
+        "userInteractionCount": dynamicViewCount,
       },
     ],
     "url": `https://vvvcoding.com/topics/${topicData.id}`,
