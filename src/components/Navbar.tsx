@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useApp } from "@/context/AppContext";
@@ -17,6 +17,14 @@ export default function Navbar() {
   const pathname = usePathname();
   const [showIdentityMenu, setShowIdentityMenu] = useState(false);
   const [showLangMenu, setShowLangMenu] = useState(false);
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      setActiveCategory(params.get("category"));
+    }
+  }, [pathname]);
 
   // Helper for tier styling
   const getTierBadgeClass = (tier: string) => {
@@ -48,30 +56,66 @@ export default function Navbar() {
             </span>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-1 text-sm font-medium text-slate-300">
+          <nav className="hidden md:flex items-center gap-1.5 text-xs font-semibold text-slate-350">
             <Link
-              href="/"
-              className={`px-3 py-1.5 rounded-md transition-colors hover:text-white ${
-                pathname === "/" ? "bg-slate-900 text-white" : ""
+              href="/?category=FileACase"
+              className={`px-2.5 py-1.5 rounded-lg transition-all hover:text-white hover:bg-slate-900/40 ${
+                pathname === "/" && activeCategory === "FileACase"
+                  ? "bg-slate-900 text-white shadow-sm border border-slate-800"
+                  : "border border-transparent"
               }`}
             >
-              All Topics
+              File Idea
             </Link>
             <Link
-              href="/prompts"
-              className={`px-3 py-1.5 rounded-md transition-colors hover:text-white ${
-                pathname?.startsWith("/prompts") ? "bg-slate-900 text-white" : ""
+              href="/?category=WebBuilds"
+              className={`px-2.5 py-1.5 rounded-lg transition-all hover:text-white hover:bg-slate-900/40 ${
+                pathname === "/" && activeCategory === "WebBuilds"
+                  ? "bg-slate-900 text-white shadow-sm border border-slate-800"
+                  : "border border-transparent"
               }`}
             >
-              Prompts
+              Web Builds
+            </Link>
+            <Link
+              href="/?category=RoastMyPage"
+              className={`px-2.5 py-1.5 rounded-lg transition-all hover:text-white hover:bg-slate-900/40 ${
+                pathname === "/" && activeCategory === "RoastMyPage"
+                  ? "bg-slate-900 text-white shadow-sm border border-slate-800"
+                  : "border border-transparent"
+              }`}
+            >
+              Roast My Page
+            </Link>
+            <Link
+              href="/?category=DeployHelp"
+              className={`px-2.5 py-1.5 rounded-lg transition-all hover:text-white hover:bg-slate-900/40 ${
+                pathname === "/" && activeCategory === "DeployHelp"
+                  ? "bg-slate-900 text-white shadow-sm border border-slate-800"
+                  : "border border-transparent"
+              }`}
+            >
+              Deploy Guide
             </Link>
             <Link
               href="/tools"
-              className={`px-3 py-1.5 rounded-md transition-colors hover:text-white ${
-                pathname?.startsWith("/tools") ? "bg-slate-900 text-white" : ""
+              className={`px-2.5 py-1.5 rounded-lg transition-all hover:text-white hover:bg-slate-900/40 ${
+                pathname?.startsWith("/tools")
+                  ? "bg-slate-900 text-white shadow-sm border border-slate-800"
+                  : "border border-transparent"
               }`}
             >
               Tools
+            </Link>
+            <Link
+              href="/?category=Graveyard"
+              className={`px-2.5 py-1.5 rounded-lg transition-all hover:text-white hover:bg-slate-900/40 ${
+                pathname === "/" && activeCategory === "Graveyard"
+                  ? "bg-slate-900 text-white shadow-sm border border-slate-800"
+                  : "border border-transparent"
+              }`}
+            >
+              Graveyard
             </Link>
           </nav>
         </div>

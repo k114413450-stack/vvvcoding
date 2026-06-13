@@ -174,14 +174,18 @@ export default function TopicDetailClient({ id }: { id: string }) {
 
   const getCategoryStyle = (category: string) => {
     switch (category) {
-      case "VibeCoding":
-        return "bg-purple-500/10 text-purple-400 border-purple-500/20";
-      case "SideProject":
+      case "FileACase":
+        return "bg-amber-500/10 text-amber-400 border-amber-500/20";
+      case "WebBuilds":
         return "bg-pink-500/10 text-pink-400 border-pink-500/20";
-      case "AI-Showcase":
-        return "bg-indigo-500/10 text-indigo-400 border-indigo-500/20";
-      case "Monetization":
+      case "RoastMyPage":
+        return "bg-red-500/10 text-red-400 border-red-500/20";
+      case "DeployHelp":
+        return "bg-sky-500/10 text-sky-400 border-sky-500/20";
+      case "AITools":
         return "bg-emerald-500/10 text-emerald-400 border-emerald-500/20";
+      case "Graveyard":
+        return "bg-slate-500/10 text-slate-400 border-slate-500/20";
       default:
         return "bg-slate-500/10 text-slate-400 border-slate-500/20";
     }

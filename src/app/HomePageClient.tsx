@@ -12,6 +12,8 @@ import {
   Sparkles,
   ArrowUpRight,
   ShieldCheck,
+  FolderPlus,
+  Flame,
 } from "lucide-react";
 
 interface Topic {
@@ -44,10 +46,12 @@ export default function HomePageClient({
 
   const categories = [
     { name: "All", label: "All Topics" },
-    { name: "VibeCoding", label: "Vibe Coding" },
-    { name: "SideProject", label: "Side Projects" },
-    { name: "AI-Showcase", label: "AI Showcase" },
-    { name: "Monetization", label: "Monetization" },
+    { name: "FileACase", label: "File a Case" },
+    { name: "WebBuilds", label: "Web Builds" },
+    { name: "RoastMyPage", label: "Roast My Page" },
+    { name: "DeployHelp", label: "Deploy Help" },
+    { name: "AITools", label: "AI Tools" },
+    { name: "Graveyard", label: "Graveyard" },
   ];
 
   const handleCategoryClick = (catName: string) => {
@@ -76,14 +80,18 @@ export default function HomePageClient({
 
   const getCategoryStyle = (category: string) => {
     switch (category) {
-      case "VibeCoding":
-        return "bg-purple-500/10 text-purple-400 border-purple-500/20";
-      case "SideProject":
+      case "FileACase":
+        return "bg-amber-500/10 text-amber-400 border-amber-500/20";
+      case "WebBuilds":
         return "bg-pink-500/10 text-pink-400 border-pink-500/20";
-      case "AI-Showcase":
-        return "bg-indigo-500/10 text-indigo-400 border-indigo-500/20";
-      case "Monetization":
+      case "RoastMyPage":
+        return "bg-red-500/10 text-red-400 border-red-500/20";
+      case "DeployHelp":
+        return "bg-sky-500/10 text-sky-400 border-sky-500/20";
+      case "AITools":
         return "bg-emerald-500/10 text-emerald-400 border-emerald-500/20";
+      case "Graveyard":
+        return "bg-slate-500/10 text-slate-400 border-slate-500/20";
       default:
         return "bg-slate-500/10 text-slate-400 border-slate-500/20";
     }
@@ -123,6 +131,44 @@ export default function HomePageClient({
 
   return (
     <main className="flex-1 mx-auto w-full max-w-6xl px-4 py-6 sm:px-6">
+      {/* Hero Section */}
+      <div className="relative mb-8 rounded-3xl overflow-hidden border border-slate-900 bg-slate-900/10 p-6 sm:p-8 backdrop-blur-md shadow-xl">
+        <div className="absolute -left-20 -top-20 h-48 w-48 rounded-full bg-purple-500/5 blur-3xl" />
+        <div className="absolute -right-20 -bottom-20 h-48 w-48 rounded-full bg-emerald-500/5 blur-3xl" />
+
+        <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="space-y-2.5 max-w-2xl">
+            <div className="inline-flex items-center gap-1.5 rounded-full bg-purple-500/10 border border-purple-500/20 px-3 py-1 text-[10px] font-bold tracking-wider uppercase text-purple-400">
+              <Sparkles className="h-3 w-3 animate-pulse" />
+              <span>AI App Lifecycle Hub</span>
+            </div>
+            <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight leading-tight">
+              Should you actually build that AI app?
+            </h1>
+            <p className="text-xs text-slate-400 leading-relaxed">
+              File your idea. Get challenged. Then build smaller, validate first, or ship it anyway.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3 shrink-0">
+            <Link
+              href="/create?category=FileACase"
+              className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 px-4 py-2.5 text-xs font-bold text-slate-950 shadow-lg transition-all active:scale-95 cursor-pointer"
+            >
+              <FolderPlus className="h-3.5 w-3.5" />
+              <span>File My Idea</span>
+            </Link>
+            <Link
+              href="/create?category=RoastMyPage"
+              className="flex items-center gap-2 rounded-xl bg-slate-900 border border-slate-800 hover:bg-slate-850 hover:border-slate-700 px-4 py-2.5 text-xs font-bold text-slate-200 transition-all active:scale-95 cursor-pointer"
+            >
+              <Flame className="h-3.5 w-3.5 text-red-400" />
+              <span>Roast My Page</span>
+            </Link>
+          </div>
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-4">
         {/* Middle/Left: Post Lists */}
         <div className="lg:col-span-3 space-y-4">

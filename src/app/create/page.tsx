@@ -217,10 +217,12 @@ export default function CreateTopicPage() {
                   onChange={(e) => setCategory(e.target.value)}
                   className="w-full rounded-xl border border-slate-850 bg-slate-950 px-3.5 py-2.5 text-sm text-slate-200 focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none transition-all"
                 >
-                  <option value="VibeCoding">#VibeCoding</option>
-                  <option value="SideProject">#SideProject</option>
-                  <option value="AI-Showcase">#AI-Showcase</option>
-                  <option value="Monetization">#Monetization</option>
+                  <option value="FileACase">#FileACase (File a Case)</option>
+                  <option value="WebBuilds">#WebBuilds (Web Builds)</option>
+                  <option value="RoastMyPage">#RoastMyPage (Roast My Page)</option>
+                  <option value="DeployHelp">#DeployHelp (Deploy Help)</option>
+                  <option value="AITools">#AITools (AI Tools)</option>
+                  <option value="Graveyard">#Graveyard (Graveyard)</option>
                 </select>
               </div>
 
