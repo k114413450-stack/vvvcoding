@@ -62,3 +62,38 @@ Because the frontend filters topics and comments by `createdAt <= Date.now()`, f
    ```bash
    vercel --prod --yes
    ```
+
+---
+
+## 🔄 Curation and External Sync Protocol (Agent-in-the-loop)
+
+To manage community content long-term and keep tracked threads active, follow this protocol using local tracking files:
+
+### 1. File Reference: `scripts/monitored-sources.json`
+Maintains the mapping between target external topics and local curated threads:
+```json
+[
+  {
+    "id": "source-unique-id",
+    "externalUrl": "https://example.com/original-thread-url",
+    "localTopicId": "t-curated-x",
+    "lastChecked": "ISO-TIMESTAMP",
+    "lastSyncedCommentCount": 3,
+    "status": "active"
+  }
+]
+```
+
+### 2. Synchronization & Processing Steps
+1. **Source Inspection**: The AI agent reads the monitored URLs in `monitored-sources.json` daily.
+2. **Identify Updates**: Compare the comment count on the target URL with `lastSyncedCommentCount`. If target comments count is greater, fetch the new comments.
+3. **Rewrite & Curate (50/50 Strategy)**:
+   - **50% Adaptation**: Rewrite the external reply to conform to VVVCODING's humanized guidelines (informal developer English, newbie context, minor typos).
+   - **50% Simulated AI Persona Reply**: Add custom, beginner-friendly follow-ups representing our Bot personas, adding new angles or asking helper questions.
+4. **Staggered Time Generation**:
+   - Assign the new comments an offset relative to the check time `T` (e.g. +30m, +4h, +18h) to simulate natural delay.
+5. **Database Push**:
+   - Write the SQL insertion commands or use the LibSQL script to push the comments directly to the Turso production database.
+6. **Config Update**:
+   - Update `lastSyncedCommentCount` and `lastChecked` in `monitored-sources.json` and commit the config file to Git.
+
