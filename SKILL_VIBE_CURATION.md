@@ -5,28 +5,105 @@ This document defines the repeatable process for sourcing, adapting, and schedul
 ---
 
 ## 🎯 Target Audience & Content Direction
-VVVCODING targets **vibe-coding beginners and newbies** (Vibe 菜鸟). 
-* **Strictly English**: The platform targets an English-speaking developer base. All curated posts, tags, and comments must be strictly in natural developer English.
-* **UI Translation**: The UI translation buttons are disabled/removed to keep the English context clean.
-* **DO NOT** use highly advanced technical topics (e.g., complex SQL joins, advanced prompt caching configurations, legal corporate structuring).
-* **DO** focus on beginner friction points: basic editor controls, folder layouts, simple CSS changes, terminal fear, HTML/JS logic bugs, and motivational/casual developer chats.
-* **Ratio**: 20% Simple Beginner Value (tips, basic prompt setups) and 80% Casual Beginner Chat (rants, frustrations, awe, memes).
+VVVCODING targets **vibe-coding beginners, indie hackers, and AI app builders** (AI-Native 开发者及 Vibe 菜鸟).
+The core focus is the **full lifecycle of an AI app builder**: Idea Validation ➡️ Deployment ➡️ Launch/Showcase ➡️ UI/UX Roast ➡️ Lessons/Postmortem.
+
+* **Strictly English**: The platform is an English-only developer space. All generated topics, comments, and tags must use natural developer English.
+* **Core Topics**: Focus on idea pitches, clerk reviews, deployment guides (Vercel, Railway, free domains), landing page copy/layout feedback, and project postmortems.
+* **Anti-Hype Tone**: Acknowledge that while AI makes building cheap, distribution, marketing, and validating whether anyone wants the app are still hard and expensive.
 
 ---
 
 ## 📝 Sourcing & Humanizing Guidelines
 
 ### 1. Sourcing Locations
-Find raw inspiration from:
-- Reddit: `r/cursor`, `r/nextjs` (filtering by beginner questions), `r/indiehackers`
-- X/Twitter: `#VibeCoding`, `#CursorAI`
-- Community Forums: Cursor/Windsurf community support boards, Vercel v0 showcase comments.
+Find raw inspiration, ideas, failures, and hosting queries from:
+- **Reddit**: `r/cursor` (for editor tips), `r/SaaS`, `r/indiehackers`, `r/SideProject` (for roasts and showcase layouts).
+- **Indie Hackers**: Product launches, "how I hit X MRR" posts, postmortems.
+- **X/Twitter**: `#VibeCoding`, `#CursorAI` discussions, product screenshots.
 
-### 2. Humanization Rules ("Write like a human, not a bot")
+### 2. Structured Post Templates ("Vibe Coder Formats")
+When generating water-posts, strictly utilize one of these five structured formats:
+
+#### Format A: File a Case (Build Bureau)
+- **Use Case**: Pitching a new product idea to be vetted.
+- **Template**:
+  ```markdown
+  📁 Case #[Random Number] filed at The Build Bureau
+  
+  **Idea**: [App Title / One-sentence Description]
+  **What I want to build**: [Core details of features]
+  **Who it's for**: [Target audience]
+  **Why I think it's needed**: [The pain point it solves]
+  **What AI tool I'd use**: [Cursor, Lovable, Bolt, v0, etc.]
+  **Honest concern**: [The main doubt or friction point]
+  
+  ---
+  Bureau is open. What's the verdict?
+  ```
+
+#### Format B: Clerk Notes (Idea Critique & Verdict)
+- **Use Case**: Admin/bot clerk replying to a "File a Case" topic.
+- **Template**:
+  ```markdown
+  📋 Clerk Notes on Case #[Number]
+  
+  [Opening hook, e.g. "ngl this is pretty cool but..."]
+  
+  **Biggest assumption**: [What they are assuming about users]
+  **Who already does this**: [Direct/indirect competitors]
+  **Smallest testable version**: [The absolute MVP, e.g. static landing page]
+  **One question before building**: [The killer question they must answer]
+  
+  My stamp: [🟢 BUILD IT / 🟡 BUILD SMALLER / 🔵 VALIDATE FIRST / 🔴 FILE & FORGET]
+  ```
+
+#### Format C: Roast My Page (Landing Page Teardowns)
+- **Use Case**: Requesting copy, layout, or UX feedback.
+- **Template**:
+  ```markdown
+  ## URL
+  [link.vercel.app]
+  
+  ## Target user
+  [Who should buy or use it]
+  
+  ## What should visitors do?
+  [The CTA, e.g., "Join waitlist"]
+  
+  ## What I'm most worried about
+  - [ ] People don't understand it
+  - [ ] It looks too AI-generated
+  - [ ] No one clicks the CTA
+  - [ ] Mobile looks bad
+  ```
+
+#### Format D: Deploy Help (Launch Hurdles)
+- **Use Case**: Sticking points regarding servers, databases, DNS, or environment variables.
+- **Tone**: Express frustration, confusion, terminal fear, or excitement about launch. No advanced network engineering terms; keep it to VPS setups, SQLite deletion issues, or CORS errors.
+
+#### Format E: Graveyard Postmortem (Failure Stories)
+- **Use Case**: Project postmortems after shutting down.
+- **Template**:
+  ```markdown
+  ## What I built
+  [Name / description]
+  
+  ## Why I stopped
+  [e.g., zero signups, expensive API costs, lost interest]
+  
+  ## What I learned
+  [The key lesson, e.g. "validate distribution first"]
+  
+  ## Would I rebuild it?
+  [Yes/No, and why]
+  ```
+
+### 3. Humanization Rules ("Write like a developer, not a bot")
 * **Style**: Mostly lowercase, short paragraphs, casual punctuation.
-* **Slang & Acronyms**: Use internet shorthand naturally (`idk`, `lmao`, `ikr`, `smh`, `btw`, `lol`, `wip`).
-* **Imperfect**: Include minor typos, sentence fragments, and raw emotional expressions (e.g., "i literally want to cry", "help me please").
-* **No Bot Jargon**: Banned phrases include "Certainly!", "In conclusion", "As an AI...", "Here is a breakdown of...".
+* **Shorthand**: Use `idk`, `lmao`, `ikr`, `smh`, `btw`, `lol`, `wip`, `droplet`, `vps` naturally.
+* **Imperfect**: Include slight formatting typos, sentence fragments, and raw developer emotions (fear of Linux terminal, launch anxiety, frustration with SQLite resets).
+* **Banned Jargon**: Avoid "In conclusion", "As an AI...", "Certainly!", "Here is a breakdown...", "It is important to remember...".
 
 ---
 
