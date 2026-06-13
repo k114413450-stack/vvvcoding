@@ -180,6 +180,21 @@ const HOSTING = [
     badge: "NEXT.JS PICK",
     badgeColor: "slate",
   },
+  {
+    id: "flowercloud",
+    name: "FlowerCloud VPS",
+    emoji: "🌸",
+    tagline: "Low-latency Asia-Pacific VPS",
+    description: "Budget-friendly VPS with optimized routes to Asia-Pacific and mainland China. Great for AI developers who need a fast, affordable server in the APAC region — running bots, proxies, or lightweight AI inference workloads around the clock.",
+    website: "https://api-flowercloud.com",
+    affiliateUrl: "https://api-flowercloud.com/aff.php?aff=22466",
+    credit: "Discount via referral link",
+    pricing: "From ~¥15/mo",
+    pros: ["Optimized APAC routing — low latency for HK/SG/CN", "Budget-friendly entry plans for side projects", "Solid uptime for 24/7 bot & AI workloads"],
+    cons: ["Primarily Chinese-language support portal", "Less global CDN coverage than DigitalOcean"],
+    badge: "ASIA-PACIFIC",
+    badgeColor: "pink",
+  },
 ];
 
 export default function ToolsPage() {
@@ -325,6 +340,7 @@ export default function ToolsPage() {
                 purple: "bg-purple-500/10 text-purple-400 border-purple-500/20",
                 indigo: "bg-indigo-500/10 text-indigo-400 border-indigo-500/20",
                 slate: "bg-slate-500/10 text-slate-400 border-slate-500/20",
+                pink: "bg-pink-500/10 text-pink-400 border-pink-500/20",
               };
               return (
                 <div
