@@ -88,7 +88,6 @@ export default async function TopicDetailPage({ params }: Props) {
     "author": {
       "@type": "Person",
       "name": topicData.author.username,
-      "url": `https://vvvcoding.com/users/${topicData.author.username}`,
     },
     "interactionStatistic": [
       {
@@ -115,7 +114,6 @@ export default async function TopicDetailPage({ params }: Props) {
       "author": {
         "@type": "Person",
         "name": c.author.username,
-        "url": `https://vvvcoding.com/users/${c.author.username}`,
       },
     })),
   };
