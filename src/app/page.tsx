@@ -1,6 +1,13 @@
 import { db } from "@/lib/db";
 import Navbar from "@/components/Navbar";
 import HomePageClient from "./HomePageClient";
+import JsonLd from "@/components/JsonLd";
+import {
+  BASE_URL,
+  breadcrumbJsonLd,
+  discussionForumJsonLd,
+  wrapJsonLdGraph,
+} from "@/lib/json-ld";
 
 import { getDynamicViews } from "@/lib/dynamic-stats";
 
@@ -57,8 +64,32 @@ export default async function HomePage({ searchParams }: Props) {
     },
   }));
 
+  const homeJsonLd = wrapJsonLdGraph(
+    discussionForumJsonLd(),
+    breadcrumbJsonLd([{ name: "Home", url: BASE_URL }]),
+    {
+      "@type": "CollectionPage",
+      "@id": `${BASE_URL}/#webpage`,
+      name: "VVVCODING — AI Native Developers Forum",
+      url: BASE_URL,
+      isPartOf: { "@id": `${BASE_URL}/#website` },
+      about: { "@id": `${BASE_URL}/#forum` },
+      mainEntity: {
+        "@type": "ItemList",
+        numberOfItems: serializedTopics.length,
+        itemListElement: serializedTopics.slice(0, 20).map((topic, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          url: `${BASE_URL}/topics/${topic.id}`,
+          name: topic.title,
+        })),
+      },
+    }
+  );
+
   return (
     <div className="min-h-screen flex flex-col bg-slate-950">
+      <JsonLd data={homeJsonLd} />
       <Navbar />
       <HomePageClient
         initialTopics={serializedTopics}

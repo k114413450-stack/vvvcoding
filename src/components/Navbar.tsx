@@ -108,6 +108,20 @@ export default function Navbar() {
               Tools
             </Link>
             <Link
+              href="/bounties"
+              className={`px-2.5 py-1.5 rounded-lg transition-all hover:text-white hover:bg-slate-900/40 flex items-center gap-1.5 ${
+                pathname?.startsWith("/bounties")
+                  ? "bg-slate-900 text-white shadow-sm border border-slate-800"
+                  : "border border-transparent"
+              }`}
+            >
+              <span>VibeBounty</span>
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+            </Link>
+            <Link
               href="/?category=Graveyard"
               className={`px-2.5 py-1.5 rounded-lg transition-all hover:text-white hover:bg-slate-900/40 ${
                 pathname === "/" && activeCategory === "Graveyard"

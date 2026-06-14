@@ -2,6 +2,12 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AppProvider } from "@/context/AppContext";
+import JsonLd from "@/components/JsonLd";
+import {
+  siteOrganizationJsonLd,
+  siteWebSiteJsonLd,
+  wrapJsonLdGraph,
+} from "@/lib/json-ld";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -81,11 +87,19 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const siteJsonLd = wrapJsonLdGraph(
+    siteOrganizationJsonLd(),
+    siteWebSiteJsonLd()
+  );
+
   return (
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
     >
+      <head>
+        <JsonLd data={siteJsonLd} />
+      </head>
       <body className="min-h-full flex flex-col bg-slate-950 text-slate-100 selection:bg-purple-600 selection:text-white">
         <AppProvider>{children}</AppProvider>
         <footer className="mt-auto border-t border-slate-900 bg-slate-950 py-6 px-4">

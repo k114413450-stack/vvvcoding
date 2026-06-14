@@ -6,6 +6,8 @@ import { db } from "@/lib/db";
 import { ArrowLeft, Clock, Copy, Shield, Sparkles, Terminal } from "lucide-react";
 import type { Metadata } from "next";
 import PromptDetailClient from "./PromptDetailClient";
+import JsonLd from "@/components/JsonLd";
+import { BASE_URL, breadcrumbJsonLd, wrapJsonLdGraph } from "@/lib/json-ld";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -56,19 +58,29 @@ export default async function PromptDetailPage({ params }: Props) {
     "name": t.trim(),
   }));
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": prompt.title,
-    "description": prompt.useCase,
-    "tool": targetTools,
-    "step": [
-      {
-        "@type": "HowToStep",
-        "text": prompt.template,
-      },
-    ],
-  };
+  const promptUrl = `${BASE_URL}/prompts/${prompt.id}`;
+
+  const jsonLd = wrapJsonLdGraph(
+    breadcrumbJsonLd([
+      { name: "Home", url: BASE_URL },
+      { name: "Prompts", url: `${BASE_URL}/prompts` },
+      { name: prompt.title, url: promptUrl },
+    ]),
+    {
+      "@type": "HowTo",
+      "@id": `${promptUrl}#howto`,
+      name: prompt.title,
+      description: prompt.useCase,
+      url: promptUrl,
+      tool: targetTools,
+      step: [
+        {
+          "@type": "HowToStep",
+          text: prompt.template,
+        },
+      ],
+    }
+  );
 
   const getCategoryStyle = (category: string) => {
     switch (category) {
@@ -104,10 +116,7 @@ export default async function PromptDetailPage({ params }: Props) {
     <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100">
       <Navbar />
 
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={jsonLd} />
 
       <main className="flex-grow mx-auto w-full max-w-6xl px-4 py-6 sm:px-6">
         

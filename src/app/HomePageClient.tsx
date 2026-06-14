@@ -169,6 +169,35 @@ export default function HomePageClient({
         </div>
       </div>
 
+      {/* VibeBounty Banner */}
+      <div className="relative mb-8 rounded-2xl border border-slate-800 bg-gradient-to-r from-purple-950/10 via-slate-950 to-emerald-950/10 p-5 shadow-lg shadow-purple-950/10">
+        <div className="absolute top-0 right-0 h-full w-1/3 bg-radial from-emerald-500/5 via-transparent to-transparent pointer-events-none rounded-2xl" />
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="space-y-1">
+            <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 text-[10px] font-bold tracking-wider uppercase text-emerald-400">
+              <span className="relative flex h-1.5 w-1.5 mr-0.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+              </span>
+              <span>VibeBounty Is Live</span>
+            </div>
+            <h2 className="text-sm sm:text-base font-bold text-white tracking-tight">
+              Looking for micro-tools or want to build them for cash?
+            </h2>
+            <p className="text-xs text-slate-400">
+              Browse small software bounties ($50-$300) that can be built in 1-3 days with AI-assisted coding.
+            </p>
+          </div>
+          <Link
+            href="/bounties"
+            className="flex items-center gap-1.5 rounded-lg bg-slate-900 border border-slate-800 hover:border-emerald-500/30 hover:bg-slate-850 px-4 py-2 text-xs font-bold text-emerald-400 transition-all shadow-md active:scale-95 shrink-0"
+          >
+            <span>Explore Bounties</span>
+            <ArrowUpRight className="h-3.5 w-3.5" />
+          </Link>
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-4">
         {/* Middle/Left: Post Lists */}
         <div className="lg:col-span-3 space-y-4">
