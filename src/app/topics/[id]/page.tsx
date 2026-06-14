@@ -58,6 +58,9 @@ export default async function TopicDetailPage({ params }: Props) {
       comments: {
         where: {
           createdAt: { lte: new Date() }
+        },
+        include: {
+          author: true
         }
       }
     },
@@ -85,6 +88,7 @@ export default async function TopicDetailPage({ params }: Props) {
     "author": {
       "@type": "Person",
       "name": topicData.author.username,
+      "url": `https://vvvcoding.com/users/${topicData.author.username}`,
     },
     "interactionStatistic": [
       {
@@ -104,6 +108,16 @@ export default async function TopicDetailPage({ params }: Props) {
       "name": "VVVCODING",
       "url": "https://vvvcoding.com",
     },
+    "comment": topicData.comments.map((c) => ({
+      "@type": "Comment",
+      "text": c.content,
+      "datePublished": c.createdAt.toISOString(),
+      "author": {
+        "@type": "Person",
+        "name": c.author.username,
+        "url": `https://vvvcoding.com/users/${c.author.username}`,
+      },
+    })),
   };
 
   return (

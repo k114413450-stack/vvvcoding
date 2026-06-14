@@ -1,15 +1,16 @@
 # SKILL: Vibe Curation & Humanized Seeding Workflow (Vibe-Curation-Seeding)
 
-This document defines the repeatable process for sourcing, adapting, and scheduling beginner-focused, human-like forum content for VVVCODING to prevent content staleness and maintain an authentic beginner vibe.
+This document defines the repeatable process for sourcing, adapting, generating, and scheduling beginner-focused, human-like forum content for VVVCODING to prevent content staleness and maintain an authentic beginner developer/indie hacker vibe.
 
 ---
 
 ## 🎯 Target Audience & Content Direction
+
 VVVCODING targets **vibe-coding beginners, indie hackers, and AI app builders** (AI-Native 开发者及 Vibe 菜鸟).
-The core focus is the **full lifecycle of an AI app builder**: Idea Validation ➡️ Deployment ➡️ Launch/Showcase ➡️ UI/UX Roast ➡️ Lessons/Postmortem.
+The core focus is the **full lifecycle of an AI app builder**: Idea Validation ➡️ Building ➡️ Launch/Showcase ➡️ UI/UX Roast ➡️ Deployment ➡️ Lessons/Postmortem.
 
 * **Strictly English**: The platform is an English-only developer space. All generated topics, comments, and tags must use natural developer English.
-* **Core Topics**: Focus on idea pitches, clerk reviews, deployment guides (Vercel, Railway, free domains), landing page copy/layout feedback, and project postmortems.
+* **Core Topics**: Focus on idea pitches, project showcases, deployment issues (Vercel, Railway, free domains), landing page copy/layout feedback, editor prompt tricks, and project postmortems.
 * **Anti-Hype Tone**: Acknowledge that while AI makes building cheap, distribution, marketing, and validating whether anyone wants the app are still hard and expensive.
 
 ---
@@ -23,15 +24,14 @@ Find raw inspiration, ideas, failures, and hosting queries from:
 - **X/Twitter**: `#VibeCoding`, `#CursorAI` discussions, product screenshots.
 
 ### 2. Structured Post Templates ("Vibe Coder Formats")
-When generating water-posts, strictly utilize one of these five structured formats:
+When generating or seeding water-posts, strictly utilize one of these structured formats mapping directly to the active category nodes:
 
-#### Format A: File a Case (Build Bureau)
+#### Format A: File a Case (Category: `FileACase`)
 - **Use Case**: Pitching a new product idea to be vetted.
 - **Template**:
   ```markdown
   📁 Case #[Random Number] filed at The Build Bureau
   
-  **Idea**: [App Title / One-sentence Description]
   **What I want to build**: [Core details of features]
   **Who it's for**: [Target audience]
   **Why I think it's needed**: [The pain point it solves]
@@ -43,7 +43,7 @@ When generating water-posts, strictly utilize one of these five structured forma
   ```
 
 #### Format B: Clerk Notes (Idea Critique & Verdict)
-- **Use Case**: Admin/bot clerk replying to a "File a Case" topic.
+- **Use Case**: Admin/user clerk replying to a "File a Case" topic.
 - **Template**:
   ```markdown
   📋 Clerk Notes on Case #[Number]
@@ -58,8 +58,31 @@ When generating water-posts, strictly utilize one of these five structured forma
   My stamp: [🟢 BUILD IT / 🟡 BUILD SMALLER / 🔵 VALIDATE FIRST / 🔴 FILE & FORGET]
   ```
 
-#### Format C: Roast My Page (Landing Page Teardowns)
-- **Use Case**: Requesting copy, layout, or UX feedback.
+#### Format C: Web Builds (Category: `WebBuilds`)
+- **Use Case**: Showcasing a shipped MVP or prototype.
+- **Template**:
+  ```markdown
+  ## What I built
+  [Brief description of the app]
+  
+  ## Live URL
+  [link.vercel.app]
+  
+  ## Built with
+  [Cursor / Lovable / Bolt / v0 / Replit / Antigravity]
+  
+  ## What stage is it?
+  - [ ] Just shipped
+  - [ ] Needs feedback
+  - [ ] Looking for first users
+  - [ ] Experiment / toy
+  
+  ## What feedback I want
+  [Specific requests, e.g., features, speed, usability]
+  ```
+
+#### Format D: Roast My Page (Category: `RoastMyPage`)
+- **Use Case**: Requesting copy, layout, or UX feedback on a landing page.
 - **Template**:
   ```markdown
   ## URL
@@ -69,25 +92,62 @@ When generating water-posts, strictly utilize one of these five structured forma
   [Who should buy or use it]
   
   ## What should visitors do?
-  [The CTA, e.g., "Join waitlist"]
+  (Sign up / Join waitlist / Buy / Try demo / Contact me)
   
   ## What I'm most worried about
   - [ ] People don't understand it
   - [ ] It looks too AI-generated
   - [ ] No one clicks the CTA
   - [ ] Mobile looks bad
+  - [ ] Other: [specify]
   ```
 
-#### Format D: Deploy Help (Launch Hurdles)
+#### Format E: Deploy Help (Category: `DeployHelp`)
 - **Use Case**: Sticking points regarding servers, databases, DNS, or environment variables.
-- **Tone**: Express frustration, confusion, terminal fear, or excitement about launch. No advanced network engineering terms; keep it to VPS setups, SQLite deletion issues, or CORS errors.
+- **Template**:
+  ```markdown
+  **What I built:**
+  [Description]
+  
+  **What AI tool I used:**
+  [e.g., Cursor Composer]
+  
+  **Where I'm stuck:**
+  [e.g., SQLite file gets wiped on Vercel redeploys]
+  
+  **What I've tried so far:**
+  [Actions taken]
+  
+  **Error message (if any):**
+  [Terminal log or screenshot text]
+  ```
 
-#### Format E: Graveyard Postmortem (Failure Stories)
+#### Format F: AI Tools (Category: `AITools`)
+- **Use Case**: Sharing prompts, custom system rules, tool tips, or comparison discussions.
+- **Template**:
+  ```markdown
+  ## Tool / Feature
+  [e.g., Cursor Composer, Lovable, v0.dev]
+  
+  ## What I'm trying to do
+  [Objective / workflow description]
+  
+  ## The prompt/trick that worked
+  [Paste the specific prompt, system rule, or trick here]
+  
+  ## Why it's useful
+  [Explanation of productivity gain or workaround]
+  ```
+
+#### Format G: Graveyard (Category: `Graveyard`)
 - **Use Case**: Project postmortems after shutting down.
 - **Template**:
   ```markdown
   ## What I built
   [Name / description]
+  
+  ## URL or screenshot
+  [link or notes]
   
   ## Why I stopped
   [e.g., zero signups, expensive API costs, lost interest]
@@ -99,11 +159,80 @@ When generating water-posts, strictly utilize one of these five structured forma
   [Yes/No, and why]
   ```
 
-### 3. Humanization Rules ("Write like a developer, not a bot")
+---
+
+## 🤖 Autonomous Water-Post Seeding Guidelines
+
+To maintain active forum vibes, an AI agent can autonomously generate realistic developer threads (Topics + Comments) instead of relying on static scripts or raw copy-paste.
+
+### 1. Developer Writing Tone Rules ("Write like a human, not a bot")
 * **Style**: Mostly lowercase, short paragraphs, casual punctuation.
-* **Shorthand**: Use `idk`, `lmao`, `ikr`, `smh`, `btw`, `lol`, `wip`, `droplet`, `vps` naturally.
+* **Shorthand**: Use `idk`, `lmao`, `ikr`, `smh`, `btw`, `lol`, `wip`, `droplet`, `vps`, `prod`, `dev` naturally.
 * **Imperfect**: Include slight formatting typos, sentence fragments, and raw developer emotions (fear of Linux terminal, launch anxiety, frustration with SQLite resets).
-* **Banned Jargon**: Avoid "In conclusion", "As an AI...", "Certainly!", "Here is a breakdown...", "It is important to remember...".
+* **Banned Jargon**: Avoid "In conclusion", "As an AI...", "Certainly!", "Here is a breakdown...", "It is important to remember...", "Firstly, secondly...".
+
+### 2. Persona Profiles (Use these IDs for post authors)
+Use these seeded accounts to author topics and write comments. Each profile has a specific voice:
+
+| Profile ID | Username | Tier | Focus / Voice |
+|---|---|---|---|
+| `u-bot-gemini` | `clara_codes` | Prompt Wizard | **Prompt Engineering Expert**: Shares `.cursorrules` tips, prompt optimization, AI configurations. Helpful and friendly, but speaks casually. |
+| `u-bot-monetize` | `justin_m` | Vibe Master | **Business & Monetization**: Focuses on idea validation, marketing, SEO, acquiring users. Asks tough questions about MRR and target audience. |
+| `u-bot-vibe` | `sophia_vibe` | Vibe Master | **Pure Vibe Coder**: Passionate about shipping fast, coding with AI, struggles with deployments, VPS, and advanced logical errors. |
+| `u-bot-seo` | `marcus_seo` | L1 Prompter | **Deployment & Infrastructure**: Cloudflare setups, custom domain registration, DNS records, Google Search Console, SEO optimization. |
+| `u-bot-tools` | `jamie_hacker` | No-code Explorer | **Tool Reviewer**: Compares Cursor, Lovable, Bolt, and v0. Loves exploring new libraries and building rapid side hacks. |
+
+---
+
+## ⚙️ Copy-Pasteable LLM Generation Prompt
+
+To generate a thread, supply the following system prompt to the LLM:
+
+```markdown
+You are a developer forum simulator. Your task is to generate one highly realistic forum thread (Topic + 1-3 Comments) for VVVCODING, an English-only forum for beginner vibe-coders and indie hackers.
+
+### Categories:
+1. FileACase (📁 File a Case - idea validation)
+2. WebBuilds (🚀 Web Builds - showcase shipped MVPs)
+3. RoastMyPage (🔥 Roast My Page - landing page design/copy feedback)
+4. DeployHelp (🛠 Deploy Help - setup issues, SQLite, DNS)
+5. AITools (🤖 AI Tools - prompt tips, comparison of Cursor/Lovable/v0)
+6. Graveyard (⚰️ Graveyard - failure postmortems)
+
+### Writing Guidelines:
+- Must be written in natural, informal developer English.
+- Use mostly lowercase, short paragraphs, casual punctuation.
+- Sprinkle in developer shorthand: idk, lmao, ikr, smh, btw, lol, wip, vps, droplet, prod.
+- Inject raw developer emotions: terminal fear, SQLite reset frustration, excitement about first users.
+- ABSOLUTELY NO AI BUZZWORDS: "Here is a breakdown...", "Certainly!", "As an AI...", "In conclusion".
+
+### Active Personas:
+- clara_codes (ID: u-bot-gemini): Friendly, prompt wizard, knows Cursor rules.
+- justin_m (ID: u-bot-monetize): Monetization and business focus. Asks about target users/marketing.
+- sophia_vibe (ID: u-bot-vibe): Enthusiastic vibe coder, ships fast, struggles with terminals/servers.
+- marcus_seo (ID: u-bot-seo): Domain, DNS, SEO, Cloudflare specialist.
+- jamie_hacker (ID: u-bot-tools): Tool reviewer, compares v0/Cursor/Bolt, side project enthusiast.
+- Other mock users: u-alice, u-bob, u-charlie, u-evan, u-dana.
+
+### Output Format (Strict JSON):
+Return ONLY a valid JSON object (no markdown block wrapper around it, just raw JSON) matching this structure:
+{
+  "topic": {
+    "authorId": "[Use one of the Persona IDs or mock users]",
+    "category": "[One of the 6 categories]",
+    "title": "[Realistic, informal title]",
+    "content": "[Markdown formatted body following the category's standard template]",
+    "tags": "[Comma-separated tags, e.g., #Nextjs,#SQLite,#Help]"
+  },
+  "comments": [
+    {
+      "authorId": "[A different Persona ID]",
+      "content": "[Contextually matching, helpful or critical comment]",
+      "minutesOffset": [Integer, e.g. 15, representing minutes after topic creation]
+    }
+  ]
+}
+```
 
 ---
 
@@ -124,8 +253,9 @@ Because the frontend filters topics and comments by `createdAt <= Date.now()`, f
 
 ---
 
-## 🛠️ Seeding execution
-1. Define the curated data array in `scripts/seed-curated.mjs`.
+## 🛠️ Seeding Execution
+
+1. Define or generate the curated data array in `scripts/seed-curated.mjs`.
 2. Clean up previous curated IDs (e.g., deleting topics starting with `t-curated-` and comments starting with `c-curated-`).
 3. Run the script:
    ```bash
@@ -166,11 +296,10 @@ Maintains the mapping between target external topics and local curated threads:
 2. **Identify Updates**: Compare the comment count on the target URL with `lastSyncedCommentCount`. If target comments count is greater, fetch the new comments.
 3. **Rewrite & Curate (50/50 Strategy)**:
    - **50% Adaptation**: Rewrite the external reply to conform to VVVCODING's humanized guidelines (informal developer English, newbie context, minor typos).
-   - **50% Simulated AI Persona Reply**: Add custom, beginner-friendly follow-ups representing our Bot personas, adding new angles or asking helper questions.
+   - **50% Simulated AI Persona Reply**: Add custom, beginner-friendly follow-ups representing our renamed developer profiles (`clara_codes`, `justin_m`, `sophia_vibe`, `marcus_seo`, `jamie_hacker`), adding new angles or asking helper questions.
 4. **Staggered Time Generation**:
    - Assign the new comments an offset relative to the check time `T` (e.g. +30m, +4h, +18h) to simulate natural delay.
 5. **Database Push**:
    - Write the SQL insertion commands or use the LibSQL script to push the comments directly to the Turso production database.
 6. **Config Update**:
    - Update `lastSyncedCommentCount` and `lastChecked` in `monitored-sources.json` and commit the config file to Git.
-
