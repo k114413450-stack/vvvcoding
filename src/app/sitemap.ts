@@ -19,6 +19,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.9,
     },
     {
+      url: `${BASE_URL}/bounties`,
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.85,
+    },
+    {
       url: `${BASE_URL}/tools`,
       lastModified: new Date(),
       changeFrequency: "weekly",
@@ -71,5 +77,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error("sitemap: skipping prompt routes", error);
   }
 
-  return [...staticRoutes, ...topicRoutes, ...promptRoutes];
+  // Dynamic bounty routes
+  let bountyRoutes: MetadataRoute.Sitemap = [];
+  try {
+    const bounties = await db.bounty.findMany({
+      select: { id: true, updatedAt: true },
+      orderBy: { updatedAt: "desc" },
+    });
+
+    bountyRoutes = bounties.map((bounty) => ({
+      url: `${BASE_URL}/bounties/${bounty.id}`,
+      lastModified: bounty.updatedAt,
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+    }));
+  } catch (error) {
+    console.error("sitemap: skipping bounty routes", error);
+  }
+
+  return [...staticRoutes, ...topicRoutes, ...promptRoutes, ...bountyRoutes];
 }
