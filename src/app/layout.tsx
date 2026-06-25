@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { headers } from "next/headers";
 import "./globals.css";
 import { AppProvider } from "@/context/AppContext";
 import JsonLd from "@/components/JsonLd";
+import { isGameHost } from "@/lib/site-host";
 import {
   siteOrganizationJsonLd,
   siteWebSiteJsonLd,
@@ -82,21 +84,35 @@ export const metadata: Metadata = {
   // },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const headersList = await headers();
+  const host =
+    headersList.get("x-forwarded-host") ?? headersList.get("host") ?? "";
+  const gameSite = isGameHost(host);
+
+  const htmlClass = `${geistSans.variable} ${geistMono.variable} h-full antialiased dark`;
+
+  if (gameSite) {
+    return (
+      <html lang="en" className={htmlClass}>
+        <body className="min-h-full bg-[#070b14] text-slate-100 antialiased">
+          {children}
+        </body>
+      </html>
+    );
+  }
+
   const siteJsonLd = wrapJsonLdGraph(
     siteOrganizationJsonLd(),
     siteWebSiteJsonLd()
   );
 
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
-    >
+    <html lang="en" className={htmlClass}>
       <head>
         <JsonLd data={siteJsonLd} />
       </head>

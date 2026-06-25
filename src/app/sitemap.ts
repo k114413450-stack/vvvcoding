@@ -1,9 +1,26 @@
 import { MetadataRoute } from "next";
+import { headers } from "next/headers";
 import { db } from "@/lib/db";
+import { GAME_SITE_URL, isGameHost } from "@/lib/site-host";
 
 const BASE_URL = "https://vvvcoding.com";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const headersList = await headers();
+  const host =
+    headersList.get("x-forwarded-host") ?? headersList.get("host") ?? "";
+
+  if (isGameHost(host)) {
+    return [
+      {
+        url: GAME_SITE_URL,
+        lastModified: new Date(),
+        changeFrequency: "weekly",
+        priority: 1,
+      },
+    ];
+  }
+
   // Static routes
   const staticRoutes: MetadataRoute.Sitemap = [
     {
