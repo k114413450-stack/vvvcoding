@@ -25,10 +25,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.8,
       },
       {
+        url: `${GAME_SITE_URL}/guide/slots-strategy`,
+        lastModified: new Date(),
+        changeFrequency: "weekly",
+        priority: 0.8,
+      },
+      {
         url: `${GAME_SITE_URL}/how-to-play`,
         lastModified: new Date(),
         changeFrequency: "weekly",
         priority: 0.8,
+      },
+      {
+        url: `${GAME_SITE_URL}/slots`,
+        lastModified: new Date(),
+        changeFrequency: "weekly",
+        priority: 0.95,
       },
     ];
   }

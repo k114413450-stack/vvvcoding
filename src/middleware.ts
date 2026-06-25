@@ -24,6 +24,14 @@ export function middleware(request: NextRequest) {
       return NextResponse.rewrite(new URL(`/game${pathname}`, request.url));
     }
 
+    if (pathname === "/slots") {
+      return NextResponse.rewrite(new URL("/game/slots", request.url));
+    }
+
+    if (pathname === "/crash") {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+
     if (pathname !== "/") {
       return NextResponse.redirect(new URL("/", request.url));
     }

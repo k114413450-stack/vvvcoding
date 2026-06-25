@@ -18,6 +18,7 @@ import {
   drawCrashChart,
   setupCrashCanvas,
 } from "@/lib/crash-canvas";
+import GameNav from "@/components/game/GameNav";
 import { Coins, RotateCcw, Zap } from "lucide-react";
 
 const BET_PRESETS = [10, 50, 100, 250, 500];
@@ -237,6 +238,8 @@ export default function CrashGame() {
           </div>
         </div>
       </header>
+
+      <GameNav />
 
       <main className="flex-1 flex flex-col mx-auto w-full max-w-lg md:max-w-5xl px-4 py-4 sm:py-6 justify-center">
         <div className="flex flex-col md:grid md:grid-cols-[300px_1fr] md:gap-6 w-full items-start">
