@@ -16,7 +16,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         url: GAME_SITE_URL,
         lastModified: new Date(),
         changeFrequency: "weekly",
-        priority: 1,
+        priority: 1.0,
+      },
+      {
+        url: `${GAME_SITE_URL}/guide/crash-strategy`,
+        lastModified: new Date(),
+        changeFrequency: "weekly",
+        priority: 0.8,
+      },
+      {
+        url: `${GAME_SITE_URL}/how-to-play`,
+        lastModified: new Date(),
+        changeFrequency: "weekly",
+        priority: 0.8,
       },
     ];
   }

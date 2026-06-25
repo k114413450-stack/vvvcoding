@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import {
   MAX_BET,
   MIN_BET,
@@ -381,6 +382,50 @@ export default function CrashGame() {
                     </span>
                   )}
                 </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* SEO Text Area */}
+        <div className="mt-8 border-t border-slate-800/80 pt-6 space-y-6 text-left w-full">
+          <div className="space-y-2">
+            <h1 className="text-xl sm:text-2xl font-black text-white">
+              Free Crash Game Online — Play for Fun
+            </h1>
+            <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+              Experience the thrill of the classic crypto Crash game in your browser, completely free of charge. No download, registration, or real-money deposits are required. Practice your timing and test strategies using our responsive simulator equipped with 1,000 complimentary play coins.
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div className="space-y-1.5 p-4 rounded-xl border border-slate-800/80 bg-slate-900/10">
+              <h2 className="text-sm font-bold text-slate-200">How Does It Work?</h2>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                Strap in, select a bet amount, and click launch. As the multiplier grows exponentially, click <strong>Cash Out</strong> before it randomly crashes. If you exit in time, you win your bet multiplied by the exit multiplier.
+              </p>
+              <div className="pt-1">
+                <Link
+                  href="/how-to-play"
+                  className="text-xs font-bold text-emerald-400 hover:underline inline-flex items-center gap-0.5"
+                >
+                  Read Rules & How to Play Guide →
+                </Link>
+              </div>
+            </div>
+
+            <div className="space-y-1.5 p-4 rounded-xl border border-slate-800/80 bg-slate-900/10">
+              <h2 className="text-sm font-bold text-slate-200">Master Your Strategy</h2>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                Should you cash out early at 1.30x for consistent wins, or hold on for a high-risk 10.00x moon shot? Learn how the multiplier math works and practice bankroll management strategies.
+              </p>
+              <div className="pt-1">
+                <Link
+                  href="/guide/crash-strategy"
+                  className="text-xs font-bold text-emerald-400 hover:underline inline-flex items-center gap-0.5"
+                >
+                  View Crash Strategy Guide →
+                </Link>
               </div>
             </div>
           </div>

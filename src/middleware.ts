@@ -20,6 +20,10 @@ export function middleware(request: NextRequest) {
       return NextResponse.next();
     }
 
+    if (pathname.startsWith("/guide/") || pathname === "/how-to-play") {
+      return NextResponse.rewrite(new URL(`/game${pathname}`, request.url));
+    }
+
     if (pathname !== "/") {
       return NextResponse.redirect(new URL("/", request.url));
     }
