@@ -45,3 +45,8 @@ next-env.d.ts
 .vercel
 
 .vercel
+
+# API key files
+GK.txt
+
+.vercel

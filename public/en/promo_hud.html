@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Degen Arena - CyberHUD Showcase</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-base: #05070a;
+            --bg-surface: rgba(13, 16, 24, 0.75);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --accent: #ffb800;
+            --accent-glow: rgba(255, 184, 0, 0.25);
+            --text-primary: #f0f2f5;
+            --text-secondary: #a0aec0;
+            --text-muted: #4a5568;
+            --neon-up: #00e676;
+            --neon-up-glow: rgba(0, 230, 118, 0.4);
+            --neon-down: #ff3d00;
+            --neon-down-glow: rgba(255, 61, 0, 0.4);
+            --card-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.7);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Top Header */
+        header {
+            background: rgba(8, 10, 15, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0.9rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.45rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo span {
+            color: var(--accent);
+            text-shadow: 0 0 12px var(--accent-glow);
+        }
+
+        .sys-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            color: var(--neon-up);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--neon-up);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--neon-up);
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 0.5rem 1.1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .nav-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        /* Workspace Grid */
+        .workspace {
+            position: relative;
+            flex-grow: 1;
+            background-color: #05070a;
+            height: calc(100vh - 65px);
+        }
+
+        /* SVG Cyberpunk Chart container */
+        .chart-bg {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        /* Floating Overlays */
+        .price-overlay {
+            position: absolute;
+            top: 1.5rem;
+            left: 2rem;
+            z-index: 5;
+            background: rgba(8, 10, 15, 0.9);
+            border: 1px solid var(--border-color);
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .overlay-pair {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            letter-spacing: 0.5px;
+        }
+
+        .overlay-price {
+            font-size: 1.45rem;
+            font-weight: 800;
+            font-family: monospace;
+            color: #ffffff;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
+        }
+
+        /* Floating HUD Control Panel */
+        .hud-card {
+            position: absolute;
+            top: 1.5rem;
+            right: 2rem;
+            width: 290px;
+            background: var(--bg-surface);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            padding: 1.3rem;
+            z-index: 5;
+            display: flex;
+            flex-direction: column;
+            gap: 1.1rem;
+        }
+
+        .hud-header {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .hud-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hud-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .hud-status-badge {
+            font-size: 0.65rem;
+            color: var(--neon-up);
+            font-family: monospace;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .hud-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .divider {
+            height: 1px;
+            background: var(--border-color);
+            width: 100%;
+        }
+
+        /* Grid values */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 0.55rem 0.65rem;
+        }
+
+        .stat-lbl {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.2rem;
+        }
+
+        .stat-val {
+            font-size: 0.95rem;
+            font-weight: 700;
+            font-family: monospace;
+        }
+        .stat-val.up { color: var(--neon-up); text-shadow: 0 0 8px var(--neon-up-glow); }
+
+        /* Trade box */
+        .trade-box {
+            display: flex;
+            flex-direction: column;
+            gap: 0.55rem;
+        }
+
+        .input-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.45rem 0.8rem;
+        }
+
+        .input-lbl {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .input-val {
+            font-family: monospace;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .btn-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+
+        .action-btn {
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem 0.5rem;
+            font-weight: 800;
+            font-size: 0.85rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.15rem;
+        }
+
+        .btn-buy {
+            background-color: var(--neon-up);
+            color: #030406;
+            box-shadow: 0 0 15px var(--neon-up-glow);
+        }
+
+        .btn-sell {
+            background-color: var(--neon-down);
+            color: #ffffff;
+            box-shadow: 0 0 15px var(--neon-down-glow);
+        }
+
+        .btn-price {
+            font-size: 0.65rem;
+            font-weight: 500;
+            opacity: 0.85;
+        }
+
+        .btn-close-all {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            border-radius: 8px;
+            padding: 0.55rem;
+            font-size: 0.78rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        /* Subscription section */
+        .alert-box {
+            background: rgba(255, 184, 0, 0.03);
+            border: 1px solid rgba(255, 184, 0, 0.1);
+            border-radius: 8px;
+            padding: 0.65rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.45rem;
+        }
+
+        .alert-hdr {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .alert-desc {
+            font-size: 0.68rem;
+            color: var(--text-secondary);
+            line-height: 1.35;
+        }
+
+        .alert-form {
+            display: flex;
+            gap: 0.4rem;
+        }
+
+        .alert-input {
+            flex-grow: 1;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 0.35rem 0.55rem;
+            font-size: 0.75rem;
+            color: var(--text-primary);
+            outline: none;
+        }
+
+        .btn-submit {
+            background: var(--accent);
+            border: none;
+            color: #030406;
+            font-weight: 700;
+            font-size: 0.75rem;
+            padding: 0 0.7rem;
+            border-radius: 4px;
+        }
+
+        /* Floating positions list (Bottom Left) */
+        .positions-card {
+            position: absolute;
+            bottom: 1.5rem;
+            left: 2rem;
+            width: 480px;
+            background: var(--bg-surface);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            padding: 0.9rem;
+            z-index: 5;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .positions-hdr-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+        }
+
+        .positions-count {
+            font-family: monospace;
+            font-size: 0.7rem;
+        }
+
+        .pos-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.75rem;
+            text-align: left;
+        }
+
+        .pos-table th {
+            color: var(--text-muted);
+            font-weight: 600;
+            padding: 0.3rem 0.4rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .pos-table td {
+            padding: 0.45rem 0.4rem;
+            border-bottom: none;
+            font-family: monospace;
+        }
+
+        .type-buy {
+            color: var(--neon-up);
+            font-weight: 700;
+        }
+
+        .pnl-val {
+            color: var(--neon-up);
+            text-shadow: 0 0 8px var(--neon-up-glow);
+        }
+
+        .btn-close-pos {
+            background: rgba(255, 61, 0, 0.15);
+            border: 1px solid rgba(255, 61, 0, 0.3);
+            color: var(--neon-down);
+            border-radius: 4px;
+            padding: 0.1rem 0.35rem;
+            font-size: 0.65rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="logo-area">
+            <a href="/en/index.html" class="logo">
+                <span>Degen</span>Arena
+            </a>
+        </div>
+        <div class="sys-status">
+            <div class="status-dot"></div>
+            <span>LIVE FEDERATED DATASTREAM</span>
+        </div>
+        <a href="/en/pattern.html" class="nav-btn">📐 Pattern Scanner Radar</a>
+    </header>
+
+    <!-- Workspace Container -->
+    <div class="workspace">
+        
+        <!-- SVG Vector Cyberpunk Glowing Chart -->
+        <svg class="chart-bg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 800" preserveAspectRatio="none">
+            <!-- Filter Defs for Neon Glow -->
+            <defs>
+                <filter id="glow-up" x="-20%" y="-20%" width="140%" height="140%">
+                    <feGaussianBlur stdDeviation="3.5" result="blur" />
+                    <feMerge>
+                        <feMergeNode in="blur" />
+                        <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                </filter>
+                <filter id="glow-down" x="-20%" y="-20%" width="140%" height="140%">
+                    <feGaussianBlur stdDeviation="3.5" result="blur" />
+                    <feMerge>
+                        <feMergeNode in="blur" />
+                        <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                </filter>
+            </defs>
+
+            <!-- Background Grid (Very faint) -->
+            <g stroke="rgba(255,255,255,0.015)" stroke-width="0.75">
+                <!-- Vertical grid lines -->
+                <line x1="100" y1="0" x2="100" y2="800" />
+                <line x1="200" y1="0" x2="200" y2="800" />
+                <line x1="300" y1="0" x2="300" y2="800" />
+                <line x1="400" y1="0" x2="400" y2="800" />
+                <line x1="500" y1="0" x2="500" y2="800" />
+                <line x1="600" y1="0" x2="600" y2="800" />
+                <line x1="700" y1="0" x2="700" y2="800" />
+                <line x1="800" y1="0" x2="800" y2="800" />
+                <line x1="900" y1="0" x2="900" y2="800" />
+                <line x1="1000" y1="0" x2="1000" y2="800" />
+                <line x1="1100" y1="0" x2="1100" y2="800" />
+                <line x1="1200" y1="0" x2="1200" y2="800" />
+                <line x1="1300" y1="0" x2="1300" y2="800" />
+
+                <!-- Horizontal grid lines -->
+                <line x1="0" y1="100" x2="1440" y2="100" />
+                <line x1="0" y1="200" x2="1440" y2="200" />
+                <line x1="0" y1="300" x2="1440" y2="300" />
+                <line x1="0" y1="400" x2="1440" y2="400" />
+                <line x1="0" y1="500" x2="1440" y2="500" />
+                <line x1="0" y1="600" x2="1440" y2="600" />
+                <line x1="0" y1="700" x2="1440" y2="700" />
+            </g>
+
+            <!-- Price line (Dotted) -->
+            <line x1="0" y1="480" x2="1440" y2="480" stroke="rgba(0, 230, 118, 0.45)" stroke-width="1.25" stroke-dasharray="4,4" />
+
+            <!-- Static Candlesticks Stream (Drawing the exact visual flow of the mockup) -->
+            <!-- x spacing: 30px per candle -->
+            
+            <!-- Up Candle (Green) -->
+            <line x1="80" y1="340" x2="80" y2="420" stroke="#00e676" stroke-width="1.5" />
+            <rect x="75" y="360" width="10" height="40" fill="#00e676" filter="url(#glow-up)" />
+
+            <!-- Down Candle (Red) -->
+            <line x1="110" y1="350" x2="110" y2="450" stroke="#ff3d00" stroke-width="1.5" />
+            <rect x="105" y="380" width="10" height="50" fill="#ff3d00" filter="url(#glow-down)" />
+
+            <!-- Down Candle (Red) -->
+            <line x1="140" y1="390" x2="140" y2="480" stroke="#ff3d00" stroke-width="1.5" />
+            <rect x="135" y="410" width="10" height="50" fill="#ff3d00" filter="url(#glow-down)" />
+
+            <!-- Up Candle (Green) -->
+            <line x1="170" y1="330" x2="170" y2="430" stroke="#00e676" stroke-width="1.5" />
+            <rect x="165" y="350" width="10" height="60" fill="#00e676" filter="url(#glow-up)" />
+
+            <!-- Up Candle (Green) -->
+            <line x1="200" y1="280" x2="200" y2="390" stroke="#00e676" stroke-width="1.5" />
+            <rect x="195" y="300" width="10" height="70" fill="#00e676" filter="url(#glow-up)" />
+
+            <!-- Buy Marker Arrow on Chart -->
+            <path d="M 200 410 L 195 422 L 205 422 Z" fill="#00e676" filter="url(#glow-up)" />
+            <text x="210" y="420" fill="#00e676" font-size="9" font-family="monospace" font-weight="bold">BUY 0.10</text>
+
+            <!-- Down Candle (Red) -->
+            <line x1="230" y1="320" x2="230" y2="400" stroke="#ff3d00" stroke-width="1.5" />
+            <rect x="225" y="340" width="10" height="40" fill="#ff3d00" filter="url(#glow-down)" />
+
+            <!-- Down Candle (Red) -->
+            <line x1="260" y1="350" x2="260" y2="440" stroke="#ff3d00" stroke-width="1.5" />
+            <rect x="255" y="370" width="10" height="50" fill="#ff3d00" filter="url(#glow-down)" />
+
+            <!-- Down Candle (Red) -->
+            <line x1="290" y1="380" x2="290" y2="490" stroke="#ff3d00" stroke-width="1.5" />
+            <rect x="285" y="400" width="10" height="70" fill="#ff3d00" filter="url(#glow-down)" />
+
+            <!-- Up Candle (Green) -->
+            <line x1="320" y1="410" x2="320" y2="520" stroke="#00e676" stroke-width="1.5" />
+            <rect x="315" y="430" width="10" height="60" fill="#00e676" filter="url(#glow-up)" />
+
+            <!-- Up Candle (Green) -->
+            <line x1="350" y1="390" x2="350" y2="480" stroke="#00e676" stroke-width="1.5" />
+            <rect x="345" y="410" width="10" height="50" fill="#00e676" filter="url(#glow-up)" />
+
+            <!-- Up Candle (Green) -->
+            <line x1="380" y1="360" x2="380" y2="450" stroke="#00e676" stroke-width="1.5" />
+            <rect x="375" y="380" width="10" height="50" fill="#00e676" filter="url(#glow-up)" />
+
+            <!-- Up Candle (Green) -->
+            <line x1="410" y1="310" x2="410" y2="420" stroke="#00e676" stroke-width="1.5" />
+            <rect x="405" y="330" width="10" height="70" fill="#00e676" filter="url(#glow-up)" />
+
+            <!-- Up Candle (Green) -->
+            <line x1="440" y1="290" x2="440" y2="380" stroke="#00e676" stroke-width="1.5" />
+            <rect x="435" y="310" width="10" height="50" fill="#00e676" filter="url(#glow-up)" />
+
+            <!-- Down Candle (Red) -->
+            <line x1="470" y1="330" x2="470" y2="440" stroke="#ff3d00" stroke-width="1.5" />
+            <rect x="465" y="350" width="10" height="70" fill="#ff3d00" filter="url(#glow-down)" />
+
+            <!-- Down Candle (Red) -->
+            <line x1="500" y1="390" x2="500" y2="490" stroke="#ff3d00" stroke-width="1.5" />
+            <rect x="495" y="410" width="10" height="60" fill="#ff3d00" filter="url(#glow-down)" />
+
+            <!-- Up Candle (Green) -->
+            <line x1="530" y1="360" x2="530" y2="460" stroke="#00e676" stroke-width="1.5" />
+            <rect x="525" y="380" width="10" height="60" fill="#00e676" filter="url(#glow-up)" />
+
+            <!-- Up Candle (Green) -->
+            <line x1="560" y1="320" x2="560" y2="420" stroke="#00e676" stroke-width="1.5" />
+            <rect x="555" y="340" width="10" height="60" fill="#00e676" filter="url(#glow-up)" />
+
+            <!-- Up Candle (Green) -->
+            <line x1="590" y1="280" x2="590" y2="380" stroke="#00e676" stroke-width="1.5" />
+            <rect x="585" y="300" width="10" height="60" fill="#00e676" filter="url(#glow-up)" />
+
+            <!-- Down Candle (Red) -->
+            <line x1="620" y1="320" x2="620" y2="430" stroke="#ff3d00" stroke-width="1.5" />
+            <rect x="615" y="340" width="10" height="70" fill="#ff3d00" filter="url(#glow-down)" />
+
+            <!-- Down Candle (Red) -->
+            <line x1="650" y1="380" x2="650" y2="480" stroke="#ff3d00" stroke-width="1.5" />
+            <rect x="645" y="400" width="10" height="60" fill="#ff3d00" filter="url(#glow-down)" />
+
+            <!-- Up Candle (Green) -->
+            <line x1="680" y1="340" x2="680" y2="440" stroke="#00e676" stroke-width="1.5" />
+            <rect x="675" y="360" width="10" height="60" fill="#00e676" filter="url(#glow-up)" />
+
+            <!-- Down Candle (Red) -->
+            <line x1="710" y1="370" x2="710" y2="490" stroke="#ff3d00" stroke-width="1.5" />
+            <rect x="705" y="390" width="10" height="80" fill="#ff3d00" filter="url(#glow-down)" />
+
+            <!-- Down Candle (Red) -->
+            <line x1="740" y1="450" x2="740" y2="540" stroke="#ff3d00" stroke-width="1.5" />
+            <rect x="735" y="470" width="10" height="50" fill="#ff3d00" filter="url(#glow-down)" />
+
+            <!-- Up Candle (Green) -->
+            <line x1="770" y1="410" x2="770" y2="510" stroke="#00e676" stroke-width="1.5" />
+            <rect x="765" y="430" width="10" height="60" fill="#00e676" filter="url(#glow-up)" />
+
+            <!-- Up Candle (Green) -->
+            <line x1="800" y1="360" x2="800" y2="460" stroke="#00e676" stroke-width="1.5" />
+            <rect x="795" y="380" width="10" height="60" fill="#00e676" filter="url(#glow-up)" />
+
+            <!-- Up Candle (Green) -->
+            <line x1="830" y1="310" x2="830" y2="410" stroke="#00e676" stroke-width="1.5" />
+            <rect x="825" y="330" width="10" height="60" fill="#00e676" filter="url(#glow-up)" />
+            
+            <!-- Current price tag at 480px y coordinate -->
+            <rect x="1380" y="468" width="60" height="24" fill="#00e676" rx="4" filter="url(#glow-up)" />
+            <text x="1390" y="484" fill="#030406" font-size="11" font-family="monospace" font-weight="bold">2360.61</text>
+        </svg>
+
+        <!-- Top Left Price Overlay -->
+        <div class="price-overlay">
+            <div class="overlay-pair">XAUUSD.m (Spot Gold)</div>
+            <div class="overlay-price">2360.61</div>
+        </div>
+
+        <!-- Floating HUD Control Card (Top Right) -->
+        <div class="hud-card">
+            <div class="hud-header">
+                <div class="hud-title-row">
+                    <div class="hud-title">⚡ DEGEN H.U.D.</div>
+                    <div class="hud-status-badge">ACTIVE</div>
+                </div>
+                <div class="hud-subtitle">SaaS Execution & Warning Panel</div>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Card Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-lbl">Equity</div>
+                    <div class="stat-val">$10001.40</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label" style="font-size: 0.7rem; color: var(--text-secondary); margin-bottom: 0.2rem;">Floating PnL</div>
+                    <div class="stat-val up">+$1.40</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-lbl">Live Spread</div>
+                    <div class="stat-val" style="color: var(--text-primary);">1.2 pips</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-lbl">Daily H / L</div>
+                    <div class="stat-val" style="font-size: 0.75rem; color: var(--text-secondary);">2368.4 / 2342.1</div>
+                </div>
+            </div>
+
+            <!-- Volume lots config -->
+            <div class="trade-box">
+                <div class="input-row">
+                    <span class="input-lbl">Lots</span>
+                    <span class="input-val">0.10</span>
+                </div>
+                <div class="btn-row">
+                    <button class="action-btn btn-buy">
+                        <span>BUY MARKET</span>
+                        <span class="btn-price">2360.67</span>
+                    </button>
+                    <button class="action-btn btn-sell">
+                        <span>SELL MARKET</span>
+                        <span class="btn-price">2360.55</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Clean terminal -->
+            <button class="btn-close-all">🗑️ Close All Positions</button>
+
+            <div class="divider"></div>
+
+            <!-- WeChat alerts -->
+            <div class="alert-box">
+                <div class="alert-hdr">
+                    <span>✉️ WeChat & Email Alerts Link</span>
+                </div>
+                <div class="alert-desc">
+                    Enter your QQ Mail to receive instant trading alerts directly via WeChat notifications.
+                </div>
+                <div class="alert-form">
+                    <input type="email" value="example@qq.com" class="alert-input" readonly>
+                    <button class="btn-submit">Link</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Positions HUD (Bottom Left) -->
+        <div class="positions-card">
+            <div class="positions-hdr-row">
+                <span>📂 Open Positions</span>
+                <span class="positions-count">1 笔</span>
+            </div>
+            
+            <!-- Open positions detail -->
+            <table class="pos-table">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Lots</th>
+                        <th>Entry</th>
+                        <th>Current</th>
+                        <th>PnL</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="type-buy">BUY</td>
+                        <td>0.10</td>
+                        <td>2360.47</td>
+                        <td>2360.61</td>
+                        <td class="pnl-val">+$1.40</td>
+                        <td><button class="btn-close-pos">Close</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

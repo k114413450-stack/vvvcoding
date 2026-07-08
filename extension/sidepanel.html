@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DEGEN ARENA — AI Copilot Side Panel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="sidepanel.css" />
+</head>
+<body>
+  <div class="sidebar-inner">
+    
+    <!-- Active Symbol Detector Banner -->
+    <div class="glass-section" style="padding: 10px; border-color: rgba(61, 253, 93, 0.4); background: rgba(61, 253, 93, 0.02); font-size: 0.72rem; display: flex; align-items: center; justify-content: space-between;">
+      <div style="display: flex; align-items: center; gap: 6px; font-weight: 700; color: #3dfd5d;">
+        <span class="active-pulse-dot"></span>
+        📡 自动侦测看盘:
+      </div>
+      <span id="detectedSymbolText" style="font-family: 'Share Tech Mono', monospace; font-weight: 800; color: #fff; text-shadow: 0 0 8px rgba(255,255,255,0.2);">XAUUSD (默认)</span>
+    </div>
+
+    <!-- Profile Card (Hidden by default to save vertical space) -->
+    <div class="profile-card glass-section" style="display: none;">
+      <div class="sidebar-gear">⚙</div>
+      <div class="profile-avatar-ring">
+        <img class="profile-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=Degen_01" alt="Avatar" />
+      </div>
+      <div class="vip-gold-pill">VIP GOLD</div>
+      <div class="profile-name">GUEST_TRADER</div>
+      <div class="profile-balance">
+        <span class="coin-stack">🪙</span>
+        <span class="vc">142,500 VC</span>
+      </div>
+    </div>
+
+    <!-- AI Compiler Card -->
+    <div class="compiler-card glass-section">
+      <div class="compiler-title"><span class="sparkle">✦</span> AI STRATEGY COMPILER</div>
+      
+      <div class="compiler-subtitle">用大白话描述你的策略进行回测:</div>
+      <div class="compiler-input-wrap">
+        <textarea
+          class="compiler-textarea"
+          id="strategyInput"
+          placeholder="当5日均线上穿10日均线时买入，下穿时平仓..."
+        ></textarea>
+        <button class="analyze-btn" type="button" id="btnAnalyze">Analyze</button>
+      </div>
+
+      <!-- Terminal Output -->
+      <div class="compiler-terminal">
+        <pre id="terminalOutput"><span class="term-muted">Awaiting strategy input...</span>
+<span class="term-muted">Press Analyze to compile strategy rules.</span><span class="terminal-cursor"></span></pre>
+      </div>
+
+      <!-- AI Choice Card (for clarifications) -->
+      <div id="aiAssistantCard" style="display: none; margin-top: 10px; border: 1px dashed rgba(0, 229, 255, 0.35); border-radius: 10px; padding: 10px; background: rgba(0, 229, 255, 0.03);">
+        <div style="font-weight: 800; color: #00e5ff; font-size: 0.68rem; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+          <span style="display:inline-block; width:6px; height:6px; background:#00e5ff; border-radius:50%; box-shadow:0 0 6px #00e5ff; animation: pulse 1.5s infinite;"></span>
+          🤖 AI 需要确认参数
+        </div>
+        <div id="aiAssistantTitle" style="color: rgba(160,174,192,0.9); font-size: 0.68rem; margin-bottom: 8px; line-height: 1.5;"></div>
+        <div id="aiAssistantOptions" style="display: flex; flex-direction: column; gap: 4px;"></div>
+      </div>
+    </div>
+
+    <!-- Canvas Animation Card -->
+    <div class="chart-card glass-section" id="chartCard" style="display: none;">
+      <div class="compiler-title"><span class="sparkle">📊</span> LIVE BACKTEST SIMULATOR</div>
+      <div class="chart-container" style="position: relative; height: 160px; margin-top: 10px; border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; overflow: hidden; background: #04070c;">
+        <canvas id="miniCandleChart"></canvas>
+      </div>
+      <div style="display: flex; justify-content: space-between; font-family: 'Share Tech Mono', monospace; font-size: 0.68rem; color: #ffd600; margin-top: 8px; padding: 0 4px;">
+        <span>账户净值: <span id="equityVal">$10,000.00</span></span>
+        <span>交易笔数: <span id="tradeCountVal">0</span></span>
+      </div>
+    </div>
+
+    <!-- Single Action Button -->
+    <button class="btn-test-solo" type="button" id="btnTest">🚀 RUN BACKTEST</button>
+
+  </div>
+
+  <script src="mock_data.js"></script>
+  <script src="sidepanel.js"></script>
+</body>
+</html>

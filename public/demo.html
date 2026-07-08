@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DEGEN ARENA — Premium Cyberpunk UI 100% Mockup Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #030508;
+      --bg-panel: rgba(10, 16, 26, 0.45);
+      --border: rgba(0, 229, 255, 0.15);
+      --text-dim: #5a6478;
+      --text: #a0aec0;
+      --white: #ffffff;
+
+      --green: #00ff88;
+      --green-glow: rgba(0, 255, 136, 0.45);
+      --red: #ff3b5c;
+      --red-glow: rgba(255, 59, 92, 0.45);
+      --pink: #ff2d78;
+      --pink-glow: rgba(255, 45, 120, 0.4);
+      --cyan: #00e5ff;
+      --cyan-glow: rgba(0, 229, 255, 0.35);
+      --purple: #b388ff;
+      --gold: #ffd600;
+      --gold-glow: rgba(255, 214, 0, 0.3);
+
+      --sidebar-w: 320px;
+      --font-ui: "Rajdhani", "Segoe UI", sans-serif;
+      --font-mono: "Share Tech Mono", "Consolas", monospace;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      height: 100%;
+      background-color: var(--bg);
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(0, 229, 255, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(255, 45, 120, 0.05) 0%, transparent 40%);
+      color: var(--text);
+      font-family: var(--font-ui);
+      overflow: hidden;
+    }
+
+    /* Sci-fi Tech Grid Pattern overlay */
+    .grid-overlay {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.007) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.007) 1px, transparent 1px);
+      background-size: 30px 30px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .app {
+      display: flex;
+      height: 100vh;
+      width: 100vw;
+      position: relative;
+      z-index: 1;
+      padding: 12px 0 12px 12px;
+    }
+
+    /* ── LEFT PREMIUM SIDEBAR (100% Mockup Match) ── */
+    .sidebar {
+      width: var(--sidebar-w);
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      isolation: isolate;
+      border-radius: 20px;
+      border: 1px solid rgba(170, 190, 220, 0.28);
+      background: rgba(30, 34, 45, 0.50);
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.07),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.18),
+        0 16px 40px rgba(0, 0, 0, 0.28);
+      backdrop-filter: blur(16px) saturate(120%);
+      -webkit-backdrop-filter: blur(16px) saturate(120%);
+      padding: 16px 12px;
+      overflow-y: auto;
+      z-index: 10;
+    }
+
+    /* 双层玻璃外框 + 右上/左下粉色霓虹切角 */
+    .sidebar::before,
+    .sidebar::after {
+      content: "";
+      position: absolute;
+      width: 34px;
+      height: 34px;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .sidebar::before {
+      top: 8px;
+      right: 8px;
+      border-top: 2px solid rgba(255, 45, 120, 0.95);
+      border-right: 2px solid rgba(255, 45, 120, 0.95);
+      border-radius: 0 14px 0 0;
+      box-shadow: 0 0 14px rgba(255, 45, 120, 0.65);
+    }
+
+    .sidebar::after {
+      bottom: 8px;
+      left: 8px;
+      border-bottom: 2px solid rgba(255, 45, 120, 0.95);
+      border-left: 2px solid rgba(255, 45, 120, 0.95);
+      border-radius: 0 0 0 14px;
+      box-shadow: 0 0 14px rgba(255, 45, 120, 0.65);
+    }
+
+    .brand-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      padding-bottom: 1rem;
+      display: flex;
+      gap: 6px;
+    }
+
+    .neon-green {
+      color: var(--green);
+      text-shadow: 0 0 5px var(--green), 0 0 15px rgba(0, 255, 136, 0.3);
+    }
+    .neon-pink {
+      color: var(--pink);
+      text-shadow: 0 0 5px var(--pink), 0 0 15px rgba(255, 45, 120, 0.3);
+    }
+    .neon-cyan {
+      color: var(--cyan);
+      text-shadow: 0 0 6px var(--cyan);
+    }
+
+    .sidebar-section {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .section-lbl {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-dim);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* 1. User Profile Card with stylized avatar, glowing VIP GOLD badge, and coin balance */
+    .saas-card-vip {
+      padding: 12px;
+      border: 1px solid var(--gold);
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(30, 24, 5, 0.9) 0%, rgba(15, 12, 3, 0.98) 100%);
+      box-shadow: 0 0 18px rgba(255, 214, 0, 0.25), inset 0 0 10px rgba(255, 214, 0, 0.05);
+      font-family: var(--font-mono);
+    }
+
+    .vip-badge {
+      background: linear-gradient(90deg, #ffd600, #ffaa00);
+      color: #000;
+      font-size: 0.58rem;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 4px;
+      box-shadow: 0 0 8px var(--gold-glow);
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .coin-balance {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--gold);
+      text-shadow: 0 0 6px var(--gold-glow);
+      margin-top: 4px;
+    }
+
+    .avatar-vip {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 2px solid var(--gold);
+      box-shadow: 0 0 8px var(--gold-glow);
+      background: #1a2333;
+    }
+
+    /* 2. Textarea strategy input labeled 'Describe your strategy' with cyan glow on focus */
+    .strategy-input {
+      width: 100%;
+      height: 80px;
+      background: rgba(1, 3, 6, 0.7);
+      border: 1px solid rgba(0, 229, 255, 0.25);
+      border-radius: 10px;
+      color: #e2e8f0;
+      padding: 0.75rem;
+      font-family: var(--font-ui);
+      font-size: 0.85rem;
+      resize: none;
+      outline: none;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4), 0 0 8px rgba(0, 229, 255, 0.05);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .strategy-input:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 14px rgba(0, 229, 255, 0.3), inset 0 2px 4px rgba(0, 0, 0, 0.4);
+    }
+
+    /* 3. AI Compiler Code Terminal Panel displaying compiler output with code highlight */
+    .terminal-window {
+      border: 1px solid rgba(0, 229, 255, 0.35);
+      border-radius: 10px;
+      background: #020406;
+      box-shadow: 0 0 15px rgba(0, 229, 255, 0.15), inset 0 0 10px rgba(0, 229, 255, 0.05);
+      overflow: hidden;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+    }
+
+    .terminal-bar {
+      background: rgba(10, 16, 26, 0.95);
+      border-bottom: 1px solid rgba(0, 229, 255, 0.15);
+      padding: 6px 10px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .term-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+    }
+    .term-red { background: #ff5f56; }
+    .term-yellow { background: #ffbd2e; }
+    .term-green { background: #27c93f; }
+    .term-title {
+      margin-left: 6px;
+      font-size: 0.6rem;
+      color: var(--cyan);
+      letter-spacing: 0.05em;
+      font-weight: 700;
+    }
+
+    .terminal-content {
+      padding: 10px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      line-height: 1.4;
+      color: #fff;
+    }
+
+    /* Syntax Highlighting */
+    .term-keyword { color: var(--pink); font-weight: bold; }
+    .term-function { color: var(--cyan); }
+    .term-string { color: var(--green); }
+    .term-number { color: #f59e0b; }
+    .term-comment { color: var(--text-dim); font-style: italic; }
+
+    /* Cursor animation */
+    .terminal-cursor {
+      display: inline-block;
+      width: 5px;
+      height: 11px;
+      background: var(--cyan);
+      margin-left: 2px;
+      animation: blink 1s infinite;
+      vertical-align: middle;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 0; }
+      50% { opacity: 1; }
+    }
+
+    /* 4. Glowing interaction pills */
+    .template-box {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+    .pill {
+      background: rgba(13, 25, 41, 0.55);
+      border: 1px solid rgba(255, 45, 120, 0.28);
+      color: #8fa3bf;
+      border-radius: 30px;
+      padding: 0.35rem 0.75rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+    }
+    .pill:hover {
+      border-color: var(--pink);
+      color: #ffffff;
+      box-shadow: 0 0 12px var(--pink-glow);
+      transform: scale(1.04);
+    }
+
+    /* Glowing Neon Pill Option buttons inside compiler card */
+    .ai-pill-btn {
+      width: 100%;
+      background: rgba(0, 229, 255, 0.02);
+      border: 1px dashed rgba(0, 229, 255, 0.28);
+      color: var(--cyan);
+      font-size: 0.68rem;
+      font-weight: 600;
+      border-radius: 6px;
+      padding: 8px 10px;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: var(--font-ui);
+    }
+    .ai-pill-btn:hover {
+      background: rgba(0, 229, 255, 0.08);
+      border-style: solid;
+      border-color: var(--cyan);
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+    }
+
+    /* Glowing Run Button */
+    .btn-run {
+      background: linear-gradient(135deg, rgba(0, 255, 136, 0.18) 0%, rgba(0, 229, 255, 0.05) 100%);
+      border: 1px solid var(--green);
+      color: #ffffff;
+      text-shadow: 0 0 4px var(--green);
+      padding: 0.8rem;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.5rem;
+      letter-spacing: 0.08em;
+      box-shadow: 0 0 16px rgba(0, 255, 136, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+      transition: all 0.25s ease-out;
+    }
+    .btn-run:hover {
+      background: linear-gradient(135deg, rgba(0, 255, 136, 0.35) 0%, rgba(0, 229, 255, 0.15) 100%);
+      box-shadow: 0 0 28px rgba(0, 255, 136, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+      transform: translateY(-1px);
+    }
+
+    /* Watchlist symbol list */
+    .symbol-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .symbol-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .symbol-item:hover {
+      background: rgba(0, 229, 255, 0.04);
+      color: var(--text);
+      transform: translateX(3px);
+    }
+    .symbol-item.active {
+      color: var(--green);
+      background: rgba(0, 255, 136, 0.07);
+      border-left: 2.5px solid var(--green);
+      margin-left: -2.5px;
+      box-shadow: inset 0 0 18px rgba(0, 255, 136, 0.05);
+    }
+    .sym-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green), 0 0 16px rgba(0, 255, 136, 0.4);
+      flex-shrink: 0;
+      animation: pulse-dot 1.8s infinite;
+    }
+    .sym-dot.dim {
+      background: #3a4255;
+      box-shadow: none;
+      animation: none;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 0.6; box-shadow: 0 0 6px var(--green); }
+      50% { opacity: 1; box-shadow: 0 0 14px var(--green), 0 0 20px rgba(0, 255, 136, 0.6); }
+    }
+
+    /* Bottom Link Buttons */
+    .nav-links {
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 0.8rem;
+    }
+    .nav-link-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      color: var(--text-dim);
+      font-size: 0.82rem;
+      text-decoration: none;
+      padding: 0.45rem 0.6rem;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+    .nav-link-btn:hover {
+      color: var(--cyan);
+      background: rgba(0, 229, 255, 0.05);
+    }
+
+    /* ── Screenshot left sidebar replication ── */
+    .sidebar-inner {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .glass-section {
+      position: relative;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      background: rgba(18, 22, 30, 0.28);
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .profile-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 18px 14px 16px;
+    }
+
+    .sidebar-gear {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      color: rgba(255, 45, 120, 0.92);
+      font-size: 16px;
+      line-height: 1;
+      text-shadow: 0 0 10px rgba(255, 45, 120, 0.55);
+      user-select: none;
+    }
+
+    .profile-avatar-ring {
+      width: 122px;
+      height: 122px;
+      margin-top: 10px;
+      border-radius: 50%;
+      border: 3px solid rgba(255, 45, 120, 0.95);
+      box-shadow:
+        0 0 18px rgba(255, 45, 120, 0.55),
+        0 0 36px rgba(255, 45, 120, 0.28),
+        inset 0 0 18px rgba(255, 45, 120, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      overflow: hidden;
+      background: radial-gradient(circle at 50% 35%, rgba(255, 45, 120, 0.18), rgba(8, 10, 16, 0.9) 68%);
+    }
+
+    .profile-avatar {
+      width: 102px;
+      height: 102px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(5, 8, 14, 0.85);
+    }
+
+    .vip-gold-pill {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 14px;
+      padding: 7px 34px;
+      min-width: 168px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      font-size: 0.82rem;
+      color: #ffd600;
+      background: rgba(12, 10, 4, 0.88);
+      clip-path: polygon(12% 0, 88% 0, 100% 50%, 88% 100%, 12% 100%, 0 50%);
+      box-shadow:
+        0 0 0 2px rgba(255, 200, 0, 0.85),
+        0 0 22px rgba(255, 200, 0, 0.45),
+        inset 0 0 14px rgba(255, 200, 0, 0.08);
+      text-shadow: 0 0 8px rgba(255, 200, 0, 0.35);
+      user-select: none;
+    }
+
+    .profile-name {
+      margin-top: 10px;
+      font-weight: 800;
+      color: #ffffff;
+      font-size: 1.05rem;
+      letter-spacing: 0.04em;
+    }
+
+    .profile-balance {
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: var(--font-ui);
+      font-weight: 700;
+      color: #ffffff;
+      font-size: 0.92rem;
+    }
+
+    .profile-balance .coin-stack {
+      font-size: 1rem;
+      filter: drop-shadow(0 0 6px rgba(255, 200, 0, 0.45));
+    }
+
+    .profile-balance .vc {
+      color: #ffffff;
+      letter-spacing: 0.02em;
+    }
+
+    .compiler-card {
+      padding: 14px 12px 16px;
+    }
+
+    .compiler-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 800;
+      letter-spacing: 0.10em;
+      font-size: 0.74rem;
+      color: #ffffff;
+      user-select: none;
+    }
+
+    .compiler-title .sparkle {
+      color: var(--pink);
+      text-shadow: 0 0 12px rgba(255, 45, 120, 0.55);
+      font-size: 0.85rem;
+    }
+
+    .compiler-subtitle {
+      margin-top: 12px;
+      font-size: 0.76rem;
+      color: rgba(160, 174, 192, 0.92);
+      font-weight: 600;
+    }
+
+    .compiler-input-wrap {
+      position: relative;
+      margin-top: 8px;
+    }
+
+    .compiler-textarea {
+      width: 100%;
+      height: 78px;
+      background: rgba(4, 8, 14, 0.82);
+      border: 1px solid rgba(0, 242, 255, 0.55);
+      border-radius: 10px;
+      color: #e2e8f0;
+      padding: 10px 12px 42px;
+      font-family: var(--font-ui);
+      font-size: 0.82rem;
+      resize: none;
+      outline: none;
+      transition: all 0.25s ease;
+      box-shadow:
+        inset 0 2px 6px rgba(0, 0, 0, 0.45),
+        0 0 14px rgba(0, 242, 255, 0.12);
+    }
+
+    .compiler-textarea:focus {
+      border-color: rgba(0, 242, 255, 0.85);
+      box-shadow:
+        0 0 20px rgba(0, 242, 255, 0.28),
+        inset 0 2px 6px rgba(0, 0, 0, 0.45);
+    }
+
+    .analyze-btn {
+      position: absolute;
+      right: 8px;
+      bottom: 8px;
+      height: 30px;
+      padding: 0 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 800;
+      font-size: 0.72rem;
+      letter-spacing: 0.02em;
+      border: none;
+      background: #00f2ff;
+      color: #041018;
+      box-shadow: 0 0 16px rgba(0, 242, 255, 0.35);
+      transition: all 0.2s ease;
+    }
+
+    .analyze-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 24px rgba(0, 242, 255, 0.5);
+    }
+
+    .compiler-terminal {
+      margin-top: 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(2, 4, 8, 0.92);
+      overflow: hidden;
+      font-family: var(--font-mono);
+      max-height: 118px;
+      overflow-y: auto;
+    }
+
+    .compiler-terminal pre {
+      margin: 0;
+      padding: 10px 12px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      line-height: 1.45;
+      font-size: 0.66rem;
+      color: #f1f5f9;
+    }
+
+    .term-muted { color: rgba(160, 174, 192, 0.82); }
+    .term-cyan { color: var(--cyan); text-shadow: 0 0 10px rgba(0, 229, 255, 0.25); }
+    .term-green { color: var(--green); text-shadow: 0 0 10px rgba(0, 255, 136, 0.25); }
+
+    .compiler-actions {
+      margin-top: 12px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .action-btn {
+      height: 38px;
+      border-radius: 999px;
+      cursor: pointer;
+      border: 1.5px solid rgba(255, 255, 255, 0.12);
+      background: rgba(0, 0, 0, 0.35);
+      color: #ffffff;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      font-size: 0.68rem;
+      transition: all 0.2s ease;
+    }
+
+    .action-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .action-test {
+      border-color: rgba(0, 242, 255, 0.75);
+      color: #00f2ff;
+      box-shadow: 0 0 16px rgba(0, 242, 255, 0.18);
+    }
+
+    .action-save {
+      border-color: rgba(61, 253, 93, 0.75);
+      color: #3dfd5d;
+      box-shadow: 0 0 16px rgba(61, 253, 93, 0.18);
+    }
+
+    .action-deploy {
+      border-color: rgba(255, 45, 120, 0.75);
+      color: #ff2d78;
+      box-shadow: 0 0 16px rgba(255, 45, 120, 0.18);
+    }
+
+    .action-backtest {
+      border-color: rgba(79, 195, 247, 0.75);
+      color: #4fc3f7;
+      box-shadow: 0 0 16px rgba(79, 195, 247, 0.18);
+    }
+
+    .watchlist-card {
+      padding: 14px 12px 16px;
+    }
+
+    .watchlist-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      user-select: none;
+    }
+
+    .watchlist-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      font-size: 0.72rem;
+      color: #ffffff;
+    }
+
+    .watchlist-title .chart-icon {
+      color: var(--pink);
+      text-shadow: 0 0 10px rgba(255, 45, 120, 0.45);
+      font-size: 0.85rem;
+    }
+
+    .watchlist-dots {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .watchlist-dots span {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px rgba(0, 255, 136, 0.55);
+    }
+
+    .watchlist-list {
+      margin-top: 12px;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .watch-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 4px;
+    }
+
+    .watch-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #3dfd5d;
+      box-shadow: 0 0 10px rgba(61, 253, 93, 0.55);
+      flex-shrink: 0;
+    }
+
+    .watch-symbol {
+      flex: 1;
+      font-weight: 700;
+      color: #ffffff;
+      font-size: 0.84rem;
+      letter-spacing: 0.02em;
+    }
+
+    .watch-value {
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      color: rgba(200, 210, 225, 0.92);
+      font-weight: 600;
+      margin-right: 4px;
+    }
+
+    .watch-change {
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      font-weight: 800;
+      min-width: 42px;
+      text-align: right;
+    }
+
+    .watch-change.up {
+      color: #3dfd5d;
+      text-shadow: 0 0 10px rgba(61, 253, 93, 0.25);
+    }
+
+    /* ── RIGHT MAIN CONTENT AREA ── */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      background: rgba(3, 5, 8, 0.5);
+      z-index: 5;
+    }
+
+    /* Chart Header */
+    .chart-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Sci-Fi Panels */
+    .chart-wrap {
+      flex: 1;
+      display: grid;
+      grid-template-rows: 1fr 100px 145px;
+      gap: 8px;
+      padding: 12px 24px 24px;
+      position: relative;
+      min-height: 0;
+    }
+
+    .panel {
+      position: relative;
+      background: rgba(6, 10, 16, 0.7);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      z-index: 1;
+      box-shadow: inset 0 0 20px rgba(0, 229, 255, 0.03), 0 10px 30px rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .panel-header {
+      position: absolute;
+      top: 8px;
+      left: 12px;
+      z-index: 2;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Floating buy/sell button overlay for trading screen */
+    .mt5-overlay {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(6, 10, 16, 0.95);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+      font-family: var(--font-mono);
+    }
+    .mt5-btn {
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 4px;
+      color: #fff;
+      font-weight: 700;
+      padding: 6px 12px;
+      cursor: pointer;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      background: transparent;
+      transition: all 0.2s;
+    }
+    .mt5-sell {
+      color: var(--red);
+      border-color: rgba(255, 59, 92, 0.3);
+    }
+    .mt5-sell:hover {
+      background: rgba(255, 59, 92, 0.15);
+      border-color: var(--red);
+      box-shadow: 0 0 10px var(--red-glow);
+    }
+    .mt5-buy {
+      color: var(--green);
+      border-color: rgba(0, 255, 136, 0.3);
+    }
+    .mt5-buy:hover {
+      background: rgba(0, 255, 136, 0.15);
+      border-color: var(--green);
+      box-shadow: 0 0 10px var(--green-glow);
+    }
+    .mt5-input {
+      width: 50px;
+      background: #000;
+      border: 1px solid var(--border);
+      color: var(--cyan);
+      border-radius: 4px;
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 5px 0;
+      outline: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Sci-fi background grid -->
+  <div class="grid-overlay"></div>
+
+  <div class="app">
+    <!-- 左侧控制面板 (100% Mockup Match - Translucent Glassmorphism Neon Sidebar) -->
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <!-- Profile card -->
+        <div class="profile-card glass-section">
+          <div class="sidebar-gear">⚙</div>
+          <div class="profile-avatar-ring" aria-hidden="true">
+            <img
+              class="profile-avatar"
+              src="https://api.dicebear.com/7.x/bottts/svg?seed=Alex_Korp_01"
+              alt="Avatar"
+            />
+          </div>
+          <div class="vip-gold-pill">VIP GOLD</div>
+          <div class="profile-name">ALEX_KORP_01</div>
+          <div class="profile-balance">
+            <span class="coin-stack" aria-hidden="true">🪙</span>
+            <span class="vc">142,500 VC</span>
+          </div>
+        </div>
+
+        <!-- AI Strategy Compiler -->
+        <div class="compiler-card glass-section">
+          <div class="compiler-title"><span class="sparkle">✦</span> AI STRATEGY COMPILER</div>
+
+          <div class="compiler-subtitle">Describe your strategy:</div>
+          <div class="compiler-input-wrap">
+            <textarea
+              class="compiler-textarea"
+              id="strategyInput"
+              placeholder="Describe your strategy..."
+            ></textarea>
+            <button class="analyze-btn" type="button">Analyze</button>
+          </div>
+
+          <div class="compiler-terminal" role="region" aria-label="Compiler output">
+            <pre><span class="term-muted">Analyzing request...</span>
+<span class="term-muted">generating code...</span>
+Strategy initialized: <span class="term-cyan">Trend Follower</span>
+<span class="term-muted">// MA(20, 50) Cross</span>
+<span class="term-muted">Executing logic</span> <span class="term-green">(L:9)</span><span class="terminal-cursor"></span></pre>
+          </div>
+
+          <div class="compiler-actions">
+            <button class="action-btn action-test" type="button">TEST</button>
+            <button class="action-btn action-save" type="button">SAVE</button>
+            <button class="action-btn action-deploy" type="button">DEPLOY</button>
+            <button class="action-btn action-backtest" type="button">BACKTEST</button>
+          </div>
+        </div>
+
+        <!-- Watchlist -->
+        <div class="watchlist-card glass-section">
+          <div class="watchlist-header">
+            <div class="watchlist-title"><span class="chart-icon">📊</span> WATCHLIST</div>
+            <div class="watchlist-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+          </div>
+
+          <ul class="watchlist-list">
+            <li class="watch-item">
+              <span class="watch-dot" aria-hidden="true"></span>
+              <span class="watch-symbol">XAUUSD</span>
+              <span class="watch-value">$2345.67</span>
+              <span class="watch-change up">+1.2%</span>
+            </li>
+            <li class="watch-item">
+              <span class="watch-dot" aria-hidden="true"></span>
+              <span class="watch-symbol">BTCUSD</span>
+              <span class="watch-value">$68120.40</span>
+              <span class="watch-change up">+0.9%</span>
+            </li>
+            <li class="watch-item">
+              <span class="watch-dot" aria-hidden="true"></span>
+              <span class="watch-symbol">ETHUSD</span>
+              <span class="watch-value">$3912.55</span>
+              <span class="watch-change up">+1.1%</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+
+    <!-- 右侧图表主区域 (Neon Bloomberg Canvas Look) -->
+    <main class="main">
+      <header class="chart-header">
+        <div style="display: flex; align-items: center; gap: 0.8rem;">
+          <h1 style="font-size: 1.15rem; font-weight: 800; letter-spacing: 0.08em; display: flex; align-items: center; gap: 0.4rem;">
+            <span class="neon-green">XAUUSD.m</span>
+            <span class="neon-pink">HISTORICAL BACKTEST</span>
+          </h1>
+          <span style="font-family: monospace; font-size: 0.78rem; color: var(--text-dim); margin-left: 0.4rem;">Degen Engine v1.0</span>
+        </div>
+        <div style="display:flex; gap: 0.5rem;">
+          <button class="pill" style="border-color: var(--green); color: var(--green); box-shadow: 0 0 8px var(--green-glow);">M1 (1分钟线)</button>
+          <button class="pill" style="border-color: rgba(255,255,255,0.08); color: var(--text);">H1</button>
+          <button class="pill" style="border-color: rgba(255,255,255,0.08); color: var(--text);">D1</button>
+        </div>
+      </header>
+
+      <div class="chart-wrap">
+        <!-- 1. K-line Main Candlestick Chart -->
+        <div class="panel main-chart">
+          <div class="panel-header">
+            <span>📊 XAUUSD.m — PRICE ACTION MAIN COCKPIT</span>
+          </div>
+          <!-- MT5 Overlay buttons -->
+          <div class="mt5-overlay">
+            <button class="mt5-btn mt5-sell">SELL<br><span style="font-size:0.6rem;font-weight:normal;">2042.50</span></button>
+            <input type="text" class="mt5-input" value="0.10" readonly />
+            <button class="mt5-btn mt5-buy">BUY<br><span style="font-size:0.6rem;font-weight:normal;">2042.85</span></button>
+          </div>
+          <canvas id="mockCandleCanvas"></canvas>
+        </div>
+
+        <!-- 2. Volume Chart -->
+        <div class="panel volume-chart">
+          <div class="panel-header"><span>📊 TRADING VOLUME SCANNER</span></div>
+          <canvas id="mockVolumeCanvas"></canvas>
+        </div>
+
+        <!-- 3. RSI Indicator Chart -->
+        <div class="panel rsi-chart">
+          <div class="panel-header"><span>📐 RSI (14) - STRENGTH INDEX</span></div>
+          <canvas id="mockRsiCanvas"></canvas>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Drawing script for premium canvas graphics -->
+  <script>
+    window.addEventListener('load', () => {
+      drawMockCharts();
+    });
+
+    function drawMockCharts() {
+      // 1. Draw Candlesticks
+      const candleCanvas = document.getElementById('mockCandleCanvas');
+      if (candleCanvas) {
+        const ctx = candleCanvas.getContext('2d');
+        const w = candleCanvas.clientWidth;
+        const h = candleCanvas.clientHeight;
+        candleCanvas.width = w * window.devicePixelRatio;
+        candleCanvas.height = h * window.devicePixelRatio;
+        ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+        ctx.clearRect(0, 0, w, h);
+
+        // Draw horizontal grid lines
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.02)';
+        ctx.lineWidth = 1;
+        for (let y = 30; y < h; y += 40) {
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(w, y);
+          ctx.stroke();
+        }
+
+        // Draw vertical grid lines
+        for (let x = 50; x < w; x += 60) {
+          ctx.beginPath();
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x, h);
+          ctx.stroke();
+        }
+
+        // Draw Neon glow indicators and lines (moving averages)
+        const maPoints = [];
+        const numCandles = 32;
+        const candleSpacing = w / numCandles;
+        let lastClose = h * 0.5;
+
+        // Generate data & draw candlesticks
+        for (let i = 0; i < numCandles; i++) {
+          const x = i * candleSpacing + candleSpacing / 2;
+          const open = lastClose;
+          const close = open + (Math.random() - 0.48) * 45;
+          const high = Math.max(open, close) + Math.random() * 10;
+          const low = Math.min(open, close) - Math.random() * 10;
+          lastClose = close;
+          
+          maPoints.push([x, (open + close) / 2]);
+
+          const isUp = close < open; // inverted screen Y axis: smaller value is higher price
+          const color = isUp ? '#00ff88' : '#ff3b5c';
+          const glowColor = isUp ? 'rgba(0, 255, 136, 0.5)' : 'rgba(255, 59, 92, 0.5)';
+
+          // Draw wick
+          ctx.strokeStyle = color;
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.moveTo(x, high);
+          ctx.lineTo(x, low);
+          ctx.stroke();
+
+          // Draw body with shadow glow
+          ctx.fillStyle = color;
+          ctx.shadowBlur = 10;
+          ctx.shadowColor = glowColor;
+          const bodyW = Math.max(candleSpacing - 8, 4);
+          const bodyH = Math.max(Math.abs(close - open), 3);
+          ctx.fillRect(x - bodyW / 2, Math.min(open, close), bodyW, bodyH);
+          ctx.shadowBlur = 0; // reset
+        }
+
+        // Draw Moving Average Line
+        ctx.strokeStyle = '#00e5ff';
+        ctx.lineWidth = 2.5;
+        ctx.shadowBlur = 12;
+        ctx.shadowColor = 'rgba(0, 229, 255, 0.7)';
+        ctx.beginPath();
+        ctx.moveTo(maPoints[0][0], maPoints[0][1]);
+        for (let i = 1; i < maPoints.length; i++) {
+          ctx.lineTo(maPoints[i][0], maPoints[i][1] - 8); // offset for MA look
+        }
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+      }
+
+      // 2. Draw Volumes
+      const volCanvas = document.getElementById('mockVolumeCanvas');
+      if (volCanvas) {
+        const ctx = volCanvas.getContext('2d');
+        const w = volCanvas.clientWidth;
+        const h = volCanvas.clientHeight;
+        volCanvas.width = w * window.devicePixelRatio;
+        volCanvas.height = h * window.devicePixelRatio;
+        ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+        ctx.clearRect(0, 0, w, h);
+        const numBars = 32;
+        const barW = w / numBars;
+
+        for (let i = 0; i < numBars; i++) {
+          const x = i * barW + barW / 2;
+          const barH = Math.random() * (h * 0.7);
+          const isUp = Math.random() > 0.45;
+          ctx.fillStyle = isUp ? 'rgba(0, 255, 136, 0.35)' : 'rgba(255, 59, 92, 0.35)';
+          ctx.fillRect(x - (barW - 8) / 2, h - barH, barW - 8, barH);
+        }
+      }
+
+      // 3. Draw RSI
+      const rsiCanvas = document.getElementById('mockRsiCanvas');
+      if (rsiCanvas) {
+        const ctx = rsiCanvas.getContext('2d');
+        const w = rsiCanvas.clientWidth;
+        const h = rsiCanvas.clientHeight;
+        rsiCanvas.width = w * window.devicePixelRatio;
+        rsiCanvas.height = h * window.devicePixelRatio;
+        ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+        ctx.clearRect(0, 0, w, h);
+
+        // Draw 30 / 70 lines
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(0, h * 0.3); ctx.lineTo(w, h * 0.3);
+        ctx.moveTo(0, h * 0.7); ctx.lineTo(w, h * 0.7);
+        ctx.stroke();
+
+        // Draw RSI line
+        ctx.strokeStyle = '#b388ff';
+        ctx.lineWidth = 1.5;
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = 'rgba(179, 136, 255, 0.5)';
+        ctx.beginPath();
+        ctx.moveTo(0, h * 0.5);
+        
+        const spacing = w / 32;
+        let curY = h * 0.5;
+        for (let i = 1; i <= 32; i++) {
+          const x = i * spacing;
+          curY = Math.max(Math.min(curY + (Math.random() - 0.5) * 24, h * 0.95), h * 0.05);
+          ctx.lineTo(x, curY);
+        }
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+      }
+    }
+  </script>
+</body>
+</html>

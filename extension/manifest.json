@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "DEGEN ARENA — AI Backtest Copilot",
+  "version": "0.1.0",
+  "description": "白话策略 AI 编译与霓虹回测动画模拟插件 (MVP)",
+  "permissions": [
+    "sidePanel",
+    "tabs",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "http://localhost:3000/*",
+    "https://vvvcoding.com/*",
+    "https://webgame-three-fawn.vercel.app/*",
+    "https://api.binance.com/*",
+    "https://query1.finance.yahoo.com/*"
+  ],
+  "action": {
+    "default_title": "打开 Degen 控制台"
+  },
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  }
+}

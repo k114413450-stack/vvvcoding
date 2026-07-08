@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DEGEN ARENA — Visual Backtest Sandbox</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/backtest.css" />
+</head>
+<body>
+  <div class="app">
+    <!-- 左侧回测参数与策略输入 -->
+    <aside class="sidebar">
+      <div class="brand-title">
+        <span class="neon-green">DEGEN</span>
+        <span class="neon-pink">SANDBOX</span>
+      </div>
+
+      <!-- Strategy Text Area -->
+      <div class="sidebar-section">
+        <span class="section-lbl">Enter Strategy (Natural Language)</span>
+        <textarea class="strategy-input" id="strategyInput" placeholder="Describe your entry and exit logic..."></textarea>
+      </div>
+
+      <!-- AI Real-time compilation thinking simulator panel -->
+      <div id="aiThinkingWrap" style="display: none; border: 1px solid rgba(0, 229, 255, 0.15); border-radius: 6px; padding: 10px; background: rgba(0, 229, 255, 0.01); margin-top: -6px; margin-bottom: 6px; font-family: monospace;">
+        <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.72rem; color: var(--cyan); font-weight: 700; margin-bottom: 6px;">
+          <span id="aiThinkingText">🤖 AI analyzing strategy rules...</span>
+          <span id="aiThinkingPercent" style="color: var(--cyan); font-weight: bold;">0%</span>
+        </div>
+        <!-- Shimmer loading bar -->
+        <div style="height: 4px; background: rgba(255, 255, 255, 0.05); border-radius: 2px; overflow: hidden; position: relative;">
+          <div style="height: 100%; width: 35%; background: linear-gradient(90deg, transparent, var(--cyan), var(--green), transparent); background-size: 200% 100%; position: absolute; left: -30%; animation: shimmer-move 1.4s infinite linear;"></div>
+        </div>
+      </div>
+
+
+      <!-- AI Quant Pilot Interactive Assistant -->
+      <div class="sidebar-section" id="aiAssistantCard" style="display: none; border: 1px solid var(--border); border-radius: 6px; padding: 10px; background: rgba(0, 229, 255, 0.02); transition: all 0.3s; margin-top: -6px; margin-bottom: 6px;">
+        <div style="font-weight: 700; color: var(--cyan); font-size: 0.72rem; margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between;">
+          <div style="display:flex; align-items:center; gap:4px;">
+            <span style="display:inline-block; width:6px; height:6px; background:var(--cyan); border-radius:50%; box-shadow:0 0 6px var(--cyan); animation: pulse 1.5s infinite;"></span>
+            🤖 AI 量化决策建议
+          </div>
+          <span id="aiProgressBadge" style="font-size:0.6rem; color:var(--text-dim); font-weight:400;"></span>
+        </div>
+        <!-- Multi-round convergence progress bar -->
+        <div id="aiProgressWrap" style="display:none; margin-bottom:8px;">
+          <div style="display:flex; justify-content:space-between; font-size:0.6rem; color:var(--text-dim); margin-bottom:3px;">
+            <span id="aiProgressLabel">检查中...</span>
+            <span id="aiProgressCount"></span>
+          </div>
+          <div style="height:3px; background:rgba(255,255,255,0.08); border-radius:2px; overflow:hidden;">
+            <div id="aiProgressBar" style="height:100%; background:linear-gradient(90deg,var(--cyan),var(--green)); border-radius:2px; width:0%; transition:width 0.4s ease;"></div>
+          </div>
+        </div>
+        <div id="aiAssistantTitle" style="color: var(--text-secondary); font-size: 0.72rem; margin-bottom: 8px; line-height: 1.4;"></div>
+        <div id="aiAssistantOptions" style="display: flex; flex-direction: column; gap: 4px;"></div>
+      </div>
+
+      <!-- Date Selection -->
+      <div class="sidebar-section">
+        <span class="section-lbl">Start Date (2026 XAUUSD)</span>
+        <input type="text" id="startDate" class="strategy-input" style="height: 38px; padding: 0.5rem;" value="2026_03_11" placeholder="格式: YYYY_MM_DD" />
+      </div>
+      <div class="sidebar-section">
+        <span class="section-lbl">End Date (Max 5 Days)</span>
+        <input type="text" id="endDate" class="strategy-input" style="height: 38px; padding: 0.5rem;" value="2026_03_11" placeholder="格式: YYYY_MM_DD" />
+      </div>
+
+      <!-- Suggestion Pills -->
+      <div class="sidebar-section">
+        <span class="section-lbl">Recommended Templates</span>
+        <div class="template-box">
+          <div class="pill" onclick="loadTemplate('ma_cross')">MA Golden Cross</div>
+          <div class="pill" onclick="loadTemplate('rsi_pullback')">MA + RSI Pullback</div>
+          <div class="pill" onclick="loadTemplate('martingale')">Martingale Grid Strategy</div>
+          <div class="pill" onclick="loadTemplate('macd_crossover')">MACD Crossover</div>
+          <div class="pill" onclick="loadTemplate('boll_reversion')">Bollinger Bands Breakout</div>
+          <div class="pill" onclick="loadTemplate('kdj_crossover')">Stochastic KDJ Cross</div>
+        </div>
+      </div>
+
+      <button class="btn-run" id="btnRun">⚡ Run Backtest</button>
+
+      <!-- Backtest Result Card -->
+      <div class="sidebar-section" id="resultsBox" style="display: none;">
+        <span class="section-lbl">Backtest Performance Report</span>
+        <div class="stats-card">
+          <div class="stats-row">
+            <span>Net Return:</span>
+            <span class="stats-val" id="statReturn">0.00%</span>
+          </div>
+          <div class="stats-row">
+            <span>Total Trades:</span>
+            <span class="stats-val" id="statTrades">0 笔</span>
+          </div>
+          <div class="stats-row">
+            <span>Win Rate:</span>
+            <span class="stats-val" id="statWinRate">0.00%</span>
+          </div>
+          <div class="stats-row">
+            <span>Max Drawdown:</span>
+            <span class="stats-val red" id="statDrawdown">0.00%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom link mappings -->
+      <div class="nav-links">
+        <a href="/en/trade.html" class="nav-link-btn">📈 Live Trading Terminal</a>
+        <a href="/en/pattern.html" class="nav-link-btn">📐 Pattern Radar</a>
+      </div>
+    </aside>
+
+    <!-- 右侧图表主区域，加 AI 诊断面板 -->
+    <main class="main" style="display:flex;flex-direction:row;gap:0;">
+
+      <!-- AI 诊断面板（左侧，初始隐藏） -->
+      <div id="diagPanel" style="
+        display: none;
+        flex-direction: column;
+        width: 260px;
+        min-width: 220px;
+        max-width: 300px;
+        background: #07090f;
+        border-right: 1px solid rgba(0,200,255,0.12);
+        font-family: 'Share Tech Mono', monospace;
+        font-size: 0.7rem;
+        color: #ccc;
+        overflow: hidden;
+        position: relative;
+        flex-shrink: 0;
+      "></div>
+
+      <!-- 图表+控件区 -->
+      <div style="flex:1;display:flex;flex-direction:column;min-width:0;">
+      <header class="chart-header">
+        <div style="display: flex; align-items: center; gap: 0.8rem;">
+          <h1 style="font-size: 1.1rem; font-weight: 700; letter-spacing: 0.08em; display: flex; align-items: center; gap: 0.4rem;">
+            <span class="neon-green">XAUUSD.m</span>
+            <span class="neon-pink">HISTORICAL BACKTEST</span>
+          </h1>
+          <span style="font-family: monospace; font-size: 0.78rem; color: var(--text-dim); margin-right: 0.5rem;">Degen Engine v1.0</span>
+        </div>
+        
+        <!-- Visual Playback Controls -->
+        <div id="playbackControls" style="display: none; align-items: center; gap: 0.6rem; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border); padding: 4px 12px; border-radius: 6px; font-family: monospace; font-size: 0.75rem;">
+          <span style="color: var(--cyan); font-weight: 700; letter-spacing: 0.05em; display: flex; align-items: center; gap: 4px;">
+            <span style="display:inline-block; width:6px; height:6px; background:var(--cyan); border-radius:50%; box-shadow:0 0 6px var(--cyan); animation: pulse 1.5s infinite;"></span> Visual Replay
+          </span>
+          <button id="btnPlayPause" class="pill" style="padding: 2px 8px; font-size: 0.7rem; border-color: var(--cyan); color: var(--cyan); background: rgba(0,229,255,0.05);">⏸ Pause</button>
+          <button id="btnStopPlayback" class="pill" style="padding: 2px 8px; font-size: 0.7rem;">⏹ Skip</button>
+          <span style="color: var(--text-dim); margin-left: 4px;">Speed:</span>
+          <input type="range" id="playbackSpeed" min="1" max="50" value="5" style="width: 80px; height: 3px; cursor: pointer; accent-color: var(--cyan);" />
+          <span id="speedVal" style="color: var(--cyan); font-weight: bold; width: 20px; text-align: left; margin-right: 6px;">5x</span>
+          
+          <span style="color: var(--text-dim); margin-left: 6px; border-left: 1px solid var(--border); padding-left: 8px;">Pause on Trade:</span>
+          <select id="pauseMode" style="background: #0d1117; border: 1px solid var(--border); color: var(--text-secondary); font-family: monospace; font-size: 0.7rem; border-radius: 4px; padding: 2px; cursor: pointer; outline: none;">
+            <option value="none">None</option>
+            <option value="3s">Pause 3s</option>
+            <option value="5s">Pause 5s</option>
+            <option value="manual">Until Pressed</option>
+          </select>
+          <span id="playbackStatus" style="color: var(--magenta); font-weight: 700; margin-left: 6px; display: none;"></span>
+        </div>
+        
+        <!-- Timeframe Selector -->
+        <div style="display: flex; gap: 0.45rem;">
+          <button class="pill" id="btnM1" style="border-radius: 4px; font-weight: 700; border-color: var(--green); color: var(--green); padding: 0.25rem 0.65rem;">M1</button>
+          <button class="pill" id="btnM5" style="border-radius: 4px; font-weight: 700; padding: 0.25rem 0.65rem;">M5</button>
+        </div>
+      </header>
+
+      <div class="chart-wrap">
+        <canvas id="bgMesh" class="bg-mesh"></canvas>
+
+        <!-- K线主图（叠加回测箭头与均线） -->
+        <div class="panel main-chart">
+          <div class="sub-label mono" style="font-size: 0.65rem;">Candlestick Chart & Trade Markers</div>
+          <canvas id="candleChart"></canvas>
+        </div>
+
+        <!-- 资金与技术指标双通道副图 -->
+        <div class="panel sub-chart" style="display: flex; flex-direction: column; background: #04070c;">
+          <div class="sub-label mono" style="font-size: 0.65rem; position: relative; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding: 6px 12px; top: 0; left: 0; background: rgba(255,255,255,0.01); z-index: 10;">
+            <div style="display: flex; gap: 0.45rem; align-items: center;" id="subChartTabs">
+              <button class="pill" id="tabEquity" style="padding: 2px 8px; font-size: 0.65rem; border-color: var(--cyan); color: var(--cyan); border-radius: 4px; background: rgba(0,229,255,0.05);">📈 资金曲线 (Equity)</button>
+            </div>
+            <span id="equityText" class="neon-cyan" style="font-size: 0.8rem; font-weight: bold;">$10,000.00</span>
+          </div>
+          <div style="flex: 1; position: relative; min-height: 0;">
+            <canvas id="equityChart" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block;"></canvas>
+            <canvas id="indicatorChart" style="position: absolute; inset: 0; width: 100%; height: 100%; display: none;"></canvas>
+          </div>
+        </div>
+
+        <!-- 交易明细终端 (MT5 Terminal) -->
+        <div class="panel terminal-panel" style="display: flex; flex-direction: column; background: #04070c;">
+          <div class="sub-label mono" style="font-size: 0.65rem; position: relative; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding: 6px 12px; top: 0; left: 0; background: rgba(255,255,255,0.01);">
+            <span>📊 MT5 Terminal — Trade History</span>
+            <span id="terminalSummary" style="color: var(--cyan); font-weight: 700;">Final Equity: $10,000.00</span>
+          </div>
+          <div style="flex: 1; overflow-y: auto; padding: 4px 12px 12px; margin-top: 4px;">
+            <table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-mono); font-size: 0.78rem; border-spacing: 0;">
+              <thead>
+                <tr style="color: var(--text-dim); border-bottom: 1px solid rgba(255,255,255,0.05); text-transform: uppercase; font-size: 0.7rem;">
+                  <th style="padding: 6px 4px; font-weight: 700;">Ticket</th>
+                  <th style="font-weight: 700;">Bar Index</th>
+                  <th style="font-weight: 700;">Type/Action</th>
+                  <th style="font-weight: 700;">Execution Price</th>
+                  <th style="font-weight: 700;">Lots</th>
+                  <th style="font-weight: 700; text-align: right;">Floating PNL</th>
+                  <th style="font-weight: 700; text-align: right;">Realized Profit</th>
+                </tr>
+              </thead>
+              <tbody id="tradeHistoryBody" style="color: #ffffff;">
+                <tr style="color: var(--text-dim);"><td colspan="7" style="padding: 12px; text-align: center;">No trades recorded yet. Please run backtest above.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      </div><!-- /图表+控件区 -->
+    </main>
+  </div>
+
+  <script src="../js/backtest/math.js"></script>
+  <script src="../js/backtest/engine.js"></script>
+  <script src="../js/backtest/chart.js"></script>
+  <script src="../js/backtest/ui.js"></script>
+  <script src="../js/backtest/diagnose.js"></script>
+  <script src="../js/backtest/auth_client.js"></script>
+  <style>
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+  <script>
+    // Init diagnose tool after DOM is ready
+    window.addEventListener('load', () => {
+      initDiagnoseMode();
+    });
+  </script>
+</body>
+</html>

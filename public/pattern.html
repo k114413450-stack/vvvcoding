@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Degen Arena - 智能形态匹配与分形分析器 (Pattern Matcher)</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-base: #0a0c10;
+            --bg-surface: #12141a;
+            --border-color: #20242e;
+            --accent: #ffb800;
+            --text-primary: #f0f2f5;
+            --text-secondary: #a0aec0;
+            --text-muted: #4a5568;
+            --color-up: #00e676;
+            --color-down: #ff3d00;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--bg-surface);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .logo span {
+            color: var(--accent);
+        }
+        .nav-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .nav-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Workspace Grid */
+        .workspace {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            flex-grow: 1;
+            height: calc(100vh - 65px);
+        }
+
+        /* Chart Stage */
+        .chart-container {
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid var(--border-color);
+            position: relative;
+            background: #0d0f14;
+        }
+        .chart-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-surface);
+        }
+        .chart-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .chart-stage {
+            flex-grow: 1;
+            position: relative;
+        }
+        .chart-overlay-info {
+            position: absolute;
+            top: 1rem;
+            left: 1.5rem;
+            z-index: 5;
+            background: rgba(18, 20, 26, 0.8);
+            backdrop-filter: blur(4px);
+            border: 1px solid var(--border-color);
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            display: flex;
+            gap: 1.5rem;
+            pointer-events: none;
+        }
+
+        /* Sidebar Panels */
+        .sidebar {
+            background-color: var(--bg-surface);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            padding: 1.5rem;
+            gap: 1.5rem;
+        }
+        .panel-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .panel-title {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        /* Interactive Buttons */
+        .btn {
+            background: var(--border-color);
+            border: 1px solid transparent;
+            color: var(--text-primary);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-primary {
+            background: var(--accent);
+            color: var(--bg-base);
+        }
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+        .btn-outline {
+            border: 1px solid var(--border-color);
+            background: transparent;
+        }
+        .btn-outline:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        .btn-outline.active {
+            background: rgba(255, 184, 0, 0.1);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Match Results Items */
+        .match-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .match-item {
+            background: rgba(255,255,255,0.01);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .match-item:hover {
+            background: rgba(255,255,255,0.03);
+            border-color: var(--accent);
+        }
+        .match-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.35rem;
+        }
+        .match-score {
+            font-weight: 700;
+            color: var(--accent);
+        }
+        .match-time {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.8rem;
+        }
+
+        /* Stat Grid */
+        .stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+        .stat-box {
+            background: rgba(255,255,255,0.01);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.75rem;
+            text-align: center;
+        }
+        .stat-lbl {
+            font-size: 0.72rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+        }
+        .stat-val {
+            font-size: 1.15rem;
+            font-weight: 800;
+        }
+        .stat-val.up { color: var(--color-up); }
+        .stat-val.down { color: var(--color-down); }
+
+        /* Loader Overlay */
+        .loader-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 12, 16, 0.7);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            gap: 1rem;
+        }
+        .loader-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 184, 0, 0.1);
+            border-top: 4px solid var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+    <!-- Lightweight Charts v4 -->
+    <script src="js/lightweight-charts.js"></script>
+</head>
+<body>
+
+    <!-- Header Area -->
+    <header>
+        <div class="logo-area">
+            <a href="index.html" class="logo">
+                <span>Degen</span>Arena
+            </a>
+            <div style="font-size: 0.85rem; color: var(--text-secondary); border-left: 1px solid var(--border-color); padding-left: 1rem;">
+                形态匹配智能分析器 (Pattern Matcher Engine)
+            </div>
+        </div>
+        <a href="index.html" class="nav-btn">🎮 返回交易主屏</a>
+    </header>
+
+    <!-- Workspace -->
+    <div class="workspace">
+        
+        <!-- Left: Main & Compare Chart Container (Vertical Split) -->
+        <div class="chart-container">
+            <!-- Main Selection Chart -->
+            <div class="chart-header">
+                <div class="chart-title">
+                    <span>📈 原始行情选区 (Main Chart & Selection)</span>
+                </div>
+                <div style="font-size: 0.78rem; color: var(--text-secondary);">
+                    💡 提示: 双击图表以标记起点与终点。
+                </div>
+            </div>
+            
+            <div class="chart-stage" id="chartStage" style="height: 52%; flex-grow: 0;">
+                <!-- Overlay Info -->
+                <div class="chart-overlay-info">
+                    <span>选区起点: <strong id="overlayStart">-</strong></span>
+                    <span>选区终点: <strong id="overlayEnd">-</strong></span>
+                    <span>当前价格: <strong id="overlayPrice">-</strong></span>
+                </div>
+                
+                <!-- Loader -->
+                <div class="loader-overlay" id="loaderOverlay">
+                    <div class="spinner"></div>
+                    <div style="font-weight:600; font-size:0.9rem;" id="loaderText">扫描历史数据库中...</div>
+                </div>
+            </div>
+
+            <!-- Historical Compare Chart -->
+            <div class="chart-header" style="border-top: 1px solid var(--border-color);">
+                <div class="chart-title">
+                    <span>🔍 历史分形比对 (Matched Historical Fractal)</span>
+                </div>
+                <div style="font-size: 0.78rem; color: var(--text-secondary);" id="compareTitleInfo">
+                    点击右侧相似形态查看详细后市演变走势
+                </div>
+            </div>
+            
+            <div class="chart-stage" id="compareChartStage" style="height: 48%; flex-grow: 1;">
+            </div>
+        </div>
+
+        <!-- Right: Sidebar Controls & Results -->
+        <div class="sidebar">
+            
+            <!-- Controls Card -->
+            <div class="panel-card">
+                <div class="panel-title">操作面板 (Controls)</div>
+                
+                <button class="btn btn-outline" id="btnToggleSelect">
+                    📐 开启框选形态
+                </button>
+                
+                <div style="font-size: 0.75rem; color: var(--text-secondary); line-height: 1.4;">
+                    1. 开启框选后，在图表上<strong>双击任意K线</strong>放下起点线。<br>
+                    2. <strong>再次双击另一根K线</strong>放下终点线。<br>
+                    3. 设定完成后，点击下方按钮开始比对。
+                </div>
+                
+                <button class="btn btn-primary" id="btnSearch" disabled>
+                    🔍 搜索历史相似形态
+                </button>
+                <button class="btn btn-outline" id="btnClearSelection" style="font-size:0.8rem; padding:0.5rem;">
+                    🗑️ 清除选区
+                </button>
+            </div>
+
+            <!-- Stats Outcome Card -->
+            <div class="panel-card" style="display:none;" id="statsCard">
+                <div class="panel-title">分形后市统计 (Statistics)</div>
+                <div class="stat-grid">
+                    <div class="stat-box">
+                        <div class="stat-lbl">相似度最高</div>
+                        <div class="stat-val" id="valMaxScore">-</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-lbl">历史样本数</div>
+                        <div class="stat-val" id="valSampleCount">-</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-lbl">后续上涨概率</div>
+                        <div class="stat-val up" id="valBullProb">-</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-lbl">平均后市涨幅</div>
+                        <div class="stat-val" id="valAvgReturn">-</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Card -->
+            <div class="panel-card">
+                <div class="panel-title">相似形态列表 (Matches)</div>
+                <div class="match-list" id="matchList">
+                    <div style="font-size:0.8rem; color:var(--text-muted); text-align:center; padding:1.5rem 0;">
+                        尚未框选任何形态
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Core Script -->
+    <script>
+        // Default historical data mock representing Gold M1 (from 2026-07-03)
+        // We inject the same M1 dataset that we generated for index.html default scenario
+        let goldData = [];
+        let isSelecting = false;
+        let selectStartIndex = null;
+        let selectEndIndex = null;
+        let chart = null;
+        let candleSeries = null;
+        let markersApi = null;
+        let ghostSeriesList = []; // list of line series overlays representing historical matches
+        let compareChart = null;
+        let compareSeries = null;
+        let compareMarkersApi = null;
+        let currentMatches = [];
+        
+        // Element references
+        const btnToggleSelect = document.getElementById('btnToggleSelect');
+        const btnSearch = document.getElementById('btnSearch');
+        const btnClearSelection = document.getElementById('btnClearSelection');
+        const overlayStart = document.getElementById('overlayStart');
+        const overlayEnd = document.getElementById('overlayEnd');
+        const overlayPrice = document.getElementById('overlayPrice');
+        const matchList = document.getElementById('matchList');
+        const statsCard = document.getElementById('statsCard');
+        const loaderOverlay = document.getElementById('loaderOverlay');
+
+        // Fetch default data from server or use preloaded gold M1 data
+        async function fetchGoldData() {
+            try {
+                // Fetch the last day data by invoking chat endpoint or generate mock locally
+                // For direct offline robustness, we will fetch standard live gold data pattern
+                // We'll call /api/chat with a search intent, or load a fallback
+                // Here we fetch a mock payload first to initialize
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: "2026年1月2日 黄金 M1" })
+                });
+                const res = await response.json();
+                if (res.action === 'load_scenario' && res.data) {
+                    goldData = res.data;
+                } else {
+                    // Fallback mock daily curve if API error
+                    goldData = generateMockM1Data();
+                }
+                
+                // Convert timestamps to sequential 1-minute UNIX timestamps (seconds)
+                // so Lightweight Charts displays hours/minutes on the X-axis
+                const baseUnix = 1767225600; // 2026-01-01 00:00:00 UTC
+                goldData = goldData.map((item, idx) => {
+                    return {
+                        ...item,
+                        time: baseUnix + idx * 60
+                    };
+                });
+            } catch (e) {
+                console.log("API load failed, using fallback generator", e);
+                goldData = generateMockM1Data();
+            }
+            initChart();
+        }
+
+        function generateMockM1Data() {
+            const data = [];
+            let price = 2300;
+            const start = new Date(2026, 6, 1);
+            for (let i = 0; i < 400; i++) {
+                const date = new Date(start.getTime() + i * 24 * 60 * 60 * 1000);
+                const dateStr = date.toISOString().split('T')[0];
+                const change = (Math.random() - 0.49) * 15;
+                const o = price;
+                const c = price + change;
+                const h = Math.max(o, c) + Math.random() * 8;
+                const l = Math.min(o, c) - Math.random() * 8;
+                data.push({
+                    time: dateStr,
+                    open: parseFloat(o.toFixed(2)),
+                    high: parseFloat(h.toFixed(2)),
+                    low: parseFloat(l.toFixed(2)),
+                    close: parseFloat(c.toFixed(2))
+                });
+                price = c;
+            }
+            return data;
+        }
+
+        // Initialize Lightweight Charts stage
+        function initChart() {
+            const chartElement = document.getElementById('chartStage');
+            chart = LightweightCharts.createChart(chartElement, {
+                layout: {
+                    background: { type: 'solid', color: '#0d0f14' },
+                    textColor: '#d1d4dc',
+                },
+                grid: {
+                    vertLines: { color: 'rgba(42, 46, 57, 0.2)' },
+                    horzLines: { color: 'rgba(42, 46, 57, 0.2)' },
+                },
+                crosshair: {
+                    mode: LightweightCharts.CrosshairMode.Normal,
+                },
+                rightPriceScale: {
+                    borderColor: 'rgba(197, 203, 206, 0.4)',
+                },
+                timeScale: {
+                    borderColor: 'rgba(197, 203, 206, 0.4)',
+                    timeVisible: true,
+                    secondsVisible: false
+                },
+            });
+
+            candleSeries = chart.addSeries(LightweightCharts.CandlestickSeries, {
+                upColor: '#00e676',
+                downColor: '#ff3d00',
+                borderUpColor: '#00e676',
+                borderDownColor: '#ff3d00',
+                wickUpColor: '#00e676',
+                wickDownColor: '#ff3d00',
+            });
+
+            candleSeries.setData(goldData);
+            chart.timeScale().fitContent();
+            
+            // Create Series Markers manager for v5
+            markersApi = LightweightCharts.createSeriesMarkers(candleSeries, []);
+
+            // Track crosshair price
+            chart.subscribeCrosshairMove((param) => {
+                if (param.time && param.entityValues) {
+                    const price = param.entityValues.get(candleSeries);
+                    if (price) {
+                        const closePrice = price.close !== undefined ? price.close : price.value;
+                        if (closePrice !== undefined) {
+                            overlayPrice.textContent = `$${closePrice.toFixed(2)}`;
+                        }
+                    }
+                }
+            });
+
+            // Double Click to Drop Range Markers
+            chart.subscribeClick((param) => {
+                if (!isSelecting || !param.time) return;
+                
+                // Find matching index in data array
+                const index = goldData.findIndex(item => item.time === param.time);
+                if (index === -1) return;
+
+                if (selectStartIndex === null) {
+                    selectStartIndex = index;
+                    overlayStart.textContent = `Bar #${index} (${param.time})`;
+                } else if (selectEndIndex === null) {
+                    if (index < selectStartIndex) {
+                        // swap so start is always smaller than end
+                        selectEndIndex = selectStartIndex;
+                        selectStartIndex = index;
+                    } else {
+                        selectEndIndex = index;
+                    }
+                    overlayEnd.textContent = `Bar #${selectEndIndex} (${param.time})`;
+                    btnSearch.disabled = false;
+                    isSelecting = false;
+                    btnToggleSelect.classList.remove('active');
+                    btnToggleSelect.textContent = '📐 形态设定完成';
+                } else {
+                    // Reset and start over
+                    selectStartIndex = index;
+                    selectEndIndex = null;
+                    overlayStart.textContent = `Bar #${index} (${param.time})`;
+                    overlayEnd.textContent = '-';
+                    btnSearch.disabled = true;
+                }
+                
+                updateSelectionMarkers();
+            });
+            
+            // Initialize Second Chart (Comparison Chart)
+            const compareElement = document.getElementById('compareChartStage');
+            compareChart = LightweightCharts.createChart(compareElement, {
+                layout: {
+                    background: { type: 'solid', color: '#090a0d' },
+                    textColor: '#d1d4dc',
+                },
+                grid: {
+                    vertLines: { color: 'rgba(42, 46, 57, 0.15)' },
+                    horzLines: { color: 'rgba(42, 46, 57, 0.15)' },
+                },
+                rightPriceScale: {
+                    borderColor: 'rgba(197, 203, 206, 0.2)',
+                },
+                timeScale: {
+                    borderColor: 'rgba(197, 203, 206, 0.2)',
+                    timeVisible: true,
+                },
+            });
+
+            // Candlestick series (K-lines) for comparison chart
+            compareSeries = compareChart.addSeries(LightweightCharts.CandlestickSeries, {
+                upColor: '#26a69a',
+                downColor: '#ef5350',
+                borderVisible: true,
+                wickVisible: true,
+                title: '历史匹配及后市K线'
+            });
+
+            // Initialize markers manager for comparison chart
+            compareMarkersApi = LightweightCharts.createSeriesMarkers(compareSeries, []);
+
+            // Handle resizing
+            window.addEventListener('resize', () => {
+                chart.resize(chartElement.clientWidth, chartElement.clientHeight);
+                compareChart.resize(compareElement.clientWidth, compareElement.clientHeight);
+            });
+        }
+
+        // Draw vertical markers on selected indices
+        function updateSelectionMarkers() {
+            const markers = [];
+            if (selectStartIndex !== null) {
+                markers.push({
+                    time: goldData[selectStartIndex].time,
+                    position: 'belowBar',
+                    color: '#ffb800',
+                    shape: 'arrowUp',
+                    text: '选区起点'
+                });
+            }
+            if (selectEndIndex !== null) {
+                markers.push({
+                    time: goldData[selectEndIndex].time,
+                    position: 'aboveBar',
+                    color: '#ffb800',
+                    shape: 'arrowDown',
+                    text: '选区终点'
+                });
+            }
+            if (markersApi) {
+                markersApi.setMarkers(markers);
+            }
+        }
+
+
+        // Load selected historical fractal into the comparison chart
+        function loadCompareFractal(idx) {
+            if (!currentMatches || idx >= currentMatches.length) return;
+            const match = currentMatches[idx];
+            
+            // Set title info text
+            const pctReturn = ((match.future_closes[match.future_closes.length - 1] - match.future_closes[0]) / match.future_closes[0]) * 100;
+            document.getElementById('compareTitleInfo').innerHTML = `
+                📅 片段时间: <strong>${match.start_time}</strong> | 
+                ★ 相似度: <strong>${(match.score * 100).toFixed(1)}%</strong> | 
+                后市演变: <strong style="color:${pctReturn >= 0 ? 'var(--color-up)' : 'var(--color-down)'};">
+                    ${pctReturn >= 0 ? '▲ 上涨' : '▼ 下跌'} ${Math.abs(pctReturn).toFixed(2)}%
+                </strong>
+            `;
+
+            const candleData = [];
+            const startMockUnix = 1767225600; // Align with base main chart UNIX timestamp
+
+            // 1. Load matched template region (Colored Gold/Yellow)
+            match.match_candles.forEach((c, i) => {
+                candleData.push({
+                    time: startMockUnix + i * 60,
+                    open: c.open,
+                    high: c.high,
+                    low: c.low,
+                    close: c.close,
+                    color: 'rgba(255, 184, 0, 0.25)',
+                    borderColor: '#ffb800',
+                    wickColor: '#ffb800'
+                });
+            });
+
+            // 2. Load future outcome region (Default red/green candles)
+            match.future_candles.forEach((c, i) => {
+                candleData.push({
+                    time: startMockUnix + (match.match_candles.length + i) * 60,
+                    open: c.open,
+                    high: c.high,
+                    low: c.low,
+                    close: c.close
+                });
+            });
+
+            // Set data to candlestick series
+            if (compareSeries) {
+                compareSeries.setData(candleData);
+            }
+            
+            // 3. Mark boundary start and endpoints
+            const matchStart = candleData[0].time;
+            const matchEnd = candleData[match.match_candles.length - 1].time;
+            
+            if (compareMarkersApi) {
+                compareMarkersApi.setMarkers([
+                    {
+                        time: matchStart,
+                        position: 'belowBar',
+                        color: '#ffb800',
+                        shape: 'arrowUp',
+                        text: '历史匹配起点'
+                    },
+                    {
+                        time: matchEnd,
+                        position: 'aboveBar',
+                        color: '#ffb800',
+                        shape: 'circle',
+                        text: '分形边界 | 预判起点'
+                    }
+                ]);
+            }
+
+            compareChart.timeScale().fitContent();
+        }
+
+        // Reset Selection
+        function clearSelection() {
+            selectStartIndex = null;
+            selectEndIndex = null;
+            overlayStart.textContent = '-';
+            overlayEnd.textContent = '-';
+            btnSearch.disabled = true;
+            isSelecting = false;
+            btnToggleSelect.classList.remove('active');
+            btnToggleSelect.textContent = '📐 开启框选形态';
+            if (markersApi) {
+                markersApi.setMarkers([]);
+            }
+            if (compareMarkersApi) {
+                compareMarkersApi.setMarkers([]);
+            }
+            
+            // Remove previous ghost overlay lines
+            ghostSeriesList.forEach(series => chart.removeSeries(series));
+            ghostSeriesList = [];
+            statsCard.style.display = 'none';
+            if (compareSeries) compareSeries.setData([]);
+            document.getElementById('compareTitleInfo').innerHTML = '点击右侧相似形态查看详细后市演变走势';
+            matchList.innerHTML = `<div style="font-size:0.8rem; color:var(--text-muted); text-align:center; padding:1.5rem 0;">选区已清除，请重新框选</div>`;
+        }
+
+        // Connect to API and run sliding window Pearson correlation search
+        async function runPatternSearch() {
+            if (selectStartIndex === null || selectEndIndex === null) return;
+            
+            loaderOverlay.classList.add('active');
+            
+            // Extract selected pattern slice
+            const selectedSlice = goldData.slice(selectStartIndex, selectEndIndex + 1);
+            const closePrices = selectedSlice.map(item => item.close);
+            
+            try {
+                const response = await fetch('/api/pattern', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        pattern: closePrices,
+                        top_k: 5,
+                        future_len: 30
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.error) {
+                    alert("错误: " + result.error);
+                } else if (result.matches) {
+                    renderMatches(result.matches);
+                }
+            } catch (err) {
+                console.error("Pattern match error:", err);
+                alert("无法连接形态引擎，请检查后端运行状态。");
+            } finally {
+                loaderOverlay.classList.remove('active');
+            }
+        }
+
+        // Render matched details in sidebar and draw overlapping lines on chart
+        function renderMatches(matches) {
+            // 1. Clear previous ghost lines
+            ghostSeriesList.forEach(series => chart.removeSeries(series));
+            ghostSeriesList = [];
+            
+            if (matches.length === 0) {
+                matchList.innerHTML = `<div style="font-size:0.8rem; color:var(--text-muted); text-align:center; padding:1.5rem 0;">没有找到高相关度的相似形态。</div>`;
+                return;
+            }
+
+            matchList.innerHTML = '';
+            currentMatches = matches;
+            
+            // Colors for overlaid ghost lines
+            const colors = ['#00e676', '#2196f3', '#e91e63', '#ffeb3b', '#9c27b0'];
+            
+            // Stats tracker
+            let bullishCount = 0;
+            let totalReturn = 0;
+            let maxScore = 0;
+            
+            // Load the first match into the bottom comparison chart by default
+            if (matches.length > 0) {
+                loadCompareFractal(0);
+            }
+            
+            matches.forEach((match, idx) => {
+                const color = colors[idx % colors.length];
+                
+                // Track stats
+                const initialFutureVal = match.future_closes[0];
+                const finalFutureVal = match.future_closes[match.future_closes.length - 1];
+                const pctReturn = ((finalFutureVal - initialFutureVal) / initialFutureVal) * 100;
+                
+                if (pctReturn > 0) bullishCount++;
+                totalReturn += pctReturn;
+                if (match.score > maxScore) maxScore = match.score;
+                
+                // Add to sidebar list
+                const item = document.createElement('div');
+                item.className = 'match-item';
+                item.innerHTML = `
+                    <div class="match-meta">
+                        <span class="match-score">★ 相似度: ${(match.score * 100).toFixed(1)}%</span>
+                        <span style="color:${pctReturn >= 0 ? 'var(--color-up)' : 'var(--color-down)'}; font-weight:700;">
+                            ${pctReturn >= 0 ? '▲ 涨' : '▼ 跌'} ${Math.abs(pctReturn).toFixed(2)}%
+                        </span>
+                    </div>
+                    <div class="match-time">${match.start_time}</div>
+                    <div style="font-size: 0.72rem; color: var(--text-secondary); margin-top: 0.2rem;">
+                        区间: ${match.start_time.split(' ')[1]} 至 ${match.end_time.split(' ')[1]}
+                    </div>
+                `;
+                
+                // Click to load details in the bottom comparison chart
+                item.addEventListener('click', () => {
+                    loadCompareFractal(idx);
+                    
+                    // Highlight selected item style
+                    document.querySelectorAll('.match-item').forEach((el, i) => {
+                        el.style.borderColor = (i === idx) ? 'var(--accent)' : 'var(--border-color)';
+                        el.style.background = (i === idx) ? 'rgba(255, 184, 0, 0.05)' : 'rgba(255,255,255,0.01)';
+                    });
+                });
+
+
+                
+                matchList.appendChild(item);
+
+
+            });
+            
+            // 3. Update Statistics panel
+            const bullProb = (bullishCount / matches.length) * 100;
+            const avgReturn = totalReturn / matches.length;
+            
+            document.getElementById('valMaxScore').textContent = `${(maxScore * 100).toFixed(1)}%`;
+            document.getElementById('valSampleCount').textContent = `${matches.length} 个`;
+            document.getElementById('valBullProb').textContent = `${bullProb.toFixed(0)}%`;
+            document.getElementById('valAvgReturn').textContent = `${avgReturn >= 0 ? '+' : ''}${avgReturn.toFixed(2)}%`;
+            document.getElementById('valAvgReturn').className = `stat-val ${avgReturn >= 0 ? 'up' : 'down'}`;
+            
+            statsCard.style.display = 'block';
+        }
+
+        // Event Hookups
+        btnToggleSelect.addEventListener('click', () => {
+            isSelecting = !isSelecting;
+            btnToggleSelect.classList.toggle('active', isSelecting);
+            if (isSelecting) {
+                btnToggleSelect.textContent = '📍 请在图表上双击设定选区';
+                // Reset select index tracking
+                selectStartIndex = null;
+                selectEndIndex = null;
+                btnSearch.disabled = true;
+                overlayStart.textContent = '-';
+                overlayEnd.textContent = '-';
+                if (markersApi) {
+                    markersApi.setMarkers([]);
+                }
+            } else {
+                btnToggleSelect.textContent = '📐 开启框选形态';
+            }
+        });
+
+        btnSearch.addEventListener('click', runPatternSearch);
+        btnClearSelection.addEventListener('click', clearSelection);
+
+        // Fetch data and launch chart on load
+        fetchGoldData();
+    </script>
+</body>
+</html>

@@ -9,16 +9,21 @@ generator client {
 }
 
 model User {
-  id        String    @id @default(uuid())
-  username  String    @unique
-  avatarUrl String
-  tier      String    // e.g. "Vibe Master", "L1 Prompter", "No-code Explorer", "Bot"
-  isBot     Boolean   @default(false)
-  createdAt DateTime  @default(now())
-  topics    Topic[]
-  comments  Comment[]
-  prompts   Prompt[]
-  bounties  Bounty[]
+  id            String       @id @default(uuid())
+  email         String?      @unique
+  passwordHash  String?
+  username      String       @unique
+  avatarUrl     String
+  tier          String       // e.g. "Vibe Master", "L1 Prompter", "No-code Explorer", "Bot"
+  isBot         Boolean      @default(false)
+  vipTier       String       @default("FREE")  // "FREE" | "VIP"
+  vipExpiresAt  DateTime?    // Membership expiration time
+  paymentLogs   PaymentLog[]
+  createdAt     DateTime     @default(now())
+  topics        Topic[]
+  comments      Comment[]
+  prompts       Prompt[]
+  bounties      Bounty[]
 }
 
 model Topic {
@@ -85,3 +90,15 @@ model Bounty {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 }
+
+model PaymentLog {
+  id            String   @id @default(uuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id])
+  paypalOrderId String   @unique
+  amount        Float
+  status        String   // "COMPLETED" | "FAILED"
+  paymentEmail  String?
+  createdAt     DateTime @default(now())
+}
+

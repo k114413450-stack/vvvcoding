@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DEGEN ARENA — Price Action Manual Speedrunner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/backtest.css" />
+  <style>
+    /* ============================================================
+       DEGEN ARENA — Neon Bloom Cockpit Core Styles (trade.html Styles)
+       ============================================================ */
+    :root {
+      --bg: #030508;
+      --bg-panel: #060a10;
+      --border: rgba(255, 255, 255, 0.06);
+      --text-dim: #5a6478;
+      --text: #8b95a8;
+
+      --green: #00ff88;
+      --green-dim: #00cc6a;
+      --red: #ff3b5c;
+      --red-dim: #cc2f4a;
+      --pink: #ff2d78;
+      --cyan: #00e5ff;
+      --purple: #b388ff;
+      --blue: #4fc3f7;
+
+      --sidebar-w: 320px;
+      --green-glow: rgba(0, 255, 136, 0.5);
+      --text-secondary: #8b95a8;
+      --font-ui: "Rajdhani", "Segoe UI", sans-serif;
+      --font-mono: "Share Tech Mono", "Consolas", monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      background: #000;
+      color: var(--text);
+      font-family: var(--font-ui);
+      overflow: hidden;
+    }
+
+    .neon-green {
+      color: var(--green);
+      text-shadow:
+        0 0 4px rgba(0, 255, 136, 0.9),
+        0 0 12px rgba(0, 255, 136, 0.55),
+        0 0 28px rgba(0, 255, 136, 0.25);
+    }
+
+    .neon-pink {
+      color: var(--pink);
+      text-shadow:
+        0 0 4px rgba(255, 45, 120, 0.9),
+        0 0 12px rgba(255, 45, 120, 0.5),
+        0 0 24px rgba(255, 45, 120, 0.2);
+    }
+
+    .neon-green-glow {
+      color: var(--green);
+      font-size: 1.75rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      text-shadow:
+        0 0 6px #00ff88,
+        0 0 16px rgba(0, 255, 136, 0.8),
+        0 0 40px rgba(0, 255, 136, 0.35);
+    }
+
+    .neon-cyan {
+      color: var(--cyan);
+      text-shadow: 0 0 8px rgba(0, 229, 255, 0.7);
+      font-style: normal;
+    }
+
+    .neon-purple {
+      color: var(--purple);
+      text-shadow: 0 0 10px rgba(179, 136, 255, 0.65);
+    }
+
+    .mono { font-family: var(--font-mono); font-size: 0.78rem; }
+
+    .app {
+      display: flex;
+      height: 100vh;
+      background: var(--bg);
+    }
+
+    /* ── Premium Sidebar (Unified Core Panel) ── */
+    .sidebar {
+      width: var(--sidebar-w);
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid rgba(0, 229, 255, 0.1);
+      background: linear-gradient(180deg, rgba(8, 12, 21, 0.98) 0%, rgba(4, 7, 13, 0.99) 100%);
+      padding: 24px 18px;
+      overflow-y: auto;
+      gap: 1.4rem;
+    }
+
+    .brand-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding-bottom: 1.2rem;
+      display: flex;
+      gap: 6px;
+    }
+
+    .sidebar-section {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .section-lbl {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-dim);
+      font-weight: 700;
+    }
+
+    .strategy-input {
+      width: 100%;
+      height: 120px;
+      background: rgba(1, 3, 6, 0.7);
+      border: 1px solid rgba(0, 229, 255, 0.18);
+      border-radius: 10px;
+      color: #e2e8f0;
+      padding: 0.85rem;
+      font-family: var(--font-ui);
+      font-size: 0.85rem;
+      resize: none;
+      outline: none;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+      transition: all 0.3s;
+    }
+    .strategy-input:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 14px rgba(0, 229, 255, 0.25), inset 0 2px 4px rgba(0, 0, 0, 0.4);
+    }
+
+    .btn-run {
+      background: linear-gradient(135deg, rgba(0, 255, 136, 0.16) 0%, rgba(0, 229, 255, 0.04) 100%);
+      border: 1px solid var(--green);
+      color: #ffffff;
+      text-shadow: 0 0 4px var(--green);
+      padding: 0.85rem;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.5rem;
+      letter-spacing: 0.06em;
+      box-shadow: 0 0 15px rgba(0, 255, 136, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+      transition: all 0.25s ease-out;
+      width: 100%;
+    }
+    .btn-run:hover {
+      background: linear-gradient(135deg, rgba(0, 255, 136, 0.32) 0%, rgba(0, 229, 255, 0.12) 100%);
+      box-shadow: 0 0 28px rgba(0, 255, 136, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+      transform: translateY(-1px);
+    }
+    .btn-run:active { transform: translateY(1px); }
+
+    .template-box {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+    .pill {
+      background: rgba(13, 25, 41, 0.55);
+      border: 1px solid rgba(255, 45, 120, 0.25);
+      color: #8fa3bf;
+      border-radius: 30px;
+      padding: 0.35rem 0.75rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+    }
+    .pill:hover {
+      border-color: var(--pink);
+      color: #ffffff;
+      box-shadow: 0 0 12px rgba(255, 45, 120, 0.45);
+      transform: scale(1.03);
+    }
+
+    .symbol-list { list-style: none; }
+    .symbol {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .symbol:hover {
+      background: rgba(0, 229, 255, 0.04);
+      color: var(--text);
+      transform: translateX(3px);
+    }
+    .sym-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green), 0 0 16px rgba(0, 255, 136, 0.4);
+      flex-shrink: 0;
+    }
+    .sym-dot.dim {
+      background: #3a4255;
+      box-shadow: none;
+    }
+    .symbol.active {
+      color: var(--green);
+      background: rgba(0, 255, 136, 0.07);
+      border-left: 2px solid var(--green);
+      margin-left: -2px;
+      box-shadow: inset 0 0 20px rgba(0, 255, 136, 0.05);
+    }
+
+    .nav-links {
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      border-top: 1px solid rgba(255,255,255,0.04);
+      padding-top: 1rem;
+    }
+    .nav-link-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      color: var(--text-dim);
+      font-size: 0.83rem;
+      text-decoration: none;
+      padding: 0.45rem 0.6rem;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+    .nav-link-btn:hover {
+      color: var(--cyan);
+      background: rgba(0, 229, 255, 0.05);
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.35; transform: scale(0.95); }
+      50% { opacity: 1; transform: scale(1.05); }
+      100% { opacity: 0.35; transform: scale(0.95); }
+    }
+    @keyframes shimmer-move {
+      0% { left: -30%; }
+      100% { left: 110%; }
+    }
+
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      background: var(--bg);
+    }
+
+    .chart-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      padding: 16px 24px 12px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .chart-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .chart-title .sep { color: #333; font-weight: 400; }
+    .chart-title .pair { color: #ccc; font-weight: 600; }
+    .chart-title .tf { color: var(--text-dim); font-weight: 500; font-size: 0.95rem; }
+
+    .price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 20px;
+      margin-top: 6px;
+    }
+    .vwap { font-size: 0.85rem; color: var(--text-dim); }
+
+    .header-meta {
+      display: flex;
+      gap: 18px;
+      color: var(--text-dim);
+    }
+    .header-meta em { font-style: normal; font-weight: 600; }
+    .header-meta .up { color: var(--green); text-shadow: 0 0 8px rgba(0,255,136,0.5); }
+    .header-meta .down { color: var(--red); text-shadow: 0 0 8px rgba(255,59,92,0.5); }
+
+    .chart-wrap {
+      flex: 1;
+      display: grid;
+      grid-template-rows: 1fr 88px 88px;
+      gap: 8px;
+      padding: 12px 24px 12px;
+      position: relative;
+      min-height: 0;
+    }
+
+    .bg-mesh {
+      position: absolute;
+      inset: 12px 24px 12px;
+      width: calc(100% - 48px);
+      height: calc(100% - 24px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.55;
+    }
+
+    .panel {
+      position: relative;
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .main-chart {
+      box-shadow: inset 0 0 60px rgba(0, 20, 40, 0.4);
+    }
+
+    .main-chart canvas,
+    .sub-chart canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .sub-chart {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sub-label {
+      position: absolute;
+      top: 6px;
+      left: 10px;
+      z-index: 2;
+      font-size: 0.68rem;
+      color: var(--text-dim);
+      letter-spacing: 0.06em;
+    }
+
+    .price-tag {
+      position: absolute;
+      right: 52px;
+      top: 42%;
+      transform: translateY(-50%);
+      padding: 3px 8px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      border-radius: 3px;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .neon-green-box {
+      color: #001a0d;
+      background: var(--green);
+      box-shadow:
+        0 0 8px var(--green),
+        0 0 20px rgba(0, 255, 136, 0.6),
+        0 0 40px rgba(0, 255, 136, 0.25);
+    }
+
+    /* MT5 Floating Overlay CSS — 继承原版霓虹特效 */
+    .mt5-overlay {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(6, 10, 16, 0.95);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 4px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+      font-family: var(--font-mono);
+    }
+    .mt5-btn {
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: #fff;
+      font-weight: 700;
+      padding: 5px 12px;
+      cursor: pointer;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      transition: all 0.2s;
+      min-width: 80px;
+      text-align: center;
+      line-height: 1.3;
+      background: transparent;
+    }
+    .mt5-sell {
+      color: var(--red);
+      border-color: rgba(255, 59, 92, 0.35);
+    }
+    .mt5-sell:hover {
+      background: rgba(255, 59, 92, 0.15);
+      border-color: var(--red);
+      box-shadow: 0 0 10px rgba(255, 59, 92, 0.35);
+      text-shadow: 0 0 4px var(--red);
+    }
+    .mt5-buy {
+      color: var(--green);
+      border-color: rgba(0, 255, 136, 0.35);
+    }
+    .mt5-buy:hover {
+      background: rgba(0, 255, 136, 0.15);
+      border-color: var(--green);
+      box-shadow: 0 0 10px rgba(0, 255, 136, 0.35);
+      text-shadow: 0 0 4px var(--green);
+    }
+    .mt5-input {
+      width: 54px;
+      background: #000;
+      border: 1px solid var(--border);
+      color: var(--cyan);
+      border-radius: 4px;
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 6px 0;
+      outline: none;
+    }
+    .mt5-input:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 8px rgba(0, 229, 255, 0.3);
+    }
+    .mt5-status {
+      font-size: 0.58rem;
+      color: var(--text-dim);
+      padding: 0 4px;
+    }
+
+    /* Settlement Overlay */
+    .gameover-overlay {
+      position: fixed; inset: 0; z-index: 20000;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(3, 5, 8, 0.85); backdrop-filter: blur(12px);
+      font-family: var(--font-mono);
+    }
+    .gameover-modal {
+      background: linear-gradient(135deg, #090e15 0%, #0d1421 100%);
+      border: 1px solid rgba(0, 255, 136, 0.18);
+      border-radius: 12px; padding: 28px; width: 100%; max-width: 480px;
+      box-shadow: 0 0 40px rgba(0, 255, 136, 0.15);
+      text-align: center; color: #fff;
+      animation: gameoverSlideIn 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    }
+    @keyframes gameoverSlideIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .gameover-rank {
+      font-size: 2.2rem; font-weight: bold; margin: 12px 0;
+      text-shadow: 0 0 10px var(--cyan);
+    }
+    .gameover-btn {
+      flex: 1; border: none; padding: 12px; border-radius: 6px; font-weight: bold;
+      font-family: inherit; font-size: 0.72rem; cursor: pointer; transition: all 0.2s;
+    }
+
+    /* Bottom shrunken trading terminal */
+    .terminal-panel {
+      height: 170px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      background: #04070c;
+      flex-shrink: 0;
+      z-index: 10;
+      font-family: var(--font-ui);
+    }
+    .terminal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #070b12;
+      padding: 6px 24px;
+      border-bottom: 1px solid var(--border);
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+    }
+    .terminal-table-wrap {
+      flex: 1;
+      overflow-y: auto;
+      padding: 6px 24px 12px;
+    }
+    
+    /* 🎲 Volatility Gashapon Button */
+    .gashapon-btn {
+      width: 100%;
+      background: linear-gradient(135deg, rgba(255, 45, 120, 0.12) 0%, rgba(0, 229, 255, 0.08) 100%);
+      border: 1px dashed rgba(255, 45, 120, 0.7);
+      color: #fff;
+      padding: 10px;
+      font-family: var(--font-ui);
+      font-weight: 700;
+      font-size: 0.76rem;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      box-shadow: 0 0 8px rgba(255, 45, 120, 0.08);
+      outline: none;
+    }
+
+    .gashapon-btn:hover {
+      border-style: solid;
+      border-color: var(--pink);
+      box-shadow: 0 0 16px rgba(255, 45, 120, 0.35), inset 0 0 8px rgba(255, 45, 120, 0.15);
+      transform: translateY(-1px);
+    }
+
+    .gashapon-btn:active {
+      transform: translateY(1px);
+    }
+
+    .gashapon-flashing {
+      animation: flash-red-cyan 0.15s infinite alternate;
+      border-style: solid !important;
+    }
+
+    @keyframes flash-red-cyan {
+      0% { border-color: var(--pink); box-shadow: 0 0 15px var(--pink); }
+      100% { border-color: var(--cyan); box-shadow: 0 0 15px var(--cyan); }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <!-- Left Sidebar (Unified Core Panel - Train Mode) -->
+    <aside class="sidebar">
+      <div class="brand-title">
+        <span class="neon-green">DEGEN</span>
+        <span class="neon-pink">ARENA</span>
+      </div>
+
+      <!-- Mode Selection Tabs -->
+      <div class="mode-tabs">
+        <a href="trade.html" class="mode-tab active" id="tabTrain">Train Mode (Practice)</a>
+        <a href="../backtest.html" class="mode-tab" id="tabBacktest">Backtest Sandbox</a>
+      </div>
+
+      <!-- SaaS 会籍信息占位由 auth_client.js 自动填充 -->
+      <div id="saasAccountCard"></div>
+
+      <!-- Strategy Text Area -->
+      <div class="sidebar-section">
+        <span class="section-lbl">⚡ Input Strategy Concept</span>
+        <textarea class="strategy-input" id="strategyInput" placeholder="Describe your strategy buy/sell rules in plain English..."></textarea>
+      </div>
+
+      <!-- Action buttons -->
+      <div style="display: flex; gap: 8px;">
+        <button class="btn-run" id="btnAnalyze" style="flex: 2; background: linear-gradient(135deg, rgba(0, 229, 255, 0.16) 0%, rgba(0, 229, 255, 0.04) 100%); border-color: var(--cyan); text-shadow: 0 0 4px var(--cyan); box-shadow: 0 0 15px rgba(0, 229, 255, 0.18);">⚡ Analyze</button>
+        <button class="btn-run" id="btnSave" style="flex: 1; background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.15); text-shadow: none; box-shadow: none; color: #fff;">💾 Save</button>
+      </div>
+
+      <!-- AI Real-time compilation thinking simulator panel -->
+      <div id="aiThinkingWrap" style="display: none; border: 1px solid rgba(0, 229, 255, 0.3); border-radius: 10px; padding: 12px; background: linear-gradient(135deg, rgba(0, 229, 255, 0.04) 0%, rgba(0, 229, 255, 0.01) 100%); box-shadow: 0 0 15px rgba(0, 229, 255, 0.12), inset 0 0 8px rgba(0, 229, 255, 0.03); margin-top: -6px; margin-bottom: 6px; font-family: monospace;">
+        <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.72rem; color: var(--cyan); font-weight: 700; margin-bottom: 6px;">
+          <span id="aiThinkingText">🤖 AI analyzing strategy rules...</span>
+          <span id="aiThinkingPercent" style="color: var(--cyan); font-weight: bold; text-shadow: 0 0 4px var(--cyan);">0%</span>
+        </div>
+        <!-- Shimmer loading bar -->
+        <div style="height: 4px; background: rgba(255, 255, 255, 0.05); border-radius: 2px; overflow: hidden; position: relative;">
+          <div style="height: 100%; width: 35%; background: linear-gradient(90deg, transparent, var(--cyan), var(--green), transparent); background-size: 200% 100%; position: absolute; left: -30%; animation: shimmer-move 1.4s infinite linear;"></div>
+        </div>
+      </div>
+
+      <!-- AI Compiler Code Terminal (Always visible in compile flow) -->
+      <div class="sidebar-section">
+        <span class="section-lbl">🤖 AI compiler code terminal</span>
+        <div class="terminal-window">
+          <div class="terminal-bar">
+            <span class="term-dot term-red"></span>
+            <span class="term-dot term-yellow"></span>
+            <span class="term-dot term-green"></span>
+            <span class="term-title">DEGEN COMPILER v1.2</span>
+          </div>
+          <pre class="terminal-content" id="terminalOutput"><code>Awaiting strategy input...
+Press ANALYZE to compile strategy rules.</code></pre>
+        </div>
+      </div>
+
+      <!-- AI Quant Pilot Interactive Assistant (Questions / choices render here) -->
+      <div class="sidebar-section" id="aiAssistantCard" style="display: none; border: 1px solid rgba(0, 229, 255, 0.35); border-radius: 12px; padding: 12px; background: linear-gradient(135deg, rgba(6, 15, 25, 0.85) 0%, rgba(3, 8, 15, 0.98) 100%); box-shadow: 0 0 20px rgba(0, 229, 255, 0.18), inset 0 0 10px rgba(0, 229, 255, 0.04); margin-top: -6px; margin-bottom: 6px;">
+        <div style="font-weight: 800; color: var(--cyan); font-size: 0.72rem; margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between;">
+          <div style="display:flex; align-items:center; gap:4px;">
+            <span style="display:inline-block; width:6px; height:6px; background:var(--cyan); border-radius:50%; box-shadow:0 0 6px var(--cyan); animation: pulse 1.5s infinite;"></span>
+            🤖 AI Compile Confirmation
+          </div>
+          <span id="aiProgressBadge" style="font-size:0.6rem; color:var(--text-dim); font-weight:400;"></span>
+        </div>
+        <!-- Multi-round convergence progress bar -->
+        <div id="aiProgressWrap" style="display:none; margin-bottom:8px;">
+          <div style="display:flex; justify-content:space-between; font-size:0.6rem; color:var(--text-dim); margin-bottom:3px;">
+            <span id="aiProgressLabel">Checking...</span>
+            <span id="aiProgressCount"></span>
+          </div>
+          <div style="height:3px; background:rgba(255,255,255,0.08); border-radius:2px; overflow:hidden;">
+            <div id="aiProgressBar" style="height:100%; background:linear-gradient(90deg,var(--cyan),var(--green)); border-radius:2px; width:0%; transition:width 0.4s ease;"></div>
+          </div>
+        </div>
+        <div id="aiAssistantTitle" style="color: var(--text-secondary); font-size: 0.72rem; margin-bottom: 8px; line-height: 1.4;"></div>
+        <div id="aiAssistantOptions" style="display: flex; flex-direction: column; gap: 4px;"></div>
+      </div>
+
+      <!-- TEST Button (glowing, hidden by default) -->
+      <button class="btn-run pulse-button" id="btnTest" style="display: none; background: linear-gradient(135deg, rgba(0, 255, 136, 0.25) 0%, rgba(0, 255, 136, 0.05) 100%); border-color: var(--green); text-shadow: 0 0 4px var(--green); box-shadow: 0 0 25px rgba(0, 255, 136, 0.5); animation: pulseGlow 1s infinite alternate; width: 100%;">🚀 RUN TEST</button>
+
+      <!-- Date Selection (hidden in Train Mode) -->
+      <div id="dateSection" style="display: none;">
+        <div class="sidebar-section">
+          <span class="section-lbl">Start Date (2026 Gold)</span>
+          <input type="text" id="startDate" class="strategy-input" style="height: 38px; padding: 0.5rem;" value="2026_03_11" placeholder="Format: YYYY_MM_DD" />
+        </div>
+        <div class="sidebar-section">
+          <span class="section-lbl">End Date (Max 5 days)</span>
+          <input type="text" id="endDate" class="strategy-input" style="height: 38px; padding: 0.5rem;" value="2026_03_11" placeholder="Format: YYYY_MM_DD" />
+        </div>
+      </div>
+
+      <!-- Suggestion Pills -->
+      <div class="sidebar-section">
+        <span class="section-lbl">🧬 Strategy Templates</span>
+        <div class="template-box">
+          <div class="pill" onclick="loadTemplate('ma_cross')">MA Crossover</div>
+          <div class="pill" onclick="loadTemplate('rsi_pullback')">MA + RSI Pullback</div>
+          <div class="pill" onclick="loadTemplate('martingale')">Martingale Grid</div>
+          <div class="pill" onclick="loadTemplate('macd_crossover')">MACD Gold Cross</div>
+          <div class="pill" onclick="loadTemplate('boll_reversion')">Bollinger Reversion</div>
+          <div class="pill" onclick="loadTemplate('kdj_crossover')">KDJ Gold Cross</div>
+        </div>
+      </div>
+
+      <!-- Watchlist Section -->
+      <div class="sidebar-section">
+        <span class="section-lbl">🪙 Watchlist</span>
+        <ul class="symbol-list" id="symbolList" style="display:flex; flex-direction:column; gap:4px; margin-top:8px;">
+          <!-- Dynamic symbol list -->
+        </ul>
+      </div>
+
+      <!-- Bottom link mappings -->
+      <div class="nav-links">
+        <a href="../backtest.html" class="nav-link-btn">🤖 AI Backtest Sandbox</a>
+        <a href="../pattern.html" class="nav-link-btn">📐 Pattern Scanner</a>
+      </div>
+    </aside>
+
+    <!-- Right Main Area -->
+    <main class="main">
+      
+      <!-- Top Header -->
+      <header class="chart-header">
+        <div class="header-left">
+          <h1 class="chart-title">
+            <span class="neon-green">DEGEN</span>
+            <span class="neon-pink" id="currScenarioName">Loading scenario...</span>
+            <span class="sep">|</span>
+            <span class="pair">XAUUSD.m</span>
+            <span class="tf">(M1)</span>
+          </h1>
+          <div class="price-row" style="margin-top: 4px;">
+            <span class="price neon-green-glow" id="lastPrice" style="font-size: 1.5rem;">---</span>
+            <span class="vwap" id="currScenarioDesc">Select a volatile scenario, click BUY / SELL to start speedrunning</span>
+          </div>
+        </div>
+
+        <!-- Playback Panel -->
+        <div id="playbackControls" style="display: flex; align-items: center; gap: 0.6rem; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border); padding: 4px 12px; border-radius: 6px; font-family: monospace; font-size: 0.75rem;">
+          <span style="color: var(--cyan); font-weight: 700; display: flex; align-items: center; gap: 4px;">
+            <span style="display:inline-block; width:6px; height:6px; background:var(--cyan); border-radius:50%; box-shadow:0 0 6px var(--cyan); animation: pulse 1.5s infinite;"></span> Replay
+          </span>
+          <button id="btnPlayPause" class="pill" style="padding: 2px 8px; font-size: 0.7rem; border-color: var(--cyan); color: var(--cyan); background: rgba(0,229,255,0.05); cursor:pointer; font-family:inherit;">⏸ Pause</button>
+          <span style="color: var(--text-dim); margin-left: 4px;">Replay Speed:</span>
+          <input type="range" id="playbackSpeed" min="1" max="50" value="10" style="width: 80px; height: 3px; cursor: pointer; accent-color: var(--cyan);" />
+          <span id="speedVal" style="color: var(--cyan); font-weight: bold; width: 20px; text-align: left; margin-right: 6px;">10x</span>
+        </div>
+      </header>
+
+      <!-- Charts Area -->
+      <div class="chart-wrap">
+        <!-- Background Grid -->
+        <canvas id="bgMesh" class="bg-mesh"></canvas>
+
+        <!-- Main Chart Panel -->
+        <div class="panel main-chart">
+          
+          <!-- MT5 Floating Overlay -->
+          <div class="mt5-overlay" id="mt5Overlay">
+            <button class="mt5-btn mt5-sell" id="mt5SellBtn">
+              SELL<br><span id="mt5BidPrice">---</span>
+            </button>
+            <input type="number" step="0.1" min="0.1" max="10" value="1.0" class="mt5-input" id="mt5LotsInput">
+            <button class="mt5-btn mt5-buy" id="mt5BuyBtn">
+              BUY<br><span id="mt5AskPrice">---</span>
+            </button>
+            <div class="mt5-status">
+              <span>Spread: 50</span>
+            </div>
+          </div>
+
+          <canvas id="candleChart"></canvas>
+          <div class="price-tag neon-green-box" id="priceTag">---</div>
+        </div>
+
+        <!-- Indicator panel (RSI) -->
+        <div class="panel sub-chart">
+          <div class="sub-label mono">RSI(14) <span id="rsiVal" class="neon-purple">---</span></div>
+          <canvas id="rsiChart"></canvas>
+        </div>
+
+        <!-- Indicator panel (MACD) -->
+        <div class="panel sub-chart">
+          <div class="sub-label mono">MACD(12, 26, 9)</div>
+          <canvas id="macdChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Bottom MT5 trading terminal -->
+      <div class="terminal-panel">
+        <div class="terminal-header">
+          <div style="display:flex; gap:16px; color:var(--text); align-items:center;">
+            <span>📊 MT5 Terminal — Manual Speedrunning Panel</span>
+            <span style="color:#00ff88; font-weight:bold;">Account Equity: $<span id="lblAccountEquity">10,000.00</span></span>
+            <span style="color:var(--cyan); font-weight:bold;">Floating P&L: $<span id="lblFloatingPnL">0.00</span></span>
+          </div>
+          <button id="btnManualCloseAll" style="background:rgba(255,59,92,0.12); border:1px solid rgba(255,59,92,0.4); color:#ff3b5c; border-radius:4px; padding:2px 8px; font-family:inherit; font-size:0.6rem; font-weight:bold; cursor:pointer;">
+            Close All Positions (CLOSE ALL)
+          </button>
+        </div>
+        
+        <div class="terminal-table-wrap">
+          <table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-mono); font-size: 0.72rem; border-spacing: 0;">
+            <thead>
+              <tr style="color: var(--text-dim); border-bottom: 1px solid rgba(255,255,255,0.05); text-transform: uppercase; font-size: 0.65rem;">
+                <th style="padding: 6px 4px; font-weight: 700;">Order ID</th>
+                <th style="font-weight: 700;">Action</th>
+                <th style="font-weight: 700;">Entry Price</th>
+                <th style="font-weight: 700;">Lots</th>
+                <th style="font-weight: 700; text-align: right;">Entry Bar</th>
+                <th style="font-weight: 700; text-align: right;">Floating PNL</th>
+                <th style="font-weight: 700; text-align: right;">Realized PNL</th>
+              </tr>
+            </thead>
+            <tbody id="tradeHistoryBody" style="color: #ffffff;">
+              <tr style="color: var(--text-dim);"><td colspan="7" style="padding: 12px; text-align: center;">Double click on the left sidebar to load a scenario!</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Game-Over Settlement Modal -->
+  <div class="gameover-overlay" id="gameOverOverlay" style="display:none;">
+    <div class="gameover-modal">
+      <h2 style="color:#00ff88; margin-top:0; font-size:1.2rem; letter-spacing:0.05em;">⚔️ Scenario Clear</h2>
+      <p id="gameOverScenarioName" style="font-size:0.75rem; color:var(--text-dim); margin-top:4px;"></p>
+      
+      <div class="gameover-rank" id="gameOverRank">A</div>
+      <p id="gameOverRankLabel" style="font-size:0.78rem; font-weight:bold; color:#ffd600; margin-top:-6px; margin-bottom:16px;"></p>
+
+      <div style="background:rgba(255,255,255,0.02); border:1px solid var(--border); border-radius:6px; padding:12px; margin-bottom:20px; font-size:0.68rem; text-align:left; display:grid; grid-template-columns:1fr 1fr; gap:8px 16px;">
+        <div>Initial Balance: <span style="float:right; color:#fff;">$10,000.00</span></div>
+        <div>Final Equity: <span style="float:right; color:#fff;" id="goFinalEquity">$10,450.00</span></div>
+        <div>Net Profit: <span style="float:right; color:#00ff88;" id="goNetProfit">+$450.00</span></div>
+        <div>Trades Count: <span style="float:right; color:#fff;" id="goTradeCount">4 Trades</span></div>
+        <div>Return Rate: <span style="float:right; color:#00ff88;" id="goReturnRate">+4.5%</span></div>
+        <div>Max Drawdown: <span style="float:right; color:#ff3b5c;" id="goDrawdown">1.2%</span></div>
+      </div>
+
+      <div style="display:flex; gap:8px;">
+        <button onclick="restartCurrentScenario()" class="gameover-btn" style="background:rgba(255,255,255,0.06); border:1px solid var(--border); color:#fff;">
+          🔄 Replay Scenario
+        </button>
+        <button onclick="shareResultToForum()" class="gameover-btn" style="background:linear-gradient(90deg, #9333ea, #059669); color:#fff; flex:1.3;">
+          💬 Copy Share Board (Share)
+        </button>
+      </div>
+      <button onclick="closeGameOverModal()" style="margin-top:16px; background:none; border:none; color:rgba(255,255,255,0.3); font-size:0.58rem; cursor:pointer; font-family:inherit;">
+        Back to Spectator mode
+      </button>
+    </div>
+  </div>
+
+  <!-- SVG bloom filter -->
+  <svg width="0" height="0" style="position:absolute">
+    <defs>
+      <filter id="glow-green" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="3" result="blur"/>
+        <feFlood flood-color="#00ff88" flood-opacity="0.85"/>
+        <feComposite in2="blur" operator="in" result="glow"/>
+        <feMerge>
+          <feMergeNode in="glow"/>
+          <feMergeNode in="glow"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+      <filter id="glow-red" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="3" result="blur"/>
+        <feFlood flood-color="#ff3b5c" flood-opacity="0.85"/>
+        <feComposite in2="blur" operator="in" result="glow"/>
+        <feMerge>
+          <feMergeNode in="glow"/>
+          <feMergeNode in="glow"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+    </defs>
+  </svg>
+
+  <script>
+    // ============================================================
+    // DEGEN ARENA — Inline Render Engine (English)
+    // ============================================================
+
+    const COLORS = {
+      green: '#00ff88',
+      greenGlow: 'rgba(0, 255, 136, 0.85)',
+      red: '#ff3b5c',
+      redGlow: 'rgba(255, 59, 92, 0.85)',
+      cyan: '#00e5ff',
+      magenta: '#ff6ec7',
+      purple: '#b388ff',
+      grid: 'rgba(255, 255, 255, 0.04)',
+      gridText: '#3d4659',
+    };
+
+    let ohlc = [];
+    let closes = [];
+    let lastPrice = 0;
+    
+    // Indicators
+    function sma(values, period) {
+      return values.map((_, i) => {
+        if (i < period - 1) return null;
+        const slice = values.slice(i - period + 1, i + 1);
+        return slice.reduce((a, b) => a + b, 0) / period;
+      });
+    }
+
+    function ema(values, period) {
+      const k = 2 / (period + 1);
+      const out = [];
+      values.forEach((v, i) => {
+        if (i === 0) out.push(v);
+        else out.push(v * k + out[i - 1] * (1 - k));
+      });
+      return out;
+    }
+
+    function calcRSI(closes, period = 14) {
+      const rsi = [];
+      for (let i = 0; i < closes.length; i++) {
+        if (i < period) { rsi.push(null); continue; }
+        let gain = 0, loss = 0;
+        for (let j = i - period + 1; j <= i; j++) {
+          const d = closes[j] - closes[j - 1];
+          if (d >= 0) gain += d; else loss -= d;
+        }
+        const rs = loss === 0 ? 100 : gain / loss;
+        rsi.push(100 - 100 / (1 + rs));
+      }
+      return rsi;
+    }
+
+    function calcMACD(closes) {
+      const e12 = ema(closes, 12);
+      const e26 = ema(closes, 26);
+      const macd = e12.map((v, i) => v - e26[i]);
+      const signal = ema(macd, 9);
+      const hist = macd.map((v, i) => v - signal[i]);
+      return { macd, signal, hist };
+    }
+
+    // ── 3. Canvas rendering functions ──
+    function drawBgMesh(canvas) {
+      const parent = canvas.parentElement;
+      const rect = parent.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      canvas.style.width = rect.width + 'px';
+      canvas.style.height = rect.height + 'px';
+      const ctx = canvas.getContext('2d');
+      ctx.scale(dpr, dpr);
+      const w = rect.width, h = rect.height;
+      ctx.clearRect(0, 0, w, h);
+
+      const pts = [];
+      const cols = 14, rows = 10;
+      for (let r = 0; r <= rows; r++) {
+        for (let c = 0; c <= cols; c++) {
+          pts.push({ x: (c / cols) * w, y: (r / rows) * h });
+        }
+      }
+      ctx.strokeStyle = 'rgba(60, 80, 120, 0.12)';
+      ctx.lineWidth = 0.5;
+      for (let i = 0; i < pts.length; i++) {
+        for (let j = i + 1; j < pts.length; j++) {
+          const dx = pts[i].x - pts[j].x;
+          const dy = pts[i].y - pts[j].y;
+          if (dx * dx + dy * dy < 9000) {
+            ctx.beginPath();
+            ctx.moveTo(pts[i].x, pts[i].y);
+            ctx.lineTo(pts[j].x, pts[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    function drawNeonCandle(ctx, x, w, open, close, high, low, yScale, bullish) {
+      const color = bullish ? COLORS.green : COLORS.red;
+      const colorBright = bullish ? '#5dffaa' : '#ff5c7a';
+      const yOpen = yScale(open);
+      const yClose = yScale(close);
+      const yHigh = yScale(high);
+      const yLow = yScale(low);
+      const top = Math.min(yOpen, yClose);
+      const bot = Math.max(yOpen, yClose);
+      const bodyH = Math.max(bot - top, 4);
+      const cx = x + w / 2;
+      const wall = Math.max(1.5, Math.min(2.2, w * 0.22));
+
+      const bx = x + wall / 2;
+      const by = top + wall / 2;
+      const bw = w - wall;
+      const bh = bodyH - wall;
+      const cy = top + bodyH / 2;
+
+      // 1) Hollow Inner Glow
+      ctx.save();
+      const innerPad = wall + 0.8;
+      const ix = x + innerPad;
+      const iy = top + innerPad;
+      const iw = w - innerPad * 2;
+      const ih = bodyH - innerPad * 2;
+      if (iw > 0 && ih > 0) {
+        const glowGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(iw, ih) * 0.55);
+        glowGrad.addColorStop(0, bullish ? 'rgba(0, 255, 136, 0.14)' : 'rgba(255, 59, 92, 0.14)');
+        glowGrad.addColorStop(0.55, bullish ? 'rgba(0, 255, 136, 0.06)' : 'rgba(255, 59, 92, 0.06)');
+        glowGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        ctx.fillStyle = glowGrad;
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = bullish ? 'rgba(0, 255, 136, 0.25)' : 'rgba(255, 59, 92, 0.25)';
+        ctx.fillRect(ix, iy, iw, ih);
+      }
+      ctx.restore();
+
+      // 2) Solid Tube Outer Glow (Border)
+      ctx.save();
+      ctx.strokeStyle = color;
+      ctx.lineWidth = wall;
+      ctx.shadowBlur = 18;
+      ctx.shadowColor = color;
+      ctx.strokeRect(bx, by, bw, bh);
+      ctx.restore();
+
+      // Highlight inner core
+      ctx.save();
+      ctx.strokeStyle = colorBright;
+      ctx.lineWidth = 0.8;
+      ctx.shadowBlur = 6;
+      ctx.shadowColor = colorBright;
+      ctx.strokeRect(bx + 0.6, by + 0.6, bw - 1.2, bh - 1.2);
+      ctx.restore();
+
+      // 3) Shadow Wicks
+      ctx.save();
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 1.2;
+      ctx.shadowBlur = 12;
+      ctx.shadowColor = color;
+      ctx.beginPath();
+      if (yHigh < top - 0.5) {
+        ctx.moveTo(cx, yHigh);
+        ctx.lineTo(cx, top);
+      }
+      if (yLow > bot + 0.5) {
+        ctx.moveTo(cx, bot);
+        ctx.lineTo(cx, yLow);
+      }
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function drawGlowLine(ctx, points, color, blur = 12, width = 1.5) {
+      const valid = points.filter(p => p[1] != null);
+      if (valid.length < 2) return;
+      ctx.save();
+      ctx.strokeStyle = color;
+      ctx.lineWidth = width;
+      ctx.shadowBlur = blur;
+      ctx.shadowColor = color;
+      ctx.lineJoin = 'round';
+      ctx.beginPath();
+      valid.forEach(([x, y], i) => (i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y)));
+      ctx.stroke();
+      ctx.shadowBlur = 4;
+      ctx.lineWidth = width * 0.6;
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function setupCanvas(canvas) {
+      const dpr = window.devicePixelRatio || 1;
+      const rect = canvas.parentElement.getBoundingClientRect();
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      canvas.style.width = rect.width + 'px';
+      canvas.style.height = rect.height + 'px';
+      const ctx = canvas.getContext('2d');
+      ctx.scale(dpr, dpr);
+      return { ctx, w: rect.width, h: rect.height };
+    }
+
+    function drawMainChart(canvas, ohlc, currentPrice) {
+      const { ctx, w, h } = setupCanvas(canvas);
+      const pad = { top: 16, right: 64, bottom: 24, left: 8 };
+      const cw = w - pad.left - pad.right;
+      const ch = h - pad.top - pad.bottom;
+      
+      if (ohlc.length === 0) return { pad, cw, candleW: 8, gap: 3, yScale: p => 0 };
+
+      // ── Viewport windowing ──
+      const scrollOff  = window.scrollOffset  || 0;
+      const visBars    = window.visibleBars   || 100;
+      const startIdx   = scrollOff;
+      const endIdx     = Math.min(ohlc.length, scrollOff + visBars);
+      const visible    = ohlc.slice(startIdx, endIdx);
+      const n          = visible.length;
+      const gap        = 3;
+      const candleW    = Math.max(4, cw / visBars - gap);
+
+      if (n === 0) return { pad, cw, candleW, gap, n: visBars, yScale: p => 0 };
+
+      const visLows  = visible.map(d => d.low);
+      const visHighs = visible.map(d => d.high);
+      const minP_raw = Math.min(...visLows);
+      const maxP_raw = Math.max(...visHighs);
+      const range    = maxP_raw - minP_raw;
+      const padding  = range * 0.08 || 1.0;
+      const minP     = minP_raw - padding;
+      const maxP     = maxP_raw + padding;
+      const yScale   = p => pad.top + ch - ((p - minP) / (maxP - minP)) * ch;
+
+      ctx.clearRect(0, 0, w, h);
+
+
+      // Horizontal grids
+      for (let i = 0; i <= 5; i++) {
+        const y = pad.top + (ch / 5) * i;
+        ctx.strokeStyle = COLORS.grid;
+        ctx.beginPath();
+        ctx.moveTo(pad.left, y);
+        ctx.lineTo(pad.left + cw, y);
+        ctx.stroke();
+        
+        ctx.fillStyle = COLORS.gridText;
+        ctx.font = '10px Share Tech Mono, monospace';
+        const gridVal = maxP - ((maxP - minP) / 5) * i;
+        ctx.fillText(gridVal.toFixed(2), w - pad.right + 6, y + 3);
+      }
+
+      // X Time labels
+      ['12:00','13:00','14:00','15:00','16:00','17:00','18:00'].forEach((t, i, arr) => {
+        const x = pad.left + (cw / (arr.length - 1)) * i;
+        ctx.fillStyle = COLORS.gridText;
+        ctx.textAlign = 'center';
+        ctx.fillText(t, x, h - 6);
+      });
+
+      // Candles rendering — visible slice only
+      visible.forEach((d, i) => {
+        const x = pad.left + i * (candleW + gap) + gap / 2;
+        drawNeonCandle(ctx, x, candleW, d.open, d.close, d.high, d.low, yScale, d.close >= d.open);
+      });
+
+      // SMA curves — computed on full data up to endIdx, rendered for visible slice
+      const fullCloses = ohlc.slice(0, endIdx).map(d => d.close);
+      const smaFull7  = sma(fullCloses, 7);
+      const smaFull21 = sma(fullCloses, 21);
+      const toPts = (arr) => arr.slice(startIdx).map((v, i) => {
+        if (v == null || i >= n) return [null, null];
+        const x = pad.left + i * (candleW + gap) + gap / 2 + candleW / 2;
+        return [x, yScale(v)];
+      });
+      drawGlowLine(ctx, toPts(smaFull7),  COLORS.cyan,    14, 1.8);
+      drawGlowLine(ctx, toPts(smaFull21), COLORS.magenta, 12, 1.5);
+
+      // ── Current Price Dashed Line ──
+      const visCloses = visible.map(d => d.close);
+      const livePrice = (currentPrice != null && currentPrice > 0) ? currentPrice : visCloses[visCloses.length - 1];
+      const ly = yScale(livePrice);
+      ctx.save();
+      ctx.strokeStyle = COLORS.green;
+      ctx.setLineDash([4, 4]);
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = COLORS.green;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(pad.left, ly);
+      ctx.lineTo(pad.left + cw, ly);
+      ctx.stroke();
+      ctx.restore();
+
+      const tag = document.getElementById('priceTag');
+      if (tag) {
+        tag.style.top = `${(ly / h) * 100}%`;
+        tag.textContent = livePrice.toFixed(2);
+      }
+
+      // Draw manual order markers (scroll-offset corrected)
+      const scrollOff = window.scrollOffset || 0;
+      if (window.backtestTrades) {
+        window.backtestTrades.forEach(t => {
+          const visIdx = t.index - scrollOff;
+          if (visIdx < 0 || visIdx >= n) return;
+          const x = pad.left + visIdx * (candleW + gap) + gap / 2 + candleW / 2;
+          const y = yScale(t.price);
+          ctx.save();
+          ctx.textAlign = 'center';
+          ctx.font = '12px Share Tech Mono, monospace';
+          if (t.type.startsWith('BUY')) {
+            ctx.fillStyle = COLORS.green;
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = COLORS.green;
+            ctx.fillText('▲', x, y + 16);
+          } else if (t.type.startsWith('SELL')) {
+            ctx.fillStyle = COLORS.red;
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = COLORS.red;
+            ctx.fillText('▼', x, y - 10);
+          } else if (t.type === 'EXIT') {
+            ctx.fillStyle = COLORS.cyan;
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = COLORS.cyan;
+            ctx.fillText('◆', x, y + 3);
+          }
+          ctx.restore();
+        });
+      }
+
+      return { pad, cw, candleW, gap, n, yScale };
+    }
+
+    function drawRSI(canvas, rsi, layout) {
+      const { ctx, w, h } = setupCanvas(canvas);
+      const { pad, cw, candleW, gap } = layout;
+      ctx.clearRect(0, 0, w, h);
+      const ch = h - 20;
+      const yScale = v => 10 + ch - (v / 100) * ch;
+      
+      [30, 70].forEach(v => {
+        const y = yScale(v);
+        ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+        ctx.beginPath();
+        ctx.moveTo(pad.left, y);
+        ctx.lineTo(pad.left + cw, y);
+        ctx.stroke();
+      });
+      
+      const pts = rsi.map((v, i) => {
+        if (v == null) return [null, null];
+        return [pad.left + i * (candleW + gap) + gap / 2 + candleW / 2, yScale(v)];
+      });
+      drawGlowLine(ctx, pts, COLORS.purple, 10, 1.5);
+      
+      const last = rsi.filter(v => v != null).pop();
+      const el = document.getElementById('rsiVal');
+      if (el && last) el.textContent = last.toFixed(2);
+    }
+
+    function drawMACD(canvas, macdData, layout) {
+      const { ctx, w, h } = setupCanvas(canvas);
+      const { pad, cw, candleW, gap } = layout;
+      const { macd, signal, hist } = macdData;
+      ctx.clearRect(0, 0, w, h);
+      
+      const all = [...macd, ...signal, ...hist];
+      if (all.length === 0) return;
+      const minV = Math.min(...all) * 1.1;
+      const maxV = Math.max(...all) * 1.1;
+      const ch = h - 16;
+      const yScale = v => 8 + ch / 2 - ((v - (minV + maxV) / 2) / (maxV - minV)) * ch;
+      const zeroY = yScale(0);
+
+      hist.forEach((v, i) => {
+        const x = pad.left + i * (candleW + gap) + gap / 2;
+        const y = yScale(v);
+        const color = v >= 0 ? COLORS.green : COLORS.red;
+        ctx.save();
+        ctx.fillStyle = v >= 0 ? 'rgba(0,255,136,0.35)' : 'rgba(255,59,92,0.35)';
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = color;
+        const top = Math.min(y, zeroY);
+        ctx.fillRect(x, top, candleW, Math.abs(y - zeroY) || 1);
+        ctx.restore();
+      });
+
+      const toPts = arr => arr.map((v, i) => [pad.left + i * (candleW + gap) + gap / 2 + candleW / 2, yScale(v)]);
+      drawGlowLine(ctx, toPts(macd), COLORS.cyan, 8, 1.2);
+      drawGlowLine(ctx, toPts(signal), COLORS.red, 8, 1.2);
+    }
+
+    function renderAll() {
+      drawBgMesh(document.getElementById('bgMesh'));
+      const layout = drawMainChart(document.getElementById('candleChart'), ohlc);
+      
+      const closesList = ohlc.map(d => d.close);
+      drawRSI(document.getElementById('rsiChart'), calcRSI(closesList), layout);
+      drawMACD(document.getElementById('macdChart'), calcMACD(closesList), layout);
+    }
+
+    // ── AI Strategy Integration for Manual Trade Page (English) ──
+    window.loadTemplate = function(key) {
+      const templates = {
+        ma_cross: "Buy when 5-day MA crosses above 10-day MA, close all positions when it crosses below.",
+        rsi_pullback: "Buy when 14-day RSI is below 30 and price is above 50-day MA, set individual SL at 5 USD and TP at 15 USD.",
+        martingale: "Buy, double position size every 30 points drop (max 5 layers), close all positions if total floating loss exceeds 100 USD.",
+        macd_crossover: "Buy when MACD DIF crosses above DEA, close all positions when it crosses below.",
+        boll_reversion: "Buy when price breaks below Bollinger Lower Band, close all positions when price touches Middle Band.",
+        kdj_crossover: "Buy when KDJ Gold Cross happens and K value is below 20, close all positions when Dead Cross happens."
+      };
+      const input = document.getElementById('strategyInput');
+      if (input && templates[key]) {
+        input.value = templates[key];
+      }
+    };
+
+    // Syntax highlight helper for terminal
+    function highlightCode(code) {
+      return code
+        .replace(/(\/\/.*)/g, '<span class="term-comment">$1</span>')
+        .replace(/\b(if|else if|else|return)\b/g, '<span class="term-keyword">$1</span>')
+        .replace(/\b(crossOver|crossUnder|MA|EMA|SMA|RSI|MACD|buy|sell|exitAll|addPosition)\b/g, '<span class="term-function">$1</span>')
+        .replace(/("[^"]*")/g, '<span class="term-string">$1</span>')
+        .replace(/\b(\d+)\b/g, '<span class="term-number">$1</span>');
+    }
+
+    window.addEventListener('load', () => {
+      loadTemplate('ma_cross');
+      
+      const btnAnalyze = document.getElementById('btnAnalyze');
+      const btnSave = document.getElementById('btnSave');
+      const btnTest = document.getElementById('btnTest');
+      const terminalOutput = document.getElementById('terminalOutput');
+      const aiAssistantCard = document.getElementById('aiAssistantCard');
+      const aiAssistantOptions = document.getElementById('aiAssistantOptions');
+
+      // Load saved strategy if exists
+      const saved = localStorage.getItem('saved_strategy');
+      if (saved) {
+        document.getElementById('strategyInput').value = saved;
+      }
+
+      if (btnSave) {
+        btnSave.addEventListener('click', () => {
+          const strategyText = document.getElementById('strategyInput').value.trim();
+          localStorage.setItem('saved_strategy', strategyText);
+          terminalOutput.innerHTML = `<code>[INFO] Strategy saved successfully to local storage.
+${new Date().toLocaleTimeString()} - Cache synced.</code>`;
+          alert('Strategy saved successfully! (Saved locally)');
+        });
+      }
+
+      let activeClarificationsQueue = [];
+
+      async function runCompile() {
+        const strategyText = document.getElementById('strategyInput').value.trim();
+        if (!strategyText) {
+          terminalOutput.innerHTML = `<code>[ERROR] Please input a strategy description first.</code>`;
+          return;
+        }
+
+        btnTest.style.display = 'none';
+        aiAssistantCard.style.display = 'none';
+        terminalOutput.innerHTML = `<code>[INFO] Initializing Degen Compiler v1.2...
+[INFO] Parsing natural language tokens...
+[INFO] Resolving semantic dependencies...<span class="terminal-cursor"></span></code>`;
+
+        try {
+          const response = await fetch('/api/translate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ strategy: strategyText })
+          });
+          const config = await response.json();
+
+          if (config.error) {
+            terminalOutput.innerHTML = `<code>[ERROR] Compilation failed:
+${config.error}</code>`;
+            return;
+          }
+
+          const clar = config.user_clarifications;
+          if (clar && clar.length > 0) {
+            // Case A: Strategy needs clarification
+            activeClarificationsQueue = [...clar];
+            const currentClar = activeClarificationsQueue[0];
+            
+            // Render terminal compilation logs
+            terminalOutput.innerHTML = `<code>[INFO] Tokens identified.
+[WARN] Clarification required for parameter: "${currentClar.title}"
+Awaiting choice input...<span class="terminal-cursor"></span></code>`;
+            
+            // Render choices as glowing pills below terminal
+            aiAssistantCard.style.display = 'block';
+            aiAssistantOptions.innerHTML = '';
+            
+            currentClar.options.forEach(opt => {
+              const btn = document.createElement('button');
+              btn.className = 'ai-pill-btn';
+              btn.textContent = `👉 ${opt.label}`;
+              btn.onclick = () => {
+                let resolvedStr = opt.append || opt.appendTemplate || opt.label;
+                resolvedStr = resolvedStr.replace(/^;\s*/, "");
+                // Append choice to textarea
+                const separator = strategyText.endsWith('。') || strategyText.endsWith('.') ? ' ' : ' ';
+                document.getElementById('strategyInput').value = strategyText + separator + resolvedStr;
+                aiAssistantCard.style.display = 'none';
+                runCompile(); // Recompile
+              };
+              aiAssistantOptions.appendChild(btn);
+            });
+          } else {
+            // Case B: Strategy compiled successfully!
+            const mockDsl = `// COMPILING STRATEGY RULESETS SUCCESSFUL
+if (crossOver(MA(5), MA(10))) {
+  buy("LONG", 1.0);
+} else if (crossUnder(MA(5), MA(10))) {
+  exitAll();
+}
+
+[SUCCESS] Compilation complete. Ready for backtesting.
+[INFO] Target: ${window.currentSymbol ? window.currentSymbol.code : "XAUUSD"}
+[INFO] Period: 2026_02_11 to 2026_02_11 (Last Month)`;
+
+            terminalOutput.innerHTML = `<code>${highlightCode(mockDsl)}</code>`;
+            
+            // Show TEST button
+            btnTest.style.display = 'block';
+          }
+
+        } catch (err) {
+          terminalOutput.innerHTML = `<code>[ERROR] Translation engine offline.
+${err.message}</code>`;
+        }
+      }
+
+      if (btnAnalyze) {
+        btnAnalyze.addEventListener('click', runCompile);
+      }
+
+      if (btnTest) {
+        btnTest.addEventListener('click', () => {
+          const strategy = document.getElementById('strategyInput').value.trim();
+          const symbol = (window.currentSymbol && window.currentSymbol.code) || "XAUUSD";
+          // Default to last month: 2026_02_11 to 2026_02_11 (redirect to root folder backtest.html)
+          window.location.href = `../backtest.html?symbol=${symbol}&strategy=${encodeURIComponent(strategy)}&start=2026_02_11&end=2026_02_11`;
+        });
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      clearTimeout(window._resizeT);
+      window._resizeT = setTimeout(renderAll, 120);
+    });
+  </script>
+  <script src="../js/backtest/auth_client.js"></script>
+  <script src="../js/backtest/manual_ui.js"></script>
+</body>
+</html>
