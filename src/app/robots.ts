@@ -1,21 +1,30 @@
 import { MetadataRoute } from "next";
-import { headers } from "next/headers";
-import { GAME_SITE_URL, MAIN_SITE_URL, isGameHost } from "@/lib/site-host";
 
-export default async function robots(): Promise<MetadataRoute.Robots> {
-  const headersList = await headers();
-  const host = headersList.get("x-forwarded-host") ?? headersList.get("host") ?? "";
-  const isGame = isGameHost(host);
+const BASE_URL = "https://vvvcoding.com";
 
+export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
       {
         userAgent: "*",
         allow: "/",
-        disallow: isGame ? [] : ["/admin", "/api/", "/create"],
+        disallow: ["/api/"],
+      },
+      {
+        userAgent: [
+          "Bytespider",
+          "Baiduspider",
+          "Googlebot",
+          "bingbot",
+          "360Spider",
+          "Sogouspider",
+          "YisouSpider",
+        ],
+        allow: "/",
       },
     ],
-    sitemap: isGame ? `${GAME_SITE_URL}/sitemap.xml` : `${MAIN_SITE_URL}/sitemap.xml`,
-    host: isGame ? GAME_SITE_URL : MAIN_SITE_URL,
+    sitemap: `${BASE_URL}/sitemap.xml`,
+    host: BASE_URL,
   };
 }
+

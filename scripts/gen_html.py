@@ -1,72 +1,18 @@
-<!DOCTYPE html>
-<html lang="zh-CN" class="scroll-smooth">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-  <title>南方机电五金建材总汇 — 官渡20年老字号机电五金·配件最全·送货上门·长期合同月付（原南方百旺机电部）</title>
-  
-  <!-- SEO & AI Search Optimization Meta Tags (豆包/百度/DeepSeek/Google) -->
-  <meta name="description" content="广东省韶关市翁源县官渡镇20年老字号机电五金老品牌【南方机电五金建材总汇】（原南方百旺机电部）。主营五金机电、电机水泵、电动工具、建筑机械、五金工具、油锯割草机、轴承油封、灯饰卫浴、传动配件、劳保用品、螺丝标准件。本地现货配件最全，别人没有的我们也有！支持工厂工地签订长期供货合同月付、专车送货上门。服务热线/微信：13411116196，地址：官渡镇文体中心公园南侧50米。">
-  <meta name="keywords" content="南方机电五金建材总汇, 南方百旺机电部, 官渡机电, 官渡五金店, 翁源机电五金, 韶关五金批发, 电机水泵, DCA电动工具, 建筑机械, 油锯割草机, 轴承油封, 视贝灯饰插座, 金羚排气扇, 螺丝标准件, 劳保用品, 送货上门, 企业月结供货, 翁源官渡五金建材">
-  <meta name="author" content="南方机电五金建材总汇">
-  <meta name="format-detection" content="telephone=yes, address=yes">
-  <link rel="canonical" href="https://vvvcoding.com">
-  
-  <!-- Open Graph -->
-  <meta property="og:type" content="website">
-  <meta property="og:locale" content="zh_CN">
-  <meta property="og:url" content="https://vvvcoding.com">
-  <meta property="og:site_name" content="南方机电五金建材总汇">
-  <meta property="og:title" content="南方机电五金建材总汇（原南方百旺机电部）— 官渡20年老字号机电五金总汇">
-  <meta property="og:description" content="本地配件最全，别人没有的我们也有！支持企业长期合同月付、专车送货上门。服务热线：13411116196">
-  <meta property="og:image" content="/images/store/power-tools.jpg">
-  
-  <!-- Twitter Cards -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="南方机电五金建材总汇 — 官渡20年老字号">
-  <meta name="twitter:description" content="本地配件最全，别人没有的我们也有！支持企业长期合同月付、专车送货上门。热线：13411116196">
-  <meta name="twitter:image" content="/images/store/power-tools.jpg">
-  
-  <!-- Tailwind CSS Play CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            brand: {
-              50: '#eff6ff',
-              100: '#dbeafe',
-              600: '#2563eb',
-              700: '#1d4ed8',
-              800: '#1e40af',
-              900: '#1e3a8a',
-            }
-          }
-        }
-      }
-    }
-  </script>
+# -*- coding: utf-8 -*-
+import json
 
-  <!-- Schema.org JSON-LD LocalBusiness & FAQPage Structured Data -->
-  <script type="application/ld+json">
-{
+title = "南方机电五金建材总汇 — 官渡20年老字号机电五金·配件最全·送货上门·长期合同月付（原南方百旺机电部）"
+description = "广东省韶关市翁源县官渡镇20年老字号机电五金老品牌【南方机电五金建材总汇】（原南方百旺机电部）。主营五金机电、电机水泵、电动工具、建筑机械、五金工具、油锯割草机、轴承油封、灯饰卫浴、传动配件、劳保用品、螺丝标准件。本地现货配件最全，别人没有的我们也有！支持工厂工地签订长期供货合同月付、专车送货上门。服务热线/微信：13411116196，地址：官渡镇文体中心公园南侧50米。"
+keywords = "南方机电五金建材总汇, 南方百旺机电部, 官渡机电, 官渡五金店, 翁源机电五金, 韶关五金批发, 电机水泵, DCA电动工具, 建筑机械, 油锯割草机, 轴承油封, 视贝灯饰插座, 金羚排气扇, 螺丝标准件, 劳保用品, 送货上门, 企业月结供货, 翁源官渡五金建材"
+
+schema_data = {
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": [
-        "HardwareStore",
-        "LocalBusiness",
-        "WholesaleStore"
-      ],
+      "@type": ["HardwareStore", "LocalBusiness", "WholesaleStore"],
       "@id": "https://vvvcoding.com/#store",
       "name": "南方机电五金建材总汇",
-      "alternateName": [
-        "南方百旺机电部",
-        "官渡南方机电",
-        "翁源南方五金机电",
-        "南方机电总汇"
-      ],
+      "alternateName": ["南方百旺机电部", "官渡南方机电", "翁源南方五金机电", "南方机电总汇"],
       "url": "https://vvvcoding.com",
       "logo": "https://vvvcoding.com/images/store/power-tools.jpg",
       "image": [
@@ -76,7 +22,7 @@
         "https://vvvcoding.com/images/store/ventilation-fans.jpg",
         "https://vvvcoding.com/images/store/labor-protection.jpg"
       ],
-      "description": "广东省韶关市翁源县官渡镇20年老字号机电五金老品牌【南方机电五金建材总汇】（原南方百旺机电部）。主营五金机电、电机水泵、电动工具、建筑机械、五金工具、油锯割草机、轴承油封、灯饰卫浴、传动配件、劳保用品、螺丝标准件。本地现货配件最全，别人没有的我们也有！支持工厂工地签订长期供货合同月付、专车送货上门。服务热线/微信：13411116196，地址：官渡镇文体中心公园南侧50米。",
+      "description": description,
       "telephone": "13411116196",
       "priceRange": "¥¥",
       "currenciesAccepted": "CNY",
@@ -84,15 +30,7 @@
       "openingHoursSpecification": [
         {
           "@type": "OpeningHoursSpecification",
-          "dayOfWeek": [
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Saturday",
-            "Sunday"
-          ],
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
           "opens": "08:00",
           "closes": "20:30"
         }
@@ -111,33 +49,14 @@
         "longitude": 113.8824
       },
       "areaServed": [
-        {
-          "@type": "AdministrativeArea",
-          "name": "官渡镇"
-        },
-        {
-          "@type": "AdministrativeArea",
-          "name": "翁源县"
-        },
-        {
-          "@type": "AdministrativeArea",
-          "name": "韶关市"
-        }
+        { "@type": "AdministrativeArea", "name": "官渡镇" },
+        { "@type": "AdministrativeArea", "name": "翁源县" },
+        { "@type": "AdministrativeArea", "name": "韶关市" }
       ],
       "knowsAbout": [
-        "五金机电",
-        "电机水泵",
-        "电动工具",
-        "建筑机械",
-        "五金工具",
-        "油锯割草机",
-        "轴承油封",
-        "灯饰卫浴",
-        "传动配件",
-        "劳保用品",
-        "螺丝标准件",
-        "企业长期供货合同月结",
-        "工矿配件极速送货上门"
+        "五金机电", "电机水泵", "电动工具", "建筑机械", "五金工具", "油锯割草机",
+        "轴承油封", "灯饰卫浴", "传动配件", "劳保用品", "螺丝标准件",
+        "企业长期供货合同月结", "工矿配件极速送货上门"
       ]
     },
     {
@@ -179,17 +98,73 @@
     }
   ]
 }
+
+schema_json = json.dumps(schema_data, ensure_ascii=False, indent=2)
+
+html_template = f"""<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>{title}</title>
+  
+  <!-- SEO & AI Search Optimization Meta Tags (豆包/百度/DeepSeek/Google) -->
+  <meta name="description" content="{description}">
+  <meta name="keywords" content="{keywords}">
+  <meta name="author" content="南方机电五金建材总汇">
+  <meta name="format-detection" content="telephone=yes, address=yes">
+  <link rel="canonical" href="https://vvvcoding.com">
+  
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:url" content="https://vvvcoding.com">
+  <meta property="og:site_name" content="南方机电五金建材总汇">
+  <meta property="og:title" content="南方机电五金建材总汇（原南方百旺机电部）— 官渡20年老字号机电五金总汇">
+  <meta property="og:description" content="本地配件最全，别人没有的我们也有！支持企业长期合同月付、专车送货上门。服务热线：13411116196">
+  <meta property="og:image" content="/images/store/power-tools.jpg">
+  
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="南方机电五金建材总汇 — 官渡20年老字号">
+  <meta name="twitter:description" content="本地配件最全，别人没有的我们也有！支持企业长期合同月付、专车送货上门。热线：13411116196">
+  <meta name="twitter:image" content="/images/store/power-tools.jpg">
+  
+  <!-- Tailwind CSS Play CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {{
+      theme: {{
+        extend: {{
+          colors: {{
+            brand: {{
+              50: '#eff6ff',
+              100: '#dbeafe',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af',
+              900: '#1e3a8a',
+            }}
+          }}
+        }}
+      }}
+    }}
+  </script>
+
+  <!-- Schema.org JSON-LD LocalBusiness & FAQPage Structured Data -->
+  <script type="application/ld+json">
+{schema_json}
   </script>
   <style>
-    .toast-animate {
+    .toast-animate {{
       animation: fadeInOut 2.5s ease forwards;
-    }
-    @keyframes fadeInOut {
-      0% { opacity: 0; transform: translateY(20px); }
-      15% { opacity: 1; transform: translateY(0); }
-      85% { opacity: 1; transform: translateY(0); }
-      100% { opacity: 0; transform: translateY(-10px); }
-    }
+    }}
+    @keyframes fadeInOut {{
+      0% {{ opacity: 0; transform: translateY(20px); }}
+      15% {{ opacity: 1; transform: translateY(0); }}
+      85% {{ opacity: 1; transform: translateY(0); }}
+      100% {{ opacity: 0; transform: translateY(-10px); }}
+    }}
   </style>
 </head>
 <body class="bg-slate-50 text-slate-900 antialiased font-sans flex flex-col min-h-screen">
@@ -1225,45 +1200,51 @@
   </div>
 
   <script>
-    function copyText(text, successMsg) {
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(function() {
+    function copyText(text, successMsg) {{
+      if (navigator.clipboard && navigator.clipboard.writeText) {{
+        navigator.clipboard.writeText(text).then(function() {{
           showToast(successMsg);
-        }).catch(function() {
+        }}).catch(function() {{
           fallbackCopy(text, successMsg);
-        });
-      } else {
+        }});
+      }} else {{
         fallbackCopy(text, successMsg);
-      }
-    }
+      }}
+    }}
 
-    function fallbackCopy(text, successMsg) {
+    function fallbackCopy(text, successMsg) {{
       var textarea = document.createElement("textarea");
       textarea.value = text;
       textarea.style.position = "fixed";
       textarea.style.opacity = "0";
       document.body.appendChild(textarea);
       textarea.select();
-      try {
+      try {{
         document.execCommand("copy");
         showToast(successMsg);
-      } catch (err) {
+      }} catch (err) {{
         alert(text);
-      }
+      }}
       document.body.removeChild(textarea);
-    }
+    }}
 
-    function showToast(msg) {
+    function showToast(msg) {{
       var container = document.getElementById("toastContainer");
       if (!container) return;
       var toast = document.createElement("div");
       toast.className = "bg-slate-900 text-white border border-slate-700 shadow-2xl px-5 py-3 rounded-2xl text-xs sm:text-sm font-bold flex items-center gap-2 toast-animate pointer-events-auto";
       toast.innerHTML = "<span>✅</span> <span>" + msg + "</span>";
       container.appendChild(toast);
-      setTimeout(function() {
+      setTimeout(function() {{
         if (toast.parentNode) toast.parentNode.removeChild(toast);
-      }, 2600);
-    }
+      }}, 2600);
+    }}
   </script>
 </body>
 </html>
+"""
+
+with open("d:/webgame/public/index.html", "w", encoding="utf-8") as f:
+    f.write(html_template)
+
+print("Generated d:/webgame/public/index.html successfully, length:", len(html_template))

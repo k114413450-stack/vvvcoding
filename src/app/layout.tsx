@@ -1,48 +1,84 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import { AppProvider } from "@/context/AppContext";
-
-// Use CSS variable font stacks instead of next/font/google to avoid build-time network dependency
-const geistSans = { variable: "--font-geist-sans", className: "" };
-const geistMono = { variable: "--font-geist-mono", className: "" };
 
 const BASE_URL = "https://vvvcoding.com";
+
+export const viewport: Viewport = {
+  themeColor: "#1e3a8a",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: "VVVCODING — Degen Trading Trainer",
-    template: "%s — VVVCODING",
+    default:
+      "南方机电五金建材总汇 — 官渡20年老字号机电五金·配件最全·送货上门·长期合同月付（原南方百旺机电部）",
+    template: "%s — 南方机电五金建材总汇",
   },
   description:
-    "A manual trading backtesting simulator designed for pricing behavior practice.",
+    "广东省韶关市翁源县官渡镇20年老字号机电五金老品牌【南方机电五金建材总汇】（原南方百旺机电部）。主营五金机电、电机水泵、电动工具、建筑机械、五金工具、油锯割草机、轴承油封、灯饰卫浴、传动配件、劳保用品、螺丝标准件。本地现货配件最全，别人没有的我们也有！支持工厂工地签订长期供货合同月付、专车送货上门。服务热线/微信：13411116196，地址：官渡镇文体中心公园南侧50米。",
   keywords: [
-    "vibe coding",
-    "backtesting",
-    "trading simulator",
-    "degen trading",
-    "manual simulator",
+    "南方机电五金建材总汇",
+    "南方百旺机电部",
+    "官渡机电",
+    "官渡五金店",
+    "翁源机电五金",
+    "韶关五金批发",
+    "电机水泵",
+    "DCA电动工具",
+    "建筑机械",
+    "油锯割草机",
+    "轴承油封",
+    "视贝灯饰插座",
+    "金羚排气扇",
+    "螺丝标准件",
+    "劳保用品",
+    "送货上门",
+    "企业月结供货",
+    "翁源官渡五金建材",
   ],
-  authors: [{ name: "VVVCODING" }],
-  creator: "VVVCODING",
+  authors: [{ name: "南方机电五金建材总汇" }],
+  creator: "南方机电五金建材总汇",
+  publisher: "南方机电五金建材总汇",
+  formatDetection: {
+    telephone: true,
+    address: true,
+  },
   openGraph: {
     type: "website",
-    locale: "en_US",
+    locale: "zh_CN",
     url: BASE_URL,
-    siteName: "VVVCODING",
-    title: "VVVCODING — Degen Trading Trainer",
+    siteName: "南方机电五金建材总汇",
+    title: "南方机电五金建材总汇（原南方百旺机电部）— 官渡20年老字号",
     description:
-      "A manual trading backtesting simulator designed for pricing behavior practice.",
+      "20年老店本地老品牌。五金机电、电机水泵、电动工具、螺丝标准件等本地配件最全，别人没有的我们也有！支持企业长期合同月付、专车送货上门。热线：13411116196",
+    images: [
+      {
+        url: "/images/store/power-tools.jpg",
+        width: 1200,
+        height: 630,
+        alt: "南方机电五金建材总汇-实体门店与现货仓库",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "VVVCODING — Degen Trading Trainer",
+    title: "南方机电五金建材总汇 — 官渡20年老字号机电五金建材总汇",
     description:
-      "A manual trading backtesting simulator designed for pricing behavior practice.",
+      "本地配件最全，别人没有的我们也有！支持企业长期合同月付、专车送货上门。热线：13411116196",
+    images: ["/images/store/power-tools.jpg"],
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
   alternates: {
     canonical: BASE_URL,
@@ -52,26 +88,17 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const htmlClass = `${geistSans.variable} ${geistMono.variable} h-full antialiased dark`;
-
   return (
-    <html lang="en" className={htmlClass}>
-      <body className="min-h-full flex flex-col bg-slate-950 text-slate-100 selection:bg-purple-600 selection:text-white animate-fade-in">
-        <AppProvider>{children}</AppProvider>
-        <footer className="mt-auto border-t border-slate-900 bg-slate-950 py-6 px-4">
-          <div className="mx-auto max-w-6xl flex flex-col sm:flex-row items-center justify-between gap-3 text-[10px] text-slate-600">
-            <p>© 2026 VVVCODING — AI Native Developers Community · Degen Trading Trainer Sandbox.</p>
-            <p className="text-center sm:text-right leading-relaxed max-w-sm">
-              All trading simulations are strictly with virtual play coins for educational purposes.
-            </p>
-          </div>
-        </footer>
+    <html lang="zh-CN" className="scroll-smooth">
+      <body className="min-h-full flex flex-col bg-slate-50 text-slate-900 antialiased font-sans">
+        {children}
       </body>
     </html>
   );
 }
+
